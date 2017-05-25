@@ -1,6 +1,6 @@
 
-// Define the `studentApp` module
-var studentApp = angular.module('studentApp', [
+// Define the `mealApp` module
+var studentApp = angular.module('mealApp', [
   'ngRoute',
   'studentList',
   'studentDetail',
