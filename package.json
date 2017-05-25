@@ -1,0 +1,47 @@
+{
+  "name": "m.e.a.l",
+  "version": "1.0.0",
+  "description": "Money Exchange and loan",
+  "main": "main.js",
+  "scripts": {
+    "postinstall": "bower install",
+    "prestart": "npm install",
+    "start": "node main",
+    "pretest": "npm install",
+    "test": "karma start karma.conf.js",
+    "test-single-run": "karma start karma.conf.js --single-run",
+    "preupdate-webdriver": "npm install",
+    "update-webdriver": "webdriver-manager update",
+    "preprotractor": "npm run update-webdriver",
+    "protractor": "protractor e2e-tests/protractor.conf.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MesSem/M.e.a.l..git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MesSem/M.e.a.l./issues"
+  },
+  "homepage": "https://github.com/MesSem/M.e.a.l.#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "cors": "^2.8.3",
+    "express": "^4.15.2",
+    "mongoose": "^4.9.5"
+  },
+  "devDependencies": {
+    "async": "^2.3.0",
+    "bower": "^1.8.0",
+    "eslint": "^3.19.0",
+    "frisby": "^0.8.5",
+    "jasmine-core": "^2.6.1",
+    "karma": "^1.6.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-firefox-launcher": "^1.0.1",
+    "karma-jasmine": "^1.1.0",
+    "morgan": "^1.8.1",
+    "protractor": "^5.1.1"
+  }
+}

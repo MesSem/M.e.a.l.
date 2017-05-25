@@ -1,0 +1,16 @@
+{
+  "name": "unicam-studenti",
+  "description": "A starter project for AngularJS",
+  "version": "1.0.0",
+  "homepage": "https://github.com/e-xtrategy/unicam-angularjs.git",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "^1.6.4",
+    "angular-animate": "1.6.x",
+    "angular-mocks": "1.6.x",
+    "angular-resource": "1.6.x",
+    "angular-route": "1.6.x",
+    "bootstrap": "^3.3.7"
+  }
+}
