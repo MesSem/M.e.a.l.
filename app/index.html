@@ -10,26 +10,37 @@
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="app.module.js"></script>
   <script src="app.config.js"></script>
+
+  <script src="modules/pages/home/home.module.js"></script>
+  <script src="modules/pages/home/home.component.js"></script>
+  <script src="modules/pages/movimenti/movimenti.module.js"></script>
+  <script src="modules/pages/movimenti/movimenti.component.js"></script>
+  <script src="modules/pages/prestiti/prestiti.module.js"></script>
+  <script src="modules/pages/prestiti/prestiti.component.js"></script>
+  <script src="modules/pages/profilo/profilo.module.js"></script>
+  <script src="modules/pages/profilo/profilo.component.js"></script>
+
+  <script src="modules/widjets/carte-associate/carte-associate.module.js"></script>
+  <script src="modules/widjets/carte-associate/carte-associate.component.js"></script>
+  <script src="modules/widjets/dettagli-account/dettagli-account.module.js"></script>
+  <script src="modules/widjets/dettagli-account/dettagli-account.component.js"></script>
+  <script src="modules/widjets/storico/storico.module.js"></script>
+  <script src="modules/widjets/storico/storico.component.js"></script>
   <!--
-  <script src="modules/pages/student-list/student-list.module.js"></script>
-  <script src="modules/pages/student-list/student-list.component.js"></script>
-  <script src="modules/pages/student-detail/student-detail.module.js"></script>
-  <script src="modules/pages/student-detail/student-detail.component.js"></script>
-  <script src="modules/pages/add-student/add-student.module.js"></script>
-  <script src="modules/pages/add-student/add-student.component.js"></script>
-  <script src="modules/pages/edit-student/edit-student.module.js"></script>
-  <script src="modules/pages/edit-student/edit-student.component.js"></script>
   <script src="modules/common/common.module.js"></script>
   <script src="modules/common/filters/media.filter.js"></script>
   <script src="modules/common/services/user.service.js"></script>-->
+
 </head>
 
 <body>
-  <h1>Lezione Angular</h1>
+<!-- qui va il menu presente in alto, dovrà cambiare in base se utente loggato o no, forse meglio fare un componente apposito-->
+
+  <h1>M.e.a.l.</h1>
   <div ng-view></div>
 
   <div id="login" ng-viewlogin></div>
-  
+
 </body>
 
 </html>

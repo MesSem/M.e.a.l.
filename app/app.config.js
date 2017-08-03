@@ -1,6 +1,5 @@
-/*
 angular.
-  module('studentApp').
+  module('mealApp').
   config(['$locationProvider', '$routeProvider',
     function config($locationProvider, $routeProvider) {
       $locationProvider.hashPrefix('!');
@@ -8,7 +7,7 @@ angular.
       $routeProvider.
         when('/students', {
           template: '<student-list></student-list>'
-        }).
+        });/*.
         when('/students/:studentId', {
           template: '<student-detail></student-detail>'
         }).
@@ -18,6 +17,6 @@ angular.
         when('/edit/students/:studentId', {
           template: '<edit-student></edit-student>'
         }).
-        otherwise('/students');
+        otherwise('/students');*/
     }
-]);*/
+]);
