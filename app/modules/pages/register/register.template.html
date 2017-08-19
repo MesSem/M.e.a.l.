@@ -1,5 +1,5 @@
-<h3>Aggiungi Studente</h3>
-<form ng-submit="$ctrl.save()">
+<h3>Nuovo utente</h3>
+<form ng-submit="$ctrl.save()" style="padding: 15px;">
   <div class="form-group">
     <label class="col-form-label" for="name">Nome:</label>
     <input type="text" required ng-model="$ctrl.student.name" class="form-control" id="name">
@@ -7,18 +7,6 @@
   <div class="form-group">
     <label class="col-form-label" for="surname">Cognome:</label>
     <input type="text" required ng-model="$ctrl.student.surname" class="form-control" id="surname">
-  </div>
-  <div class="form-group">
-    <label class="col-form-label" for="studentID">Matricola:</label>
-    <input type="text" required ng-model="$ctrl.student.studentID" class="form-control" id="studentID">
-  </div>
-  <div class="form-group">
-    <label class="col-form-label" for="media">Media:</label>
-    <input type="text" required ng-model="$ctrl.student.media" class="form-control" id="media">
-  </div>
-  <div class="form-group">
-    <label class="col-form-label" for="cfu">CFU:</label>
-    <input type="text" required ng-model="$ctrl.student.CFU" class="form-control" id="cfu">
   </div>
   <div class="form-group">
     <label class="col-form-label" for="email">Email:</label>
@@ -33,5 +21,3 @@
   <input type="reset" class="btn btn-default" value="Annulla">
   <input type="submit" class="btn btn-default" value="Aggiungi">
 </form>
-<hr>
-<a href="#!/students">Torna alla lista studenti</a>

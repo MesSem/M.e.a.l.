@@ -1,13 +1,30 @@
-angular.
-  module('mealApp').
-  config(['$locationProvider', '$routeProvider',
-    function config($locationProvider, $routeProvider) {
-      $locationProvider.hashPrefix('!');
+angular
+  .module('mealApp', ['ngRoute'])
+  .config(function ($routeProvider) {
+      //$locationProvider.hashPrefix('!');
 
-      $routeProvider.
-        when('/students', {
-          template: '<student-list></student-list>'
-        });/*.
+      $routeProvider.when('/',
+          {
+            templateUrl: "modules/pages/home/home.template.html"
+          }
+        )
+        .when('/profile',
+          {
+            templateUrl: "modules/pages/profile/profile.template.html"
+          }
+        )
+        .when('/register',
+          {
+            templateUrl: "modules/pages/register/register.template.html"
+          }
+        );
+        /*.when('/students',
+          {
+            template: '<student-list></student-list>'
+          }
+        )*/
+        
+        /*.
         when('/students/:studentId', {
           template: '<student-detail></student-detail>'
         }).
@@ -19,4 +36,4 @@ angular.
         }).
         otherwise('/students');*/
     }
-]);
+  );

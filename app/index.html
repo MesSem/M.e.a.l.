@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>M.e.a.l.</title>
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
   <link rel="stylesheet" href="app.css" />
@@ -36,10 +37,25 @@
 <body>
 <!-- qui va il menu presente in alto, dovrà cambiare in base se utente loggato o no, forse meglio fare un componente apposito-->
 
-  <h1>M.e.a.l.</h1>
-  <div ng-view></div>
+  <div class="bg-green upper-div">
+    <div><a href="#!">LOGO</a></div>
+
+    <div class="access-div">
+      <div><a class="btn btn-success" href="#!profile">Test user page</a></div>
+      <div><button class="btn btn-success" >Login</button></div>
+      <div><a class="btn btn-success" href="#!register">Register</a></div>
+    </div>
+    
+  </div>
+
+  <ng-view></ng-view>
 
   <div id="login" ng-viewlogin></div>
+
+  <div class="bg-green lower-div">
+    Footer<br>
+    Navigation, credits, etc...
+  </div>
 
 </body>
 
