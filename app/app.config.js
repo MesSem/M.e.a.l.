@@ -1,39 +1,22 @@
 angular
-  .module('mealApp', ['ngRoute'])
-  .config(function ($routeProvider) {
-      //$locationProvider.hashPrefix('!');
+  .module('mealApp')
+  .config(['$locationProvider', '$routeProvider',
+    function config($locationProvider, $routeProvider) {
+      $locationProvider.hashPrefix('!');
 
-      $routeProvider.when('/',
-          {
-            templateUrl: "modules/pages/home/home.template.html"
-          }
-        )
-        .when('/profile',
-          {
-            templateUrl: "modules/pages/profile/profile.template.html"
-          }
-        )
-        .when('/register',
-          {
-            templateUrl: "modules/pages/register/register.template.html"
-          }
-        );
-        /*.when('/students',
-          {
-            template: '<student-list></student-list>'
-          }
-        )*/
-        
-        /*.
-        when('/students/:studentId', {
-          template: '<student-detail></student-detail>'
+      $routeProvider.when('/',{
+          template: '<home></home>'
         }).
-        when('/add/students', {
-          template: '<add-student></add-student>'
-        }).
-        when('/edit/students/:studentId', {
-          template: '<edit-student></edit-student>'
-        }).
+        when('/profile',{
+            template: '<profile></profile>'
+          }).
+        when('/register',{
+            template: '<register></register>'
+          }).
+        when('/login',{
+            template: '<login></login>'
+          });
+          /*
         otherwise('/students');*/
     }
-  );
+  ]);

@@ -1,4 +1,4 @@
-// Define the `addStudent` module
-angular.module('addStudent', [
+// Define the `login` module
+angular.module('login', [
   'ngRoute'
 ]);

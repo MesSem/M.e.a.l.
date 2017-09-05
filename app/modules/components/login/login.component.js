@@ -1,19 +1,7 @@
-// Register the `addStudent` component on the `addStudent` module,
-angular.module('addStudent').component('addStudent', {
-  templateUrl: 'modules/pages/add-student/add-student.template.html',
+// Register the `login` component on the `login` module,
+angular.module('login').component('login', {
+  templateUrl: 'modules/components/login/login.template.html',
   controller: function (UserService, $location) {
-    var addStudent = this;
-    addStudent.student = {
-      imgUrl: "img/avatar.jpg"
-    };
-
-    addStudent.save = function () {
-      UserService.addStudent(addStudent.student).then(
-        function (res) {
-          $location.path('');
-        }
-      )
-    }
 
   }
 });

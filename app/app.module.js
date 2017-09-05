@@ -1,7 +1,11 @@
 
 // Define the `mealApp` module
-var studentApp = angular.module('mealApp', [
+var mealApp = angular.module('mealApp', [
   'ngRoute',
+  'profile',
+  'register',
+  'home',
+  'login'
   /*'home',
   'movimenti',
   'prestiti',

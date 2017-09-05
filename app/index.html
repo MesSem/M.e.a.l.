@@ -18,8 +18,12 @@
   <script src="modules/pages/movimenti/movimenti.component.js"></script>
   <script src="modules/pages/prestiti/prestiti.module.js"></script>
   <script src="modules/pages/prestiti/prestiti.component.js"></script>
-  <script src="modules/pages/profilo/profilo.module.js"></script>
-  <script src="modules/pages/profilo/profilo.component.js"></script>
+  <script src="modules/pages/profile/profile.module.js"></script>
+  <script src="modules/pages/profile/profile.component.js"></script>
+  <script src="modules/pages/register/register.module.js"></script>
+  <script src="modules/pages/register/register.component.js"></script>
+  <script src="modules/components/login/login.module.js"></script>
+  <script src="modules/components/login/login.component.js"></script>
 
   <script src="modules/widjets/carte-associate/carte-associate.module.js"></script>
   <script src="modules/widjets/carte-associate/carte-associate.component.js"></script>
@@ -42,15 +46,16 @@
 
     <div class="access-div">
       <div><a class="btn btn-success" href="#!profile">Test user page</a></div>
-      <div><button class="btn btn-success" >Login</button></div>
+      <div><a class="btn btn-success" href="#!login">Login</a></div>
       <div><a class="btn btn-success" href="#!register">Register</a></div>
     </div>
-    
+
   </div>
 
-  <ng-view></ng-view>
+  <!--<ng-view></ng-view>-->
+  <div ng-view></div>
 
-  <div id="login" ng-viewlogin></div>
+  <!--<div id="login" ng-viewlogin></div>-->
 
   <div class="bg-green lower-div">
     Footer<br>
