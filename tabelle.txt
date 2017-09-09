@@ -1,0 +1,45 @@
+TABELLE
+
+-utenti
+nome
+cognome
+email
+username
+password
+data nascita
+numero tel*
+indirizzo(via, citta, nazione, cap)*
+carte associate(numero, scadenza, cvv)*
+fotocopia documento*
+
+
+
+-progetti
+creatore(id)
+nome
+descrizione
+immagine principale
+immagini galleria(...)*
+data inizio
+data conclusione
+somma richiesta
+somma raggiunta(somma, data - funzione cache)
+restituzione(data, interessi)
+accettato
+
+
+
+-movimenti (senza progetto)
+mittente(id)
+destinatario(id)
+denaro
+appunti*
+data(automatica)
+
+
+
+-contributo per progetto
+mittente(id)
+progetto(id)
+denaro
+data

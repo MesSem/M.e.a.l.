@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="it" ng-app="mealApp">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>M.e.a.l.</title>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="app.css" />
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <!--<script src="app.module.js"></script>-->
+  <script src="app.config.js"></script>
+  <script src="app.services.js"></script>
+  
+  <base href="/">
+  
+  
+
+  <script src="modules/pages/home/home.component.js"></script>
+  <script src="modules/pages/profile/profile.component.js"></script>
+  <script src="modules/pages/register/register.component.js"></script>
+  <script src="modules/components/login/login.component.js"></script>
+
+  <!--
+  <script src="modules/pages/movimenti/movimenti.component.js"></script>
+  <script src="modules/pages/prestiti/prestiti.component.js"></script>
+  <script src="modules/widgets/carte-associate/carte-associate.module.js"></script>
+  <script src="modules/widgets/carte-associate/carte-associate.component.js"></script>
+  <script src="modules/widgets/dettagli-account/dettagli-account.module.js"></script>
+  <script src="modules/widgets/dettagli-account/dettagli-account.component.js"></script>
+  <script src="modules/widgets/storico/storico.module.js"></script>
+  <script src="modules/widgets/storico/storico.component.js"></script>
+  
+  <script src="modules/common/common.module.js"></script>
+  <script src="modules/common/filters/media.filter.js"></script>
+  <script src="modules/common/services/user.service.js"></script>-->
+
+</head>
+
+<body>
+<!-- qui va il menu presente in alto, dovrà cambiare in base se utente loggato o no, forse meglio fare un componente apposito-->
+
+  <div class="bg-green upper-div">
+    <div><a href="#!">LOGO</a></div>
+
+    <div class="access-div">
+      <div><a class="btn btn-success" href="#!profile">Test user page</a></div>
+      <div><a class="btn btn-success" href="#!login">Login</a></div>
+      <div><a class="btn btn-success" href="#!register">Register</a></div>
+    </div>
+
+  </div>
+
+  <!--<ng-view></ng-view>-->
+  <div ng-view></div>
+
+  <!--<div id="login" ng-viewlogin></div>-->
+
+  <div class="bg-green lower-div">
+    Footer<br>
+    Navigation, credits, etc...
+  </div>
+
+</body>
+
+</html>

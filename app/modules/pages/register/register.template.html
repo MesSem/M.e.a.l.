@@ -1,0 +1,41 @@
+<div>
+  <h1>Register</h1>
+  <div ng-show="error" class="alert alert-danger">{{errorMessage}}</div>
+  <form class="form" ng-submit="register()">
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" class="form-control" name="username" ng-model="registerForm.username" required>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" class="form-control" name="password" ng-model="registerForm.password" required>
+    </div>
+    <div class="form-group">
+      <label>Nome</label>
+      <input type="text" class="form-control" name="nome" ng-model="registerForm.nome" required>
+    </div>
+    <div class="form-group">
+      <label>Cognome</label>
+      <input type="text" class="form-control" name="cognome" ng-model="registerForm.cognome" required>
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" class="form-control" name="email" ng-model="registerForm.email" required>
+    </div>
+    <div class="form-group">
+      <label>Data nascita</label>
+      <input type="text" class="form-control" name="nascita" ng-model="registerForm.nascita" required>
+    </div>
+    <div class="form-group">
+      <label>Telefono</label>
+      <input type="text" class="form-control" name="telefono" ng-model="registerForm.telefono" required>
+    </div>
+    <div class="form-group">
+      <label>Indirizzo</label>
+      <input type="text" class="form-control" name="indirizzo" ng-model="registerForm.indirizzo" required>
+    </div>
+    <div>
+      <button type="submit" class="btn btn-default" ng-disabled="disabled">Register</button>
+    </div>
+  </form>
+</div>
