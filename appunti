@@ -52,3 +52,24 @@ importare in angular, sia impostare il file sia da definire con parentesi quadre
 this----> dentro servizio/oggetto si riferisce a servizio/oggetto
 
 ----> dentro metodo si riferisce a metodo. Sol: mi salvo l'oggetto dentro altra variabile
+
+
+
+
+
+
+
+// Define the `mealApp` module
+var mealApp = angular.module('mealApp', [
+  'ngRoute',
+  'profile',
+  'register',
+  'home',
+  'login'
+  /*'home',
+  'movimenti',
+  'prestiti',
+  'profilo',
+  'common'*/ //li ho commentati perchè per ora esistono i file ma sono o vuoti o non contengono i nomi appropriati
+  //forse ci vanno anche i widjets. Probabilmente no, credo vadano dentro home e dentro alla pagine che li utilizzano
+]);
