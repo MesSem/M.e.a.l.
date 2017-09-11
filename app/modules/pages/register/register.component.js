@@ -10,7 +10,7 @@ angular.module('mealApp').component('register', {
                   $scope.disabled = true;
 
                   // call register from service
-                  AuthService.register($scope.registerForm.username, $scope.registerForm.password)
+                  AuthService.register($scope.registerForm)
                     // handle success
                     .then(function () {
                       $location.path('/login');
