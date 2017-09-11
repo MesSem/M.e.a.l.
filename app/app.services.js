@@ -31,15 +31,15 @@ function ($q, $timeout, $http) {
       } else {
         user = false;
       }
-    }),
+    })
     // handle error
-    function (error) {
+    .catch(function (error) {
       user = false;
-    };
+    });
   }
 
   function login(username, password) {
-
+    
     // create a new instance of deferred
     var deferred = $q.defer();
 
@@ -55,12 +55,12 @@ function ($q, $timeout, $http) {
           user = false;
           deferred.reject();
         }
-      }),
+      })
       // handle error
-      function (error) {
+      .catch(function (error) {
         user = false;
         deferred.reject();
-      };
+      });
 
     // return promise object
     return deferred.promise;
@@ -78,12 +78,12 @@ function ($q, $timeout, $http) {
       .then(function (success) {
         user = false;
         deferred.resolve();
-      }),
+      })
       // handle error
-      function (error) {
+      .catch(function (error) {
         user = false;
         deferred.reject();
-      };
+      });
 
     // return promise object
     return deferred.promise;
@@ -105,11 +105,11 @@ function ($q, $timeout, $http) {
         } else {
           deferred.reject();
         }
-      }),
+      })
       // handle error
-      function (data) {
+      .catch(function (data) {
         deferred.reject();
-      };
+      });
 
     // return promise object
     return deferred.promise;

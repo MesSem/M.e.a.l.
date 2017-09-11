@@ -14,6 +14,10 @@ function ($scope, $location, AuthService) {
         $location.path('/login');
       });
 
+  },
+  $scope.isLoggedIn = function() {
+    return AuthService.isLoggedIn();
   };
 
 }]);
+
