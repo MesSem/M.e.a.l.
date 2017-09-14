@@ -11,6 +11,8 @@
     "angular-mocks": "1.6.x",
     "angular-resource": "1.6.x",
     "angular-route": "1.6.x",
-    "bootstrap": "^3.3.7"
+    "bootstrap": "^3.3.7",
+    "api-check": "^7.5.5",
+    "angular-formly": "^8.4.1"
   }
 }

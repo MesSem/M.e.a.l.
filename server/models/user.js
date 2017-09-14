@@ -19,7 +19,7 @@ var Card=new Schema({
 
 var User = new Schema({
   username: {type:String, required:true, index: true, unique: true},
-  password: {type:String, required:true},
+  //password: {type:String, required:true}, Creata automaticamente tramite modulo passport
   name: {type:String, required:true},
   surname: {type:String, required:true},
   email: {type:mongoose.SchemaTypes.Email, required:true},

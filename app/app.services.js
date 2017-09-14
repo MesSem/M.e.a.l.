@@ -11,7 +11,9 @@ function ($q, $timeout, $http) {
     getUserStatus: getUserStatus,
     login: login,
     logout: logout,
-    register: register
+    register: register,
+    getUser: getUser,
+    updateUser: updateUser
   });
 
   function isLoggedIn() {
@@ -114,6 +116,34 @@ function ($q, $timeout, $http) {
     // return promise object
     return deferred.promise;
 
+  }
+
+  function getUser() {
+    //var user;
+    return $http.get('/user/info');
+  }
+
+  function updateUser(form) {
+    // create a new instance of deferred
+    var deferred = $q.defer();
+    
+        // send a post request to the server
+        $http.post('/user/info', form)
+          // handle success
+          .then(function (success) {
+            if(success.status === 200 && success.data.status){
+              deferred.resolve();
+            } else {
+              deferred.reject();
+            }
+          })
+          // handle error
+          .catch(function (data) {
+            deferred.reject();
+          });
+    
+        // return promise object
+        return deferred.promise;
   }
 
 }]);

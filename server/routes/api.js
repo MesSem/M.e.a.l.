@@ -6,7 +6,7 @@ var User = require('../models/user.js');
 
 
 router.post('/register', function(req, res) {
-  User.register(new User({ username: req.body.username, password: req.body.password, name: req.body.name, surname: req.body.surname, email: req.body.email, bornDate: req.body.bornDate, phoneNumber: req.body.phoneNumber, address: req.body.address }),
+  User.register(new User(req.body),
     req.body.password, function(err, account) {
     if (err) {
       return res.status(500).json({
@@ -59,6 +59,40 @@ router.get('/status', function(req, res) {
   }
   res.status(200).json({
     status: true
+  });
+});
+
+router.get('/info', function(req, res) {
+  if (!req.isAuthenticated()) {
+    return res.status(200).json({
+      user: false
+    });
+  }
+  res.status(200).json({
+    user: req.user
+  });
+});
+
+router.post('/info', function(req, res) {
+  if (!req.isAuthenticated()) {
+    return res.status(200).json({
+      error: 'not logged'
+    });
+  }
+  var userData = req.body;
+
+  var userId = req.body._id;
+  
+  // Delete the _id property, otherwise Mongo will return a "Mod on _id not allowed" error
+  delete userData._id;
+  
+  // Do the upsert, which works like this: If no Contact document exists with 
+  // _id = contact.id, then create a new doc using upsertData.
+  // Otherwise, update the existing doc with upsertData
+  User.update({_id : userId}, {"$set" : userData},function(error){console.log(error);});
+
+  res.status(200).json({
+    status: 'Update successful!'
   });
 });
 

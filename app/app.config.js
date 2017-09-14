@@ -34,3 +34,21 @@ mealApp.run(function ($rootScope, $location, $route, AuthService) {
       });
   });
 });
+
+angular.module('mealApp').controller('loggedController',
+['$scope', '$location', 'AuthService',
+function ($scope, $location, AuthService) {
+
+  $scope.isLoggedIn = function() {
+    return AuthService.isLoggedIn();
+  };
+
+  $scope.logout = function () {
+    // call logout from service
+    AuthService.logout()
+      .then(function () {
+        $location.path('/login');
+      });
+  }
+
+}]);

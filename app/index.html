@@ -9,11 +9,11 @@
   <link rel="stylesheet" href="app.css" />
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
+
+  <script src="bower_components/nodep-date-input-polyfill/nodep-date-input-polyfill.dist.js"></script>
   <!--<script src="app.module.js"></script>-->
   <script src="app.config.js"></script>
   <script src="app.services.js"></script>
-  
-
   
   
 
@@ -42,12 +42,16 @@
 <!-- qui va il menu presente in alto, dovrà cambiare in base se utente loggato o no, forse meglio fare un componente apposito-->
 
   <div class="bg-green upper-div">
-    <div><a href="#!">LOGO</a></div>
+    <div><a href="#!" style="color: white;text-decoration: none;">MEAL</a></div>
 
     <div class="access-div">
-      <div><a class="btn btn-success" href="#!profile">Test user page</a></div>
-      <div><a class="btn btn-success" href="#!login">Login</a></div>
-      <div><a class="btn btn-success" href="#!register">Register</a></div>
+      <div ng-controller="loggedController">
+        <div ng-show='isLoggedIn()'><a class="btn btn-success" href="#!profile" >Profilo</a></div>
+        <div ng-show='isLoggedIn()'><a ng-click='logout()' class="btn btn-success">Logout</a></div>
+
+        <div ng-show='!isLoggedIn()'><a class="btn btn-success" href="#!login">Login</a></div>
+        <div ng-show='!isLoggedIn()'><a class="btn btn-success" href="#!register">Register</a></div>
+      </div>
     </div>
 
   </div>
