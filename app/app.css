@@ -70,6 +70,11 @@ h1, h2, h3 {text-align: center;}
     vertical-align: middle;
 }
 
+.inline {
+    display: inline-block;
+}
+
+
 /*.upper-div h1 {
     margin: 0px;
 }*/

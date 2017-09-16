@@ -98,8 +98,7 @@ function ($q, $timeout, $http) {
     var deferred = $q.defer();
 
     // send a post request to the server
-    $http.post('/user/register',
-      {username: form.username, password: form.password, name: form.name, surname: form.surname, email: form.email, bornDate: form.bornDate, phoneNumber: form.phoneNumber, address: form.address})
+    $http.post('/user/register', form)
       // handle success
       .then(function (success) {
         if(success.status === 200 && success.data.status){

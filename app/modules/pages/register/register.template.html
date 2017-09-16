@@ -3,37 +3,45 @@
   <div ng-show="error" class="alert alert-danger">{{errorMessage}}</div>
   <form class="form" ng-submit="register()">
     <div class="form-group">
-      <label>Username</label>
+      <label>Username*</label>
       <input type="text" class="form-control" name="username" ng-model="registerForm.username" required>
     </div>
     <div class="form-group">
-      <label>Password</label>
+      <label>Password*</label>
       <input type="password" class="form-control" name="password" ng-model="registerForm.password" required>
     </div>
     <div class="form-group">
-      <label>Nome</label>
+      <label>Nome*</label>
       <input type="text" class="form-control" name="nome" ng-model="registerForm.name" required>
     </div>
     <div class="form-group">
-      <label>Cognome</label>
+      <label>Cognome*</label>
       <input type="text" class="form-control" name="cognome" ng-model="registerForm.surname" required>
     </div>
     <div class="form-group">
-      <label>Email</label>
+      <label>Email*</label>
       <input type="email" class="form-control" name="email" ng-model="registerForm.email" required>
     </div>
     <div class="form-group">
-      <label>Data nascita</label>
+      <label>Data nascita*</label>
       <input type="date" class="form-control" name="nascita" ng-model="registerForm.bornDate" required>
     </div>
     <div class="form-group">
       <label>Telefono</label>
       <input type="text" class="form-control" name="telefono" ng-model="registerForm.phoneNumber">
     </div>
+    <hr>
     <div class="form-group">
       <label>Indirizzo</label>
-      <input type="text" class="form-control" name="indirizzo" ng-model="registerForm.address" disabled>
     </div>
+
+      <div class="form-group"><label style="width: 20%;">Via</label><input type="text" class="form-control inline" name="via" ng-model="registerForm.address.street" style="width: 80%;"></div>
+      <div class="form-group"><label style="width: 20%;">Città*</label><input type="text" class="form-control inline" name="citta" ng-model="registerForm.address.city" style="width: 80%;"></div>
+      <div class="form-group"><label style="width: 20%;">Nazione*</label><input type="text" class="form-control inline" name="nazione" ng-model="registerForm.address.nation" style="width: 80%;"></div>
+      <div class="form-group"><label style="width: 20%;">CAP*</label><input type="text" class="form-control inline" name="cap" ng-model="registerForm.address.CAP" style="width: 80%;"></div>
+
+    <div><i>* obbligatorio</i></div>
+    <br>
     <div>
       <button type="submit" class="btn btn-success btn-lg btn-block" ng-disabled="disabled">Crea account</button>
     </div>
