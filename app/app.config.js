@@ -22,12 +22,12 @@ mealApp.config(['$locationProvider', '$routeProvider',
   }
 ]);
 
-mealApp.run(function ($rootScope, $location, $route, AuthService) {
+mealApp.run(function ($rootScope, $location, $route, UserService) {
   $rootScope.$on('$routeChangeStart',
     function (event, next, current) {
-      AuthService.getUserStatus()
+      UserService.getUserStatus()
       .then(function(){
-        if (!angular.isUndefined(next.access) && next.access.restricted && !AuthService.isLoggedIn()){
+        if (!angular.isUndefined(next.access) && next.access.restricted && !UserService.isLoggedIn()){
           $location.path('/login');
           $route.reload();
         }
@@ -36,16 +36,16 @@ mealApp.run(function ($rootScope, $location, $route, AuthService) {
 });
 
 angular.module('mealApp').controller('loggedController',
-['$scope', '$location', 'AuthService',
-function ($scope, $location, AuthService) {
+['$scope', '$location', 'UserService',
+function ($scope, $location, UserService) {
 
   $scope.isLoggedIn = function() {
-    return AuthService.isLoggedIn();
+    return UserService.isLoggedIn();
   };
 
   $scope.logout = function () {
     // call logout from service
-    AuthService.logout()
+    UserService.logout()
       .then(function () {
         $location.path('/login');
       });

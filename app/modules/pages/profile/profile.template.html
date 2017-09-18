@@ -1,8 +1,9 @@
 <div class="row" style="padding: 15px;">
   <div class="col-xs-6 col-md-4">
     <div class="project" style="background-color: white;">
+      <h4>PROFILO</h4>
       <form class="form" ng-submit="updateUser()">
-        <input type="hidden" class="form-control" ng-model="updateForm._id" required>
+        <input type="hidden" ng-model="updateForm._id">
         <p>
           <span>Username*: </span>
           <span ng-hide='showInput'>{{user.username}}</span>
@@ -41,17 +42,17 @@
           <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.address.street">
         </p>
         <p>
-          <span>Città: </span>
+          <span>Città*: </span>
           <span ng-hide='showInput'>{{user.address.city}}</span>
           <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.address.city">
         </p>
         <p>
-          <span>Nazione: </span>
+          <span>Nazione*: </span>
           <span ng-hide='showInput'>{{user.address.nation}}</span>
           <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.address.nation">
         </p>
         <p>
-          <span>CAP: </span>
+          <span>CAP*: </span>
           <span ng-hide='showInput'>{{user.address.CAP}}</span>
           <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.address.CAP">
         </p>
@@ -67,8 +68,48 @@
       <div ng-show="success" class="alert alert-success">{{successMessage}}</div>
     </div>
   </div>
-  <div class="col-xs-6 col-md-4"><div class="project">Soldi</div></div>
-  <div class="col-xs-6 col-md-4"><div class="project">Carte associate</div></div>
+  <div class="col-xs-6 col-md-4">
+    <div class="project" style="background-color:white;">
+      <h4>CARTE ASSOCIATE</h4>
+      <form class="form" ng-submit="addCard()">
+        <input type="hidden" ng-model="updateForm._id">
+        <p>
+          <span>Numero di carta*: </span>
+          <input type="text" class="form-control" ng-model="cardForm.number" required>
+        </p>
+        <p>
+          <span>Scadenza*: </span>
+          <input type="text" class="form-control" ng-model="cardForm.endDate" maxlength="5" required>
+        </p>
+        <p>
+          <span>CVV*: </span>
+          <input type="text" class="form-control" ng-model="cardForm.cvv" maxlength="4" required>
+        </p>
+        <button class="btn btn-success" type="submit">Aggiungi</button>
+      </form>
+
+      <div ng-show="cardError" class="alert alert-danger">{{cardErrorMessage}}</div>
+
+      <form ng-repeat="card in user.cards" class="form" ng-submit="deleteCard(card._id, user._id)" id="form-{{card._id}}">
+        <hr>
+        <p>
+          <span>Numero (oscurare): </span>
+          <span>{{card.number}}</span>
+        </p>
+        <p>
+          <span>Scadenza: </span>
+          <span>{{card.endDate}}</span>
+        </p>
+        <p>
+          <span>CVV (togliere): </span>
+          <span>{{card.cvv}}</span>
+        </p>
+        <button class="btn btn-danger" type="submit">Elimina</button>
+      </form>
+    </div>
+  </div>
+
+
   <div class="col-xs-6 col-md-4"><div class="project">Storico</div></div>
 </div>
 

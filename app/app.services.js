@@ -1,4 +1,4 @@
-angular.module('mealApp').factory('AuthService',
+angular.module('mealApp').factory('UserService',
 ['$q', '$timeout', '$http',
 function ($q, $timeout, $http) {
 
@@ -13,7 +13,9 @@ function ($q, $timeout, $http) {
     logout: logout,
     register: register,
     getUser: getUser,
-    updateUser: updateUser
+    updateUser: updateUser,
+    addCard: addCard,
+    deleteCard: deleteCard
   });
 
   function isLoggedIn() {
@@ -118,7 +120,6 @@ function ($q, $timeout, $http) {
   }
 
   function getUser() {
-    //var user;
     return $http.get('/user');
   }
 
@@ -126,23 +127,69 @@ function ($q, $timeout, $http) {
     // create a new instance of deferred
     var deferred = $q.defer();
     
-        // send a post request to the server
-        $http.post('/user', form)
-          // handle success
-          .then(function (success) {
-            if(success.status === 200 && success.data.status){
-              deferred.resolve();
-            } else {
-              deferred.reject();
-            }
-          })
-          // handle error
-          .catch(function (data) {
-            deferred.reject();
-          });
+    // send a post request to the server
+    $http.post('/user', form)
+      // handle success
+      .then(function (success) {
+        if(success.status === 200 && success.data.status){
+          deferred.resolve();
+        } else {
+          deferred.reject();
+        }
+      })
+      // handle error
+      .catch(function (error) {
+        deferred.reject(error);
+      });
+
+    // return promise object
+    return deferred.promise;
+  }
+
+  function addCard(form) {
+    // create a new instance of deferred
+    var deferred = $q.defer();
     
-        // return promise object
-        return deferred.promise;
+    // send a post request to the server
+    $http.post('/user/card', form)
+      // handle success
+      .then(function (success) {
+        if(success.status === 200 && success.data.status){
+          deferred.resolve();
+        } else {
+          deferred.reject();
+        }
+      })
+      // handle error
+      .catch(function (error) {
+        deferred.reject(error);
+      });
+
+    // return promise object
+    return deferred.promise;
+  }
+
+  function deleteCard(cardId, userId) {
+    // create a new instance of deferred
+    var deferred = $q.defer();
+    
+    // send a post request to the server
+    $http.delete('/user/card?user=' + userId + '&card=' + cardId)
+      // handle success
+      .then(function (success) {
+        if(success.status === 200 && success.data.status){
+          deferred.resolve();
+        } else {
+          deferred.reject();
+        }
+      })
+      // handle error
+      .catch(function (error) {
+        deferred.reject(error);
+      });
+
+    // return promise object
+    return deferred.promise;
   }
 
 }]);

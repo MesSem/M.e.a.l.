@@ -1,7 +1,7 @@
 angular.module('mealApp').component('login', {
   templateUrl: 'modules/components/login/login.template.html',
-  controller: ['$scope', '$location', 'AuthService',
-              function ($scope, $location, AuthService) {
+  controller: ['$scope', '$location', 'UserService',
+              function ($scope, $location, UserService) {
 
                 $scope.login = function () {
 
@@ -10,7 +10,7 @@ angular.module('mealApp').component('login', {
                   $scope.disabled = true;
 
                   // call login from service
-                  AuthService.login($scope.loginForm.username, $scope.loginForm.password)
+                  UserService.login($scope.loginForm.username, $scope.loginForm.password)
                     // handle success
                     .then(function () {
                       $location.path('/');

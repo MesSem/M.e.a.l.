@@ -71,7 +71,13 @@ router.post('/user', function(req, res) {//registrazione o update
     // Delete the _id property, otherwise Mongo will return a "Mod on _id not allowed" error
     delete userData._id;
     
-    User.update({_id : userId}, {"$set" : userData},function(error){console.log(error);});
+    User.update({_id : userId}, {"$set" : userData}, function(err){
+      if (err) {
+        return res.status(500).json({
+          err: err
+        });
+      }
+    });
 
     res.status(200).json({
       status: 'Update successful!'
@@ -94,6 +100,65 @@ router.post('/user', function(req, res) {//registrazione o update
     });
 
   }
+});
+
+router.post('/user/card', function(req, res) {//registrazione o update
+    if (!req.isAuthenticated()) {
+      return res.status(200).json({
+        error: 'Not logged'
+      });
+    }
+
+    if(!req.body._id) {
+      return res.status(200).json({
+        error: 'Id not included'
+      });
+    }
+
+    var userId = req.body._id;
+
+    var newCard = {number: req.body.number, endDate: req.body.endDate, cvv: req.body.cvv};
+
+    User.update({_id: userId}, {$push: {cards: newCard}}, function (err) {
+      if (err) {
+        return res.status(500).json({
+          err: err
+        });
+      }
+
+      res.status(200).json({
+        status: 'Added successfully!'
+      });
+    })
+});
+
+router.delete('/user/card', function(req, res) {//registrazione o update
+  if (!req.isAuthenticated()) {
+    return res.status(200).json({
+      error: 'Not logged'
+    });
+  }
+
+  var userId = req.query.user;
+  var cardId = req.query.card;
+
+  if(!userId || !cardId) {
+    return res.status(200).json({
+      error: 'Id not included'
+    });
+  }
+
+  User.update({_id: userId}, {$pull: {cards: {_id: cardId}}}, function (err) {
+    if (err) {
+      return res.status(500).json({
+        err: err
+      });
+    }
+
+    res.status(200).json({
+      status: 'Removed successfully!'
+    });
+  })
 });
 
 

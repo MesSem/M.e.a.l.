@@ -1,7 +1,7 @@
 angular.module('mealApp').component('register', {
   templateUrl: 'modules/pages/register/register.template.html',
-  controller: ['$scope', '$location', 'AuthService',
-              function ($scope, $location, AuthService) {
+  controller: ['$scope', '$location', 'UserService',
+              function ($scope, $location, UserService) {
 
                 $scope.register = function () {
 
@@ -10,7 +10,7 @@ angular.module('mealApp').component('register', {
                   $scope.disabled = true;
 
                   // call register from service
-                  AuthService.register($scope.registerForm)
+                  UserService.register($scope.registerForm)
                     // handle success
                     .then(function () {
                       $location.path('/login');
