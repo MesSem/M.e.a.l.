@@ -5,23 +5,7 @@ var passport = require('passport');
 var User = require('../models/user.js');
 
 
-router.post('/register', function(req, res) {
-  User.register(new User(req.body),
-    req.body.password, function(err, account) {
-    if (err) {
-      return res.status(500).json({
-        err: err
-      });
-    }
-    passport.authenticate('local')(req, res, function () {
-      return res.status(200).json({
-        status: 'Registration successful!'
-      });
-    });
-  });
-});
-
-router.post('/login', function(req, res, next) {
+router.post('/user/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) {
       return next(err);
@@ -44,14 +28,14 @@ router.post('/login', function(req, res, next) {
   })(req, res, next);
 });
 
-router.get('/logout', function(req, res) {
+router.get('/user/logout', function(req, res) {
   req.logout();
   res.status(200).json({
     status: 'Bye!'
   });
 });
 
-router.get('/status', function(req, res) {
+router.get('/user/status', function(req, res) {
   if (!req.isAuthenticated()) {
     return res.status(200).json({
       status: false
@@ -62,7 +46,7 @@ router.get('/status', function(req, res) {
   });
 });
 
-router.get('/info', function(req, res) {
+router.get('/user', function(req, res) {
   if (!req.isAuthenticated()) {
     return res.status(200).json({
       user: false
@@ -73,27 +57,43 @@ router.get('/info', function(req, res) {
   });
 });
 
-router.post('/info', function(req, res) {
-  if (!req.isAuthenticated()) {
-    return res.status(200).json({
-      error: 'not logged'
+router.post('/user', function(req, res) {//registrazione o update
+  if(req.body._id) {//se sto facendo l'update
+
+    if (!req.isAuthenticated()) {
+      return res.status(200).json({
+        error: 'Not logged'
+      });
+    }
+    var userData = req.body;
+
+    var userId = req.body._id;
+    // Delete the _id property, otherwise Mongo will return a "Mod on _id not allowed" error
+    delete userData._id;
+    
+    User.update({_id : userId}, {"$set" : userData},function(error){console.log(error);});
+
+    res.status(200).json({
+      status: 'Update successful!'
     });
+
+  } else {//se sto registrando
+
+    User.register(new User(req.body),
+      req.body.password, function(err, account) {
+      if (err) {
+        return res.status(500).json({
+          err: err
+        });
+      }
+      passport.authenticate('local')(req, res, function () {
+        return res.status(200).json({
+          status: 'Registration successful!'
+        });
+      });
+    });
+
   }
-  var userData = req.body;
-
-  var userId = req.body._id;
-  
-  // Delete the _id property, otherwise Mongo will return a "Mod on _id not allowed" error
-  delete userData._id;
-  
-  // Do the upsert, which works like this: If no Contact document exists with 
-  // _id = contact.id, then create a new doc using upsertData.
-  // Otherwise, update the existing doc with upsertData
-  User.update({_id : userId}, {"$set" : userData},function(error){console.log(error);});
-
-  res.status(200).json({
-    status: 'Update successful!'
-  });
 });
 
 
