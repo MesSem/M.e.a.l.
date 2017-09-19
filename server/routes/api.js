@@ -3,6 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 
 var User = require('../models/user.js');
+var Transaction = require('../models/transaction.js');
 
 
 router.post('/user/login', function(req, res, next) {
@@ -38,7 +39,7 @@ router.get('/user/logout', function(req, res) {
 router.get('/user/status', function(req, res) {
   if (!req.isAuthenticated()) {
     return res.status(200).json({
-      status: false
+      logged: false
     });
   }
   res.status(200).json({
@@ -49,7 +50,7 @@ router.get('/user/status', function(req, res) {
 router.get('/user', function(req, res) {
   if (!req.isAuthenticated()) {
     return res.status(200).json({
-      user: false
+      logged: false
     });
   }
   res.status(200).json({
@@ -62,7 +63,7 @@ router.post('/user', function(req, res) {//registrazione o update
 
     if (!req.isAuthenticated()) {
       return res.status(200).json({
-        error: 'Not logged'
+        logged: false
       });
     }
     var userData = req.body;
@@ -105,7 +106,7 @@ router.post('/user', function(req, res) {//registrazione o update
 router.post('/user/card', function(req, res) {//registrazione o update
     if (!req.isAuthenticated()) {
       return res.status(200).json({
-        error: 'Not logged'
+        logged: false
       });
     }
 
@@ -135,7 +136,7 @@ router.post('/user/card', function(req, res) {//registrazione o update
 router.delete('/user/card', function(req, res) {//registrazione o update
   if (!req.isAuthenticated()) {
     return res.status(200).json({
-      error: 'Not logged'
+      logged: false
     });
   }
 
@@ -159,6 +160,80 @@ router.delete('/user/card', function(req, res) {//registrazione o update
       status: 'Removed successfully!'
     });
   })
+});
+
+router.get('/user/list', function(req, res) {
+  if (!req.isAuthenticated()) {
+    return res.status(200).json({
+      logged: false
+    });
+  }
+
+  User.find({}, '_id username', function (err, result) {
+    if (err) {
+      return res.status(500).json({
+        err: err
+      });
+    }
+    return res.status(200).json({
+      users: result
+    });
+  });
+
+});
+
+router.post('/transaction', function(req, res) {//registrazione o update
+  if (!req.isAuthenticated()) {
+    return res.status(200).json({
+      logged: false
+    });
+  }
+
+  /*if(!req.body.sender || !req.body.recipient) {
+    return res.status(200).json({
+      error: 'Id not included'
+    });
+  }*/
+
+  var tran = new Transaction({
+    sender: req.body.sender,
+    recipient: req.body.recipient,
+    money: req.body.money,
+    notes: req.body.notes
+
+  });
+  
+  tran.save(function (err, results) {
+    if (err) {
+      return res.status(500).json({
+        err: err
+      });
+    }
+    res.status(200).json({
+      status: 'Added successfully!'
+    });
+  });
+
+});
+
+router.get('/transaction', function(req, res) {
+  if (!req.isAuthenticated()) {
+    return res.status(200).json({
+      logged: false
+    });
+  }
+
+  Transaction.find({$or: [{'sender': req.user._id}, {recipient: req.user._id}]}, function (err, result) {
+    if (err) {
+      return res.status(500).json({
+        err: err
+      });
+    }
+    res.status(200).json({
+      transactions: result
+    });
+  });
+
 });
 
 

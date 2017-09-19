@@ -12,7 +12,8 @@
     "angular-resource": "1.6.x",
     "angular-route": "1.6.x",
     "bootstrap": "^3.3.7",
-    "api-check": "^7.5.5",
-    "angular-formly": "^8.4.1"
+    "nodep-date-input-polyfill": "^5.2.0",
+    "angular-mass-autocomplete": "^0.6.0",
+    "angular-sanitize": "^1.6.6"
   }
 }

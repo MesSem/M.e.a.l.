@@ -1,4 +1,4 @@
-var mealApp = angular.module('mealApp', ['ngRoute']);
+var mealApp = angular.module('mealApp', ['ngRoute', 'ngSanitize', 'MassAutoComplete']);
 
 mealApp.config(['$locationProvider', '$routeProvider',
   function config($locationProvider, $routeProvider) {

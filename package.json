@@ -34,23 +34,10 @@
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "mongoose": "^4.4.5",
+    "mongoose-type-email": "^1.0.5",
     "morgan": "^1.7.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^4.0.0",
-    "mongoose-type-email": "^1.0.5"
-  },
-  "_oldDevDependencies":  {
-    "async": "^2.3.0",
-    "bower": "^1.8.0",
-    "eslint": "^3.19.0",
-    "frisby": "^0.8.5",
-    "jasmine-core": "^2.6.1",
-    "karma": "^1.6.0",
-    "karma-chrome-launcher": "^2.0.0",
-    "karma-firefox-launcher": "^1.0.1",
-    "karma-jasmine": "^1.1.0",
-    "morgan": "^1.8.1",
-    "protractor": "^5.1.1"
+    "passport-local-mongoose": "^4.0.0"
   }
 }

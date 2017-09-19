@@ -15,7 +15,10 @@ function ($q, $timeout, $http) {
     getUser: getUser,
     updateUser: updateUser,
     addCard: addCard,
-    deleteCard: deleteCard
+    deleteCard: deleteCard,
+    getUserList: getUserList,
+    sendMoney: sendMoney,
+    getTransactions: getTransactions
   });
 
   function isLoggedIn() {
@@ -190,6 +193,37 @@ function ($q, $timeout, $http) {
 
     // return promise object
     return deferred.promise;
+  }
+
+  function getUserList() {
+    return $http.get('/user/list');
+  }
+
+  function sendMoney(form) {
+    // create a new instance of deferred
+    var deferred = $q.defer();
+    
+    // send a post request to the server
+    $http.post('/transaction', form)
+      // handle success
+      .then(function (success) {
+        if(success.status === 200 && success.data.status){
+          deferred.resolve();
+        } else {
+          deferred.reject();
+        }
+      })
+      // handle error
+      .catch(function (error) {
+        deferred.reject(error);
+      });
+
+    // return promise object
+    return deferred.promise;
+  }
+
+  function getTransactions() {
+    return $http.get('/transaction');
   }
 
 }]);
