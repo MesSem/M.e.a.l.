@@ -13,23 +13,13 @@ var adminRoutes = express.Router();
 var userRoutes = express.Router();
 var apiRoutes = express.Router();
 
-/* ========================================
-  Signup of a user, params:
-   { name:"", password:""}
-*/
-
 /**
- * @api {get} /user/:id Request User information
- * @apiName GetUser
+ * @api {post} /api/user/login User login
+ * @apiName Login
  * @apiGroup User
  *
- * @apiParam {Number} id Users unique ID.
- *
- * @apiSuccess {String} firstname Firstname of the User.
- * @apiSuccess {String} lastname  Lastname of the User.
+ * @apiParam {User} the user data--->mettere meglio
  */
-
-
 userRoutes.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) {
@@ -53,6 +43,11 @@ userRoutes.post('/login', function(req, res, next) {
   })(req, res, next);
 });
 
+/**
+ * @api {get} /api/user/logout Logout of the current user
+ * @apiName Logout
+ * @apiGroup User
+ */
 userRoutes.get('/logout', function(req, res) {
   req.logout();
   res.status(200).json({
@@ -60,6 +55,13 @@ userRoutes.get('/logout', function(req, res) {
   });
 });
 
+/**
+ * @api {get} /api/user/status Information of the user status
+ * @apiName Status
+ * @apiGroup User
+ *
+ * @apiSuccess {Boolean} logged True if the user is logged, false elsewhere
+ */
 userRoutes.get('/status', function(req, res) {
   if (!req.isAuthenticated()) {
     return res.status(200).json({
@@ -71,6 +73,14 @@ userRoutes.get('/status', function(req, res) {
   });
 });
 
+/**
+ * @api {get} /api/user/user Information of the current user if it's logged
+ * @apiName User
+ * @apiGroup User
+ *
+ * @apiSuccess {String} logged At false if the user isn't logged
+ * @apiSuccess {User} user The current user
+ */
 userRoutes.get('/user', function(req, res) {
   if (!req.isAuthenticated()) {
     return res.status(200).json({
@@ -82,6 +92,17 @@ userRoutes.get('/user', function(req, res) {
   });
 });
 
+/**
+ * @api {post} /api/user/user Insert a new user or update an old one
+ * @apiName User
+ * @apiGroup User
+ *
+ * @apiParam {User} user User to add in the database
+ *
+ * @apiSuccess {String} logged At false only if there is an attempt to edit an user before login
+ * @apiSuccess {String} status Message if the editing it's ok
+ *
+ */
 userRoutes.post('/user', function(req, res) {//registrazione o update
   if(req.body._id) {//se sto facendo l'update
 
@@ -127,6 +148,16 @@ userRoutes.post('/user', function(req, res) {//registrazione o update
   }
 });
 
+/**
+ * @api {post} /api/user/card Insert of a new card
+ * @apiName InsertCard
+ * @apiGroup User
+ *
+ * @apiParam {number:{String},endDate:{type:Date},cvv:{type:Number} body Card information
+ *
+ * @apiSuccess {String} status Message of ther insert
+ *
+ */
 userRoutes.post('/card', function(req, res) {//registrazione o update
     if (!req.isAuthenticated()) {
       return res.status(200).json({
@@ -157,6 +188,17 @@ userRoutes.post('/card', function(req, res) {//registrazione o update
     })
 });
 
+/**
+ * @api {delete} /api/user/card Delete a card
+ * @apiName DeleteCard
+ * @apiGroup User
+ *
+ * @apiParam {Number} user Users unique ID.
+ * @apiParam {Number} card Cards unique ID.
+ *
+ * @apiSuccess {String} error
+ * @apiSuccess {String} status
+ */
 userRoutes.delete('/card', function(req, res) {//registrazione o update
   if (!req.isAuthenticated()) {
     return res.status(200).json({
@@ -186,6 +228,14 @@ userRoutes.delete('/card', function(req, res) {//registrazione o update
   })
 });
 
+/**
+ * @api {get} /api/user/list List of all the user
+ * @apiName List
+ * @apiGroup User
+ *
+ * @apiSuccess {[User]} users List of users
+ *
+ */
 userRoutes.get('/list', function(req, res) {
   if (!req.isAuthenticated()) {
     return res.status(200).json({
@@ -206,6 +256,15 @@ userRoutes.get('/list', function(req, res) {
 
 });
 
+/**
+ * @api {post} /api/user/transaction Create a transaction
+ * @apiName CreateTransaction
+ * @apiGroup User
+ *
+ * @apiParam {Transaction} body
+ *
+ * @apiSuccess {String} status message
+ */
 userRoutes.post('/transaction', function(req, res) {//registrazione o update
   if (!req.isAuthenticated()) {
     return res.status(200).json({
@@ -240,6 +299,15 @@ userRoutes.post('/transaction', function(req, res) {//registrazione o update
 
 });
 
+/**
+ * @api {get} /api/user/transaction Get all transaction
+ * @apiName GetTransactions
+ * @apiGroup User
+ *
+ * @apiParam {Number} UserId
+ *
+ * @apiSuccess {[Transaction]} transactions list of all transactions of thi user
+ */
 userRoutes.get('/transaction', function(req, res) {
   if (!req.isAuthenticated()) {
     return res.status(200).json({
