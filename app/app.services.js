@@ -122,8 +122,10 @@ function ($q, $timeout, $http) {
 
   }
 
+  var cachedUser = null;
   function getUser() {
-    return $http.get('/api/user/user');
+    if(!cachedUser) cachedUser = $http.get('/api/user/user');
+    return cachedUser;
   }
 
   function updateUser(form) {
@@ -195,8 +197,10 @@ function ($q, $timeout, $http) {
     return deferred.promise;
   }
 
+  var cachedUserList = null;
   function getUserList() {
-    return $http.get('/api/user/list');
+    if(!cachedUserList) cachedUserList = $http.get('/api/user/list');
+    return cachedUserList;
   }
 
   function sendMoney(form) {
@@ -222,8 +226,10 @@ function ($q, $timeout, $http) {
     return deferred.promise;
   }
 
+  var cachedTransactions = null;
   function getTransactions() {
-    return $http.get('/api/user/transaction');
+    if(!cachedTransactions) cachedTransactions = $http.get('/api/user/transaction');
+    return cachedTransactions;
   }
 
 }]);

@@ -28,8 +28,9 @@
 body {background-color: #F7F5F2;}
 
 .project {
-    background-color: #81c784;
-    /*height: 250px;*/ /* testing only purpose */
+    background-color: #ffffff;
+    max-height: 750px;
+    overflow-y: auto;
     padding: 10px;
     text-align: left;
 }

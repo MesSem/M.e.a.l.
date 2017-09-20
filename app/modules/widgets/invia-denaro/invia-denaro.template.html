@@ -1,0 +1,28 @@
+<div ng-controller="invia-denaro">
+    <div class="col-xs-6 col-md-4">
+        <div class="project">
+            <h4>INVIA DENARO</h4>
+            <form class="form"  ng-submit="sendMoney()">
+                <input type="hidden" ng-model="user._id">
+                <div>
+                    <span>Username destinatario*: </span>
+                    <div mass-autocomplete>
+                    <input type="text" class="form-control" ng-model="dirty.value" mass-autocomplete-item="autocomplete_options" required>
+                    <input type="hidden" ng-model="selected_user._id" required>
+                    </div>
+                </div>
+                <p>
+                    <span>Importo*: </span>
+                    <input type="number" class="form-control" ng-model="money" min="1.00" max="10000.00" step="0.01" required>
+                </p>
+                <p>Invia a <u>{{selected_user.username}}</u> una somma di € {{money | number:2}}</p>
+                <p>
+                    <span>Messaggio: </span>
+                    <textarea class="form-control" ng-model="message"></textarea>
+                </p>
+                <button class="btn btn-success" type="submit">Invia</button>
+            </form>
+            <div ng-show="moneyError" class="alert alert-danger">{{moneyErrorMessage}}</div>
+        </div>
+    </div>
+</div>
