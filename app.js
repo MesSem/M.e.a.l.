@@ -19,9 +19,6 @@ var User = require('./server/models/user.js');
 // create instance of express
 var app = express();
 
-// require routes
-var routes = require('./server/routes/api.js');
-
 //define distdir
 var distDir = __dirname + "/app/";
 app.use(express.static(distDir));
@@ -46,8 +43,28 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// routes
-app.use('/', routes); //app.use('/user/', routes);
+
+// =======================
+// ADMIN ROUTES
+// =======================
+var adminRoutes = require('./server/routes/admin/admin');
+app.use('/api/admin', adminRoutes);
+
+
+// =======================
+// USER ROUTES
+// =======================
+var userRoutes = require('./server/routes/user/user');
+app.use('/api/user', userRoutes);
+
+
+// =======================
+// API ROUTES
+// =======================
+var apiRoutes = require('./server/routes/api/api');
+app.use('/api', apiRoutes);
+
+
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '/app', 'index.html'));

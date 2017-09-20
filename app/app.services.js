@@ -30,7 +30,7 @@ function ($q, $timeout, $http) {
   }
 
   function getUserStatus() {
-    return $http.get('/user/status')
+    return $http.get('/api/user/status')
     // handle success
     .then(function (success) {
       if(success.data.status){
@@ -46,12 +46,12 @@ function ($q, $timeout, $http) {
   }
 
   function login(username, password) {
-    
+
     // create a new instance of deferred
     var deferred = $q.defer();
 
     // send a post request to the server
-    $http.post('/user/login',
+    $http.post('/api/user/login',
       {username: username, password: password})
       // handle success
       .then(function (success) {
@@ -80,7 +80,7 @@ function ($q, $timeout, $http) {
     var deferred = $q.defer();
 
     // send a get request to the server
-    $http.get('/user/logout')
+    $http.get('/api/user/logout')
       // handle success
       .then(function (success) {
         user = false;
@@ -103,7 +103,7 @@ function ($q, $timeout, $http) {
     var deferred = $q.defer();
 
     // send a post request to the server
-    $http.post('/user', form)
+    $http.post('/api/user/user', form)
       // handle success
       .then(function (success) {
         if(success.status === 200 && success.data.status){
@@ -123,15 +123,15 @@ function ($q, $timeout, $http) {
   }
 
   function getUser() {
-    return $http.get('/user');
+    return $http.get('/api/user/user');
   }
 
   function updateUser(form) {
     // create a new instance of deferred
     var deferred = $q.defer();
-    
+
     // send a post request to the server
-    $http.post('/user', form)
+    $http.post('/api/user/user', form)
       // handle success
       .then(function (success) {
         if(success.status === 200 && success.data.status){
@@ -152,9 +152,9 @@ function ($q, $timeout, $http) {
   function addCard(form) {
     // create a new instance of deferred
     var deferred = $q.defer();
-    
+
     // send a post request to the server
-    $http.post('/user/card', form)
+    $http.post('/api/user/card', form)
       // handle success
       .then(function (success) {
         if(success.status === 200 && success.data.status){
@@ -175,9 +175,9 @@ function ($q, $timeout, $http) {
   function deleteCard(cardId, userId) {
     // create a new instance of deferred
     var deferred = $q.defer();
-    
+
     // send a post request to the server
-    $http.delete('/user/card?user=' + userId + '&card=' + cardId)
+    $http.delete('/api/user/card?user=' + userId + '&card=' + cardId)
       // handle success
       .then(function (success) {
         if(success.status === 200 && success.data.status){
@@ -196,15 +196,15 @@ function ($q, $timeout, $http) {
   }
 
   function getUserList() {
-    return $http.get('/user/list');
+    return $http.get('/api/user/list');
   }
 
   function sendMoney(form) {
     // create a new instance of deferred
     var deferred = $q.defer();
-    
+
     // send a post request to the server
-    $http.post('/transaction', form)
+    $http.post('/api/user/transaction', form)
       // handle success
       .then(function (success) {
         if(success.status === 200 && success.data.status){
@@ -223,7 +223,7 @@ function ($q, $timeout, $http) {
   }
 
   function getTransactions() {
-    return $http.get('/transaction');
+    return $http.get('/api/user/transaction');
   }
 
 }]);

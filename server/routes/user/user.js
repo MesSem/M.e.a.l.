@@ -1,12 +1,36 @@
+// =======================
+// USER ROUTES
+// =======================
+
 var express = require('express');
-var router = express.Router();
+var userRoutes = express.Router();
 var passport = require('passport');
 
-var User = require('../models/user.js');
-var Transaction = require('../models/transaction.js');
+var User = require('../../models/user.js');
+var Transaction = require('../../models/transaction.js');
+
+var adminRoutes = express.Router();
+var userRoutes = express.Router();
+var apiRoutes = express.Router();
+
+/* ========================================
+  Signup of a user, params:
+   { name:"", password:""}
+*/
+
+/**
+ * @api {get} /user/:id Request User information
+ * @apiName GetUser
+ * @apiGroup User
+ *
+ * @apiParam {Number} id Users unique ID.
+ *
+ * @apiSuccess {String} firstname Firstname of the User.
+ * @apiSuccess {String} lastname  Lastname of the User.
+ */
 
 
-router.post('/user/login', function(req, res, next) {
+userRoutes.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) {
       return next(err);
@@ -29,14 +53,14 @@ router.post('/user/login', function(req, res, next) {
   })(req, res, next);
 });
 
-router.get('/user/logout', function(req, res) {
+userRoutes.get('/logout', function(req, res) {
   req.logout();
   res.status(200).json({
     status: 'Bye!'
   });
 });
 
-router.get('/user/status', function(req, res) {
+userRoutes.get('/status', function(req, res) {
   if (!req.isAuthenticated()) {
     return res.status(200).json({
       logged: false
@@ -47,7 +71,7 @@ router.get('/user/status', function(req, res) {
   });
 });
 
-router.get('/user', function(req, res) {
+userRoutes.get('/user', function(req, res) {
   if (!req.isAuthenticated()) {
     return res.status(200).json({
       logged: false
@@ -58,7 +82,7 @@ router.get('/user', function(req, res) {
   });
 });
 
-router.post('/user', function(req, res) {//registrazione o update
+userRoutes.post('/user', function(req, res) {//registrazione o update
   if(req.body._id) {//se sto facendo l'update
 
     if (!req.isAuthenticated()) {
@@ -71,7 +95,7 @@ router.post('/user', function(req, res) {//registrazione o update
     var userId = req.body._id;
     // Delete the _id property, otherwise Mongo will return a "Mod on _id not allowed" error
     delete userData._id;
-    
+
     User.update({_id : userId}, {"$set" : userData}, function(err){
       if (err) {
         return res.status(500).json({
@@ -103,7 +127,7 @@ router.post('/user', function(req, res) {//registrazione o update
   }
 });
 
-router.post('/user/card', function(req, res) {//registrazione o update
+userRoutes.post('/card', function(req, res) {//registrazione o update
     if (!req.isAuthenticated()) {
       return res.status(200).json({
         logged: false
@@ -133,7 +157,7 @@ router.post('/user/card', function(req, res) {//registrazione o update
     })
 });
 
-router.delete('/user/card', function(req, res) {//registrazione o update
+userRoutes.delete('/card', function(req, res) {//registrazione o update
   if (!req.isAuthenticated()) {
     return res.status(200).json({
       logged: false
@@ -162,7 +186,7 @@ router.delete('/user/card', function(req, res) {//registrazione o update
   })
 });
 
-router.get('/user/list', function(req, res) {
+userRoutes.get('/list', function(req, res) {
   if (!req.isAuthenticated()) {
     return res.status(200).json({
       logged: false
@@ -182,7 +206,7 @@ router.get('/user/list', function(req, res) {
 
 });
 
-router.post('/transaction', function(req, res) {//registrazione o update
+userRoutes.post('/transaction', function(req, res) {//registrazione o update
   if (!req.isAuthenticated()) {
     return res.status(200).json({
       logged: false
@@ -202,7 +226,7 @@ router.post('/transaction', function(req, res) {//registrazione o update
     notes: req.body.notes
 
   });
-  
+
   tran.save(function (err, results) {
     if (err) {
       return res.status(500).json({
@@ -216,7 +240,7 @@ router.post('/transaction', function(req, res) {//registrazione o update
 
 });
 
-router.get('/transaction', function(req, res) {
+userRoutes.get('/transaction', function(req, res) {
   if (!req.isAuthenticated()) {
     return res.status(200).json({
       logged: false
@@ -237,4 +261,4 @@ router.get('/transaction', function(req, res) {
 });
 
 
-module.exports = router;
+module.exports = userRoutes;
