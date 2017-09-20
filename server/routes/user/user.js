@@ -5,6 +5,7 @@
 var express = require('express');
 var userRoutes = express.Router();
 var passport = require('passport');
+var errorCodes= require('../../errorCodes.js');
 
 var User = require('../../models/user.js');
 var Transaction = require('../../models/transaction.js');
@@ -12,6 +13,21 @@ var Transaction = require('../../models/transaction.js');
 var adminRoutes = express.Router();
 var userRoutes = express.Router();
 var apiRoutes = express.Router();
+a=errorCodes.ERR_API_NOT_FOUND;
+/*
+res.status(400).json({ success: false,
+                         code: err.code,
+                         message: err.msg
+                        });
+
+  res.status(400).json({ success: false,
+             message: 'Bad Request. name and password required.' });
+
+             res.status(201).json({success: true,
+                                   message: 'Enjoy your token!',
+                                   data: {'token':token}});
+ */
+
 
 /**
  * @api {post} /api/user/login User login
