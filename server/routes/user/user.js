@@ -358,7 +358,8 @@ userRoutes.get('/transaction', function(req, res) {
     });
   }*/
 
-  Transaction.find({$or: [{'sender': req.user._id}, {recipient: req.user._id}]}, function (err, result) {
+  //Transaction.find({$or: [{'sender': req.user._id}, {recipient: req.user._id}]}, function (err, result) {
+  Transaction.find({$or: [{'sender': req.userId}, {recipient: req.userId}]}, function (err, result) {
     if (err) {
       return res.status(500).json({
         err: err

@@ -55,16 +55,17 @@ app.use('/api', apiRoutes);
 // =======================
 // USER ROUTES
 // =======================
-/*userRoutes = require('./server/routes/user/user');
+userRoutes = require('./server/routes/user/user');
 app.use('/api/user',authenticate, userRoutes);
 
-*/
+
 // =======================
 // ADMIN ROUTES
 // =======================
+// POTREBBE NON ARRIVARCI MAI PERCHÈ IN AUTHENTICATE FACCIO SEND Error
+// E NON SO SE DOPO CONTINUA O LÌ CHIUDE TUTTO
 //var adminRoutes = require('./server/routes/admin/admin');
 //app.use('/api/admin', adminRoutes);
-
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '/app', 'index.html'));
