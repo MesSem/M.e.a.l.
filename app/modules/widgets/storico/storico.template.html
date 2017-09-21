@@ -4,7 +4,7 @@
             <h4>STORICO</h4>
             <div ng-repeat="tran in transactions">
                 <hr>
-                <div>Data: {{tran.date}}</div>
+                <div>Data: {{tran.date | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
                 <div>Mittente: {{tran.senderName}}</div>
                 <div>Destinatario: {{tran.recipientName}}</div>
                 <div>Importo: € {{tran.money | number:2}}</div>

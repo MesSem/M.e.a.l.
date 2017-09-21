@@ -12,9 +12,9 @@ var Address=new Schema({
 });
 
 var Card=new Schema({
-  number:{type:String, required:true},
+  number:{type:String, minlength: 16, maxlength: 16, required:true},
   endDate:{type:Date, required:true},
-  cvv:{type:Number, required:true}
+  cvv:{type:String, minlength: 3, maxlength: 4, required:true}
 });
 
 var User = new Schema({

@@ -6,11 +6,11 @@
             <input type="hidden" ng-model="user._id">
             <p>
                 <span>Numero di carta*: </span>
-                <input type="text" class="form-control" ng-model="cardForm.number" required>
+                <input type="text" class="form-control" ng-model="cardForm.number" minlength="16" maxlength="16" required>
             </p>
             <p>
                 <span>Scadenza*: </span>
-                <input type="text" class="form-control" ng-model="cardForm.endDate" maxlength="5" required>
+                <input type="text" class="form-control" ng-model="cardForm.endDate" placeholder="dd/mm" minlength="5" maxlength="5" required>
             </p>
             <p>
                 <span>CVV*: </span>
@@ -29,7 +29,7 @@
             </p>
             <p>
                 <span>Scadenza: </span>
-                <span>{{card.endDate}}</span>
+                <span>{{card.endDate | amDateFormat:'MM/YY'}}</span>
             </p>
             <p>
                 <span>CVV (togliere): </span>

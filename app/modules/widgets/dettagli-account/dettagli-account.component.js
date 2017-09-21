@@ -1,11 +1,13 @@
 angular.module('mealApp').controller('dettagli-account',
-              ['$scope', 'UserService',
+              ['$scope', 'UserService', 'moment',
 
-                function ($scope, UserService) {
+                function ($scope, UserService, moment) {
                   UserService.getUser()
                   .then(function(response) {
                     $scope.user = response.data.user;
                     $scope.updateForm = $scope.user;
+
+                    $scope.user.bornDate = moment($scope.user.bornDate).format('DD-MM-YYYY').toString();//parse per manipolazione moment
                   })
                   
                   $scope.showInput = false;
