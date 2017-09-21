@@ -9,6 +9,7 @@ var hash = require('bcrypt-nodejs');
 var path = require('path');
 var passport = require('passport');
 var localStrategy = require('passport-local' ).Strategy;
+var authenticate = require("./server/auth.js");
 
 // mongoose
 mongoose.connect('mongodb://localhost/meal');
@@ -45,25 +46,24 @@ passport.deserializeUser(User.deserializeUser());
 
 
 // =======================
-// ADMIN ROUTES
-// =======================
-var adminRoutes = require('./server/routes/admin/admin');
-app.use('/api/admin', adminRoutes);
-
-
-// =======================
-// USER ROUTES
-// =======================
-var userRoutes = require('./server/routes/user/user');
-app.use('/api/user', userRoutes);
-
-
-// =======================
 // API ROUTES
 // =======================
 var apiRoutes = require('./server/routes/api/api');
 app.use('/api', apiRoutes);
 
+
+// =======================
+// USER ROUTES
+// =======================
+/*userRoutes = require('./server/routes/user/user');
+app.use('/api/user',authenticate, userRoutes);
+
+*/
+// =======================
+// ADMIN ROUTES
+// =======================
+//var adminRoutes = require('./server/routes/admin/admin');
+//app.use('/api/admin', adminRoutes);
 
 
 app.get('/', function(req, res) {
@@ -74,7 +74,7 @@ app.get('/', function(req, res) {
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
-  next(err);
+  next(req, res);
 });
 
 app.use(function(err, req, res) {

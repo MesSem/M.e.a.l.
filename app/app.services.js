@@ -51,12 +51,19 @@ function ($q, $timeout, $http) {
     var deferred = $q.defer();
 
     // send a post request to the server
-    $http.post('/api/user/login',
+    $http.post('/api/login',
       {username: username, password: password})
       // handle success
       .then(function (success) {
         if(success.status === 200 && success.data.status){
           user = true;
+          if (success.data.token) {
+               // store username and token in local storage to keep user logged in between page refreshes
+               //$localStorage.currentUser = { username: username, token: response.token }; può essere utile???
+
+               // add jwt token to auth header for all requests made by the $http service
+               $http.defaults.headers.common.Authorization = 'JWT ' + success.data.token;
+             }
           deferred.resolve();
         } else {
           user = false;

@@ -3,7 +3,6 @@
 // =======================
 
 var express = require('express');
-var userRoutes = express.Router();
 var passport = require('passport');
 var errorCodes= require('../../errorCodes.js');
 
@@ -28,6 +27,15 @@ res.status(400).json({ success: false,
                                    data: {'token':token}});
  */
 
+ /**
+  * Api di prova per fare testing
+  */
+ userRoutes.get('/prova', function(req, res) {
+   res.status(200).json({
+     message: "Complimenti, puoi accedere alle api"+req.userId
+   });
+ });
+
 
 /**
  * @api {post} /api/user/login User login
@@ -36,7 +44,7 @@ res.status(400).json({ success: false,
  *
  * @apiParam {User} the user data--->mettere meglio
  */
-userRoutes.post('/login', function(req, res, next) {
+/*userRoutes.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) {
       return next(err);
@@ -57,7 +65,7 @@ userRoutes.post('/login', function(req, res, next) {
       });
     });
   })(req, res, next);
-});
+});*/
 
 /**
  * @api {get} /api/user/logout Logout of the current user
@@ -79,11 +87,11 @@ userRoutes.get('/logout', function(req, res) {
  * @apiSuccess {Boolean} logged True if the user is logged, false elsewhere
  */
 userRoutes.get('/status', function(req, res) {
-  if (!req.isAuthenticated()) {
+  /*if (!req.isAuthenticated()) {
     return res.status(200).json({
       logged: false
     });
-  }
+  }*/
   res.status(200).json({
     status: true
   });
@@ -98,14 +106,33 @@ userRoutes.get('/status', function(req, res) {
  * @apiSuccess {User} user The current user
  */
 userRoutes.get('/user', function(req, res) {
-  if (!req.isAuthenticated()) {
+  /*if (!req.isAuthenticated()) {
     return res.status(200).json({
       logged: false
     });
-  }
-  res.status(200).json({
-    user: req.user
+  }*/
+  User.findOne({_id: req.userId}, function(err, user) {
+    if (err) {
+      res.send("error");
+        //return done(err, false);
+    }
+    console.log(user);
+    if (user) {
+      res.status(200).json({
+        user: user
+      });
+    } else {
+      res.send("error");
+      //  done(null, false);
+        // or you could create a new account
+        // return done(new Error("User not found"), null);
+    }
   });
+
+
+
+
+
 });
 
 /**
@@ -122,11 +149,11 @@ userRoutes.get('/user', function(req, res) {
 userRoutes.post('/user', function(req, res) {//registrazione o update
   if(req.body._id) {//se sto facendo l'update
 
-    if (!req.isAuthenticated()) {
+  /*  if (!req.isAuthenticated()) {
       return res.status(200).json({
         logged: false
       });
-    }
+    }*/
     var userData = req.body;
 
     var userId = req.body._id;
@@ -175,11 +202,11 @@ userRoutes.post('/user', function(req, res) {//registrazione o update
  *
  */
 userRoutes.post('/card', function(req, res) {//registrazione o update
-    if (!req.isAuthenticated()) {
+    /*if (!req.isAuthenticated()) {
       return res.status(200).json({
         logged: false
       });
-    }
+    }*/
 
     if(!req.body._id) {
       return res.status(200).json({
@@ -216,11 +243,11 @@ userRoutes.post('/card', function(req, res) {//registrazione o update
  * @apiSuccess {String} status
  */
 userRoutes.delete('/card', function(req, res) {//registrazione o update
-  if (!req.isAuthenticated()) {
+  /*if (!req.isAuthenticated()) {
     return res.status(200).json({
       logged: false
     });
-  }
+  }*/
 
   var userId = req.query.user;
   var cardId = req.query.card;
@@ -253,11 +280,11 @@ userRoutes.delete('/card', function(req, res) {//registrazione o update
  *
  */
 userRoutes.get('/list', function(req, res) {
-  if (!req.isAuthenticated()) {
+  /*if (!req.isAuthenticated()) {
     return res.status(200).json({
       logged: false
     });
-  }
+  }*/
 
   User.find({}, '_id username', function (err, result) {
     if (err) {
@@ -282,11 +309,11 @@ userRoutes.get('/list', function(req, res) {
  * @apiSuccess {String} status message
  */
 userRoutes.post('/transaction', function(req, res) {//registrazione o update
-  if (!req.isAuthenticated()) {
+  /*if (!req.isAuthenticated()) {
     return res.status(200).json({
       logged: false
     });
-  }
+  }*/
 
   /*if(!req.body.sender || !req.body.recipient) {
     return res.status(200).json({
@@ -325,11 +352,11 @@ userRoutes.post('/transaction', function(req, res) {//registrazione o update
  * @apiSuccess {[Transaction]} transactions list of all transactions of thi user
  */
 userRoutes.get('/transaction', function(req, res) {
-  if (!req.isAuthenticated()) {
+  /*if (!req.isAuthenticated()) {
     return res.status(200).json({
       logged: false
     });
-  }
+  }*/
 
   Transaction.find({$or: [{'sender': req.user._id}, {recipient: req.user._id}]}, function (err, result) {
     if (err) {
