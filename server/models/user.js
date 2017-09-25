@@ -18,7 +18,7 @@ var Card=new Schema({
 });
 
 var User = new Schema({
-  username: {type:String, required:true, index: true, unique: true},
+  username: {type:String, minlength: 6, maxlength: 20, required:true, index: true, unique: true},
   //password: {type:String, required:true}, Creata automaticamente tramite modulo passport
   name: {type:String, required:true},
   surname: {type:String, required:true},

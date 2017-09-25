@@ -109,21 +109,17 @@ userRoutes.get('/user', function(req, res) {
  * @apiName User
  * @apiGroup User
  *
- * @apiParam {User} user User to add in the database
+ * @apiParam {User} user User to update in the database
  *
- * @apiSuccess {String} logged At false only if there is an attempt to edit an user before login
  * @apiSuccess {String} status Message if the editing it's ok
  *
  */
-userRoutes.post('/user', function(req, res) {//registrazione o update
-  if(req.body._id) {//se sto facendo l'update
+userRoutes.post('/user', function(req, res) {
 
-  /*  if (!req.isAuthenticated()) {
-      return res.status(200).json({
-        logged: false
-      });
-    }*/
     var userData = req.body;
+
+    if (userData.username)
+      delete userData.username;
 
     var userId = req.body._id;
     // Delete the _id property, otherwise Mongo will return a "Mod on _id not allowed" error
@@ -141,23 +137,6 @@ userRoutes.post('/user', function(req, res) {//registrazione o update
       status: 'Update successful!'
     });
 
-  } else {//se sto registrando
-
-    User.register(new User(req.body),
-      req.body.password, function(err, account) {
-      if (err) {
-        return res.status(500).json({
-          err: err
-        });
-      }
-      passport.authenticate('local')(req, res, function () {
-        return res.status(200).json({
-          status: 'Registration successful!'
-        });
-      });
-    });
-
-  }
 });
 
 /**

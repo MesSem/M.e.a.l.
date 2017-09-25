@@ -119,7 +119,7 @@ function ($q, $timeout, $http) {
     var deferred = $q.defer();
 
     // send a post request to the server
-    $http.post('/api/user/user', form)
+    $http.post('/api/register/', form)
       // handle success
       .then(function (success) {
         if(success.status === 200 && success.data.status){

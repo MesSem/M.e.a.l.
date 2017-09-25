@@ -56,3 +56,35 @@ apiRoutes.post('/login', function(req, res, next) {
     });
   })(req, res, next);
 });
+
+/**
+ * @api {post} /api/register User registration
+ * @apiName Register
+ * @apiGroup Api
+ *
+ * @apiParam {User} the user data--->mettere meglio
+ */
+apiRoutes.post('/register', function(req, res) {
+
+  if (req.body.password.length < 8 || req.body.password.length > 100) {
+    return res.status(500).json({
+      err: 'Password must be between 8 and 100 characters long'
+    });
+  }
+
+
+  User.register(new User(req.body),
+    req.body.password, function(err, account) {
+    if (err) {
+      return res.status(500).json({
+        err: err
+      });
+    }
+    passport.authenticate('local')(req, res, function () {
+      return res.status(200).json({
+        status: 'Registration successful!'
+      });
+    });
+  });
+
+});

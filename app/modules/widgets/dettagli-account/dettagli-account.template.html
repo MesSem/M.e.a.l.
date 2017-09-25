@@ -6,8 +6,8 @@
             <input type="hidden" ng-model="updateForm._id">
             <p>
                 <span>Username*: </span>
-                <span ng-hide='showInput'>{{user.username}}</span>
-                <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.username" required>
+                <span>{{user.username}}</span>
+                <!--<input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.username" required>-->
             </p>
             <p>
                 <span>Nome*: </span>
@@ -26,8 +26,8 @@
             </p>
             <p>
                 <span>Data nascita*: </span>
-                <span ng-hide='showInput'>{{user.bornDate}}</span>
-                <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.bornDate" required>
+                <span ng-hide='showInput'>{{user.formattedBornDate}}</span>
+                <input type="text" ng-show='showInput' class="form-control" minlength="10" maxlength="10" ng-model="updateForm.formattedBornDate" required>
             </p>
             <p>
                 <span>Telefono: </span>
@@ -35,7 +35,7 @@
                 <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.telephone">
             </p>
             <hr>
-            <p><span>Indirizzo</span></p>
+            <p><span>INDIRIZZO</span></p>
             <p>
                 <span>Via: </span>
                 <span ng-hide='showInput'>{{user.address.street}}</span>
