@@ -1,12 +1,9 @@
-var passportJWT = require("passport-jwt");
 var User = require('./models/user.js');
 var cfg = require("./config.js");
 var errorCodes= require('./errorCodes.js');
 var jwt = require("jwt-simple");
 var toJSON = require( 'utils-error-to-json' );
 var moment = require('moment');//gestione date e tempo
-var ExtractJwt = passportJWT.ExtractJwt;
-var Strategy = passportJWT.Strategy;
 
 module.exports = function(req, res, next) {
 
