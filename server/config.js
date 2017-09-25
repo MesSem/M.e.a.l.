@@ -9,5 +9,6 @@ module.exports =
     jwtSecret: "A1sd3nh5dr7",
     jwtSession: {
         session: false
-    }
+    },
+    timeSessionToken: 1//espresso in ore
 };

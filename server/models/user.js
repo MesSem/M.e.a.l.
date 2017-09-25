@@ -27,7 +27,8 @@ var User = new Schema({
   phoneNumber: String,
   address:  Address,
   cards: [Card],
-  idCard: String
+  idCard: String,
+  isAdmin:{type:Boolean, default:false}
 });
 
 

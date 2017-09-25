@@ -2,6 +2,12 @@ angular.module('mealApp').factory('UserService',
 ['$q', '$timeout', '$http',
 function ($q, $timeout, $http) {
 
+  try{
+    $http.defaults.headers.common.Authorization = 'JWT ' +window.sessionStorage.accessToken;
+  }catch(err){
+    console.log("jwt not found");
+  }
+
   // create user variable
   var user = null;
 
@@ -62,6 +68,7 @@ function ($q, $timeout, $http) {
                //$localStorage.currentUser = { username: username, token: response.token }; può essere utile???
 
                // add jwt token to auth header for all requests made by the $http service
+               window.sessionStorage.accessToken = success.data.token;
                $http.defaults.headers.common.Authorization = 'JWT ' + success.data.token;
              }
           deferred.resolve();
@@ -91,11 +98,13 @@ function ($q, $timeout, $http) {
       // handle success
       .then(function (success) {
         user = false;
+        window.sessionStorage.accessToken=null;
         deferred.resolve();
       })
       // handle error
       .catch(function (error) {
         user = false;
+        window.sessionStorage.accessToken=null;
         deferred.reject();
       });
 

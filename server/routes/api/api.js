@@ -5,6 +5,7 @@
 var express = require('express');
 var passport = require('passport');
 var jwt = require("jwt-simple");
+var moment = require('moment');//gestione date e tempo
 var cfg = require("../../config.js");
 
 var User = require('../../models/user.js');
@@ -42,9 +43,12 @@ apiRoutes.post('/login', function(req, res, next) {
         err: info
       });
     }
+    //Creazone del payload del token
     var payload = {
-        id: user.id
+        id: user.id,
+        expr:moment().add(cfg.timeSessionToken, "hours").unix()
     };
+    //Codifica del token e restituzione
     var token = jwt.encode(payload, cfg.jwtSecret);
     res.status(200).json({
         token: token,

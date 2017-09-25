@@ -9,7 +9,7 @@ var hash = require('bcrypt-nodejs');
 var path = require('path');
 var passport = require('passport');
 var localStrategy = require('passport-local' ).Strategy;
-var authenticate = require("./server/auth.js");
+var auth = require("./server/auth.js")();
 
 // mongoose
 mongoose.connect('mongodb://localhost/meal');
@@ -56,16 +56,14 @@ app.use('/api', apiRoutes);
 // USER ROUTES
 // =======================
 userRoutes = require('./server/routes/user/user');
-app.use('/api/user',authenticate, userRoutes);
+app.use('/api/user',auth.authenticate, userRoutes);
 
 
 // =======================
 // ADMIN ROUTES
 // =======================
-// POTREBBE NON ARRIVARCI MAI PERCHÈ IN AUTHENTICATE FACCIO SEND Error
-// E NON SO SE DOPO CONTINUA O LÌ CHIUDE TUTTO
-//var adminRoutes = require('./server/routes/admin/admin');
-//app.use('/api/admin', adminRoutes);
+var adminRoutes = require('./server/routes/admin/admin');
+app.use('/api/admin', auth.authenticateAdmin,adminRoutes);
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '/app', 'index.html'));
