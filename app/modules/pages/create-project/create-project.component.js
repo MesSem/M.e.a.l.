@@ -7,9 +7,16 @@ angular.module('mealApp').component('createProject', {
                   $scope.progress=0;
                   $scope.createProject = function () {
 
+                    var mainImage = $scope.projectForm.mainImage;
+                    var gallery = $scope.projectForm.gallery;
+
+                    delete $scope.projectForm.mainImage;//evito il doppio upload
+                    delete $scope.projectForm.gallery;
+
                     Upload.upload({
                       url: 'http://localhost:8080/api/user/project', //webAPI exposed to upload the file
-                      data:{file:$scope.projectForm.file, body:$scope.projectForm} //pass file as data, should be user ng-model
+                      arrayKey: '',
+                      data:{file: {main: mainImage, gallery: gallery}, form: $scope.projectForm} //pass file as data, should be user ng-model
                     }).then(function (resp) { //upload function returns a promise
                       if(resp.data.error_code === 0){ //validate success
                         alert('Success ' + resp.config.data.file.name + 'uploaded. Response: ');

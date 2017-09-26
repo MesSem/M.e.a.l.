@@ -6,6 +6,9 @@ var express = require('express');
 var passport = require('passport');
 var multer = require('multer');
 var Q=require('q');
+var uuid = require('node-uuid');
+var fs = require('fs');
+var path = require('path');
 
 var errorCodes= require('../../errorCodes.js');
 
@@ -318,16 +321,26 @@ userRoutes.get('/transaction', function(req, res) {
 
 });
 
+uploadDir = 'uploads';
+tempDir = uploadDir + path.sep + 'temp';
+//controllo se esistono cartelle, in caso negativo le creo - cartella temporanea prima di mettere il record nel db
+if (!fs.existsSync(uploadDir))
+  fs.mkdirSync(uploadDir);
+if (!fs.existsSync(tempDir))
+  fs.mkdirSync(tempDir);
 
 var storage = multer.diskStorage({ //multers disk storage settings
   destination: function (req, file, cb) {
-    cb(null, './upload/')
+    //console.log(file);
+    cb(null, tempDir)
   },
   filename: function (req, file, cb) {
     var datetimestamp = Date.now();
-      cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
+      cb(null, uuid.v4() + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])//genero nome file
   }
 });
+//ci sarebbe da metterlo dentro la route, se esterno potrebbe causare problemi di sicurezza, ma a quanto pare non funziona da dentro
+//https://github.com/expressjs/multer
 var upload = multer({ //multer settings
                 storage: storage,
                 onError : function(err, next) {
@@ -337,32 +350,60 @@ var upload = multer({ //multer settings
                   }
                    res.json({error_code:0,err_desc:null});
                 }
-            }).single('file');
-
-
+            }).any();//uso any perchè sembra l'unico funzionante
 
 //SE SI VUOLE FILTRARE IL FILE ESISTE OPZIONE fileFilter, guardare sulla guida di multer
-userRoutes.post('/project', /*upload,*/ function(req, res) {//registrazione o update
+userRoutes.post('/project', upload, function(req, res) {//registrazione o update
+  var form = req.body.form;
+  //console.log(req.files);
+
+  var gallery = [];
+
+  for (var key in req.files) {//trovo immagine principale e immagini galleria
+    el = req.files[key];
+    if (el.fieldname == 'file[main]')
+      mainImage = el.path;
+    else if (el.fieldname == 'file[gallery]')
+      gallery.push(el.path);
+  }
+
   var proj = new Project({
     owner: req.userId,
-    name: req.body.name,
-    description: req.body.description,
-    //image: req.file.path,
-    //imagesGallery,
-    endDate:req.body.endDate,
+    name: form.name,
+    description: form.description,
+    image: req.files[0].path,
+    imagesGallery: gallery,
+    endDate:form.endDate,
     restitution: {
-      date:req.body.dateRestitution,
-      interests:req.body.interests
+      date: form.restitution.dateRestitution,
+      interests: form.restitution.interests
       },
-    requestedMoney:req.body.requestedMoney,
+    requestedMoney: form.requestedMoney,
     actualMoney:{money:0, date:Date.now()}
   });
-//consol.log(proj);
+  console.log(proj);
   proj.save(function (err, results) {
     if (err) {
+      //in caso di errore elimino tutte le immagini caricate
+      fs.unlinkSync(mainImage);
+      for (var key in gallery) {
+        fs.unlinkSync(gallery[key]);
+      }
       return res.status(500).json({
         err: err
       });
+    }
+    //sposto le immagini nella cartella una volta che ho _id del progetto - rename(vecchia_dir, nuova_dir)
+    projDir = uploadDir + path.sep + proj._id;
+    if (!fs.existsSync(projDir))
+      fs.mkdirSync(projDir);
+
+    var mainImageName = mainImage.split(path.sep).pop();
+    console.log(path.sep);
+    fs.renameSync(mainImage, projDir + path.sep + mainImageName);
+    for (var key in gallery) {
+      var galleryName = gallery[key].split(path.sep).pop();
+      fs.renameSync(gallery[key], projDir + path.sep + galleryName);
     }
     res.status(200).json({
       status: 'Added successfully!'

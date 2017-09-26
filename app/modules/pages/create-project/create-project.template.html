@@ -1,46 +1,49 @@
 <div class="form-div">
   <h1>Project</h1>
   <div ng-show="error" class="alert alert-danger">{{errorMessage}}</div>
-  <form class="form" ng-submit="createProject()">
+  <form class="form" ng-submit="createProject()" enctype="multipart/form-data" >
     <div class="form-group">
       <label>Nome*</label>
-      <input type="text" class="form-control" name="name" minlength="6" maxlength="20" ng-model="projectForm.name" required>
+      <input type="text" class="form-control" minlength="6" maxlength="20" ng-model="projectForm.name" required>
     </div>
     <div class="form-group">
       <label>Descrizione*</label>
-      <input type="textarea" class="form-control" name="description" minlength="8" maxlength="500" ng-model="projectForm.description" required>
+      <input type="textarea" class="form-control" minlength="8" maxlength="500" ng-model="projectForm.description" required>
     </div>
     <div class="form-group">
       <label>Data di fine*</label>
-      <input type="date" class="form-control" name="endDate" ng-model="projectForm.endDate" required>
+      <input type="date" class="form-control" ng-model="projectForm.endDate" required>
     </div>
     <div class="form-group">
       <label>Soldi richiesti*</label>
-      <input type="number" class="form-control" name="requestedMoney" ng-model="projectForm.requestedMoney" required>
+      <input type="number" class="form-control" ng-model="projectForm.requestedMoney" required>
     </div>
     <div class="form-group">
       <label>Resituzione</label>
     </div>
-      <div class="form-group"><label style="width: 20%;">Data</label><input type="date" class="form-control inline" name="dateRestitution" ng-model="projectForm.restitution.dateRestitution" style="width: 80%;"></div>
-      <div class="form-group"><label style="width: 20%;">Interessi(in percentuale)*</label><input type="number" class="form-control inline" name="interests" ng-model="projectForm.restitution.interests" style="width: 80%;"></div>
+      <div class="form-group"><label style="width: 20%;">Data</label><input type="date" class="form-control inline" ng-model="projectForm.restitution.dateRestitution" style="width: 80%;"></div>
+      <div class="form-group"><label style="width: 20%;">Interessi(in percentuale)*</label><input type="number" class="form-control inline" ng-model="projectForm.restitution.interests" style="width: 80%;"></div>
     <div><i>* obbligatorio</i></div>
     <input
                type="file"
                ngf-select
-               ng-model="projectForm.file"
-               name="file"
+               ng-model="projectForm.mainImage"
                ngf-pattern="'image/*'"
                accept="image/*"
                ngf-max-size="20MB"
                />
-            Image thumbnail: <img style="width:100px;" ngf-thumbnail="projectForm.file || '/thumb.jpg'"/>
+            Image thumbnail: <img style="width:100px;" ngf-thumbnail="projectForm.mainImage || '/thumb.jpg'"/>
             <!--<i ng-show="up.upload_form.file.$error.required">*required</i><br>
             <i ng-show="up.upload_form.file.$error.maxSize">File too large
             {{up.file.size / 1000000|number:1}}MB: max 20M</i>-->
             <p>{{progress}}
     <br>
+
+    Galleria:
+    <div class="btn btn-primary" ngf-select="uploadFiles($files)" ngf-pattern="'image/*'" accept="image/*" ng-model="projectForm.gallery" multiple="multiple">Seleziona file galleria</div>
+    <br><br>
     <div>
-      <button type="submit" class="btn btn-success btn-lg btn-block" ng-disabled="disabled">Crea progetto</button>
+      <button type="submit" class="btn btn-success btn-lg btn-block">Crea progetto</button>
     </div>
   </form>
 </div>

@@ -12,7 +12,7 @@ var Project = new Schema({
   endDate: {type:Date, min:Date.now, required:true},
   restitution: {
     date:{type:Date, max:Date.now, required:true},
-    interests:Number
+    interests:{type:Number}
     },
   accepted: {type:Boolean, default:false},
   requestedMoney:{type:Number, required:true},

@@ -55,6 +55,7 @@
 
     <div class="access-div">
       <div ng-controller="loggedController">
+        <div ng-show='isLoggedIn()'><a class="btn btn-success" href="#!newProject" >Nuovo progetto</a></div>
         <div ng-show='isLoggedIn()'><a class="btn btn-success" href="#!profile" >Profilo</a></div>
         <div ng-show='isLoggedIn()'><a ng-click='logout()' class="btn btn-success">Logout</a></div>
 
