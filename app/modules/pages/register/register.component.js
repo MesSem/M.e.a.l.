@@ -28,5 +28,5 @@ angular.module('mealApp').component('register', {
                 };
               }]
 
-  
+
 });

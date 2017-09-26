@@ -1,4 +1,4 @@
-var mealApp = angular.module('mealApp', ['ngRoute', 'ngSanitize', 'MassAutoComplete', 'angularMoment']);
+var mealApp = angular.module('mealApp', ['ngRoute', 'ngSanitize', 'MassAutoComplete', 'angularMoment','ngFileUpload']);
 
 mealApp.config(['$locationProvider', '$routeProvider',
   function config($locationProvider, $routeProvider) {
@@ -16,7 +16,10 @@ mealApp.config(['$locationProvider', '$routeProvider',
         }).
       when('/login',{
           template: '<login></login>'
-        });
+        }).
+      when('/newProject',{
+            template: '<create-project></create-project>'
+          });
         /*
       otherwise('/students');*/
   }

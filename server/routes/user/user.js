@@ -4,10 +4,14 @@
 
 var express = require('express');
 var passport = require('passport');
+var multer = require('multer');
+var Q=require('q');
+
 var errorCodes= require('../../errorCodes.js');
 
 var User = require('../../models/user.js');
 var Transaction = require('../../models/transaction.js');
+var Project= require('../../models/project.js');
 
 var adminRoutes = express.Router();
 var userRoutes = express.Router();
@@ -300,12 +304,6 @@ userRoutes.post('/transaction', function(req, res) {//registrazione o update
  * @apiSuccess {[Transaction]} transactions list of all transactions of thi user
  */
 userRoutes.get('/transaction', function(req, res) {
-  /*if (!req.isAuthenticated()) {
-    return res.status(200).json({
-      logged: false
-    });
-  }*/
-
   //Transaction.find({$or: [{'sender': req.user._id}, {recipient: req.user._id}]}, function (err, result) {
   Transaction.find({$or: [{'sender': req.userId}, {recipient: req.userId}]}, function (err, result) {
     if (err) {
@@ -315,6 +313,59 @@ userRoutes.get('/transaction', function(req, res) {
     }
     res.status(200).json({
       transactions: result
+    });
+  });
+
+});
+
+
+var storage = multer.diskStorage({ //multers disk storage settings
+  destination: function (req, file, cb) {
+    cb(null, './upload/')
+  },
+  filename: function (req, file, cb) {
+    var datetimestamp = Date.now();
+      cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
+  }
+});
+var upload = multer({ //multer settings
+                storage: storage,
+                onError : function(err, next) {
+                  console.log("err.message");
+                  if(err){
+                       res.json({error_code:1,err_desc:err});
+                  }
+                   res.json({error_code:0,err_desc:null});
+                }
+            }).single('file');
+
+
+
+//SE SI VUOLE FILTRARE IL FILE ESISTE OPZIONE fileFilter, guardare sulla guida di multer
+userRoutes.post('/project', /*upload,*/ function(req, res) {//registrazione o update
+  var proj = new Project({
+    owner: req.userId,
+    name: req.body.name,
+    description: req.body.description,
+    //image: req.file.path,
+    //imagesGallery,
+    endDate:req.body.endDate,
+    restitution: {
+      date:req.body.dateRestitution,
+      interests:req.body.interests
+      },
+    requestedMoney:req.body.requestedMoney,
+    actualMoney:{money:0, date:Date.now()}
+  });
+//consol.log(proj);
+  proj.save(function (err, results) {
+    if (err) {
+      return res.status(500).json({
+        err: err
+      });
+    }
+    res.status(200).json({
+      status: 'Added successfully!'
     });
   });
 

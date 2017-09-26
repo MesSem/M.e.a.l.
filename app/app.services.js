@@ -24,7 +24,8 @@ function ($q, $timeout, $http) {
     deleteCard: deleteCard,
     getUserList: getUserList,
     sendMoney: sendMoney,
-    getTransactions: getTransactions
+    getTransactions: getTransactions,
+    createProject:createProject
   });
 
   function isLoggedIn() {
@@ -241,6 +242,33 @@ function ($q, $timeout, $http) {
     // return promise object
     return deferred.promise;
   }
+
+//NON UTILIZZATA
+  function createProject(form) {
+
+    // create a new instance of deferred
+    var deferred = $q.defer();
+
+    // send a post request to the server
+    $http.post('/api/user/project', form)
+      // handle success
+      .then(function (success) {
+        if(success.status === 200 && success.data.status){
+          deferred.resolve();
+        } else {
+          deferred.reject();
+        }
+      })
+      // handle error
+      .catch(function (data) {
+        deferred.reject();
+      });
+
+    // return promise object
+    return deferred.promise;
+
+  }
+
 
   var cachedTransactions = null;
   function getTransactions() {

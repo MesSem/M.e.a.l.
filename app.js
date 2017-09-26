@@ -43,7 +43,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
+app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
 
 // =======================
 // API ROUTES
