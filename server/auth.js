@@ -14,10 +14,11 @@ module.exports = function(req, res, next) {
       authenticate: function(req, res, next) {
         try{
           //Recover of token and decoding
-          var token = req.headers.authorization.split(' ')[1];
+          //var token = req.headers.authorization.split(' ')[1];
+          var token = req.cookies.token;
           var payload = jwt.decode(token, cfg.jwtSecret);//esiste libreria per farlo in modo asincrono
-          //Check if the token is expired
-          if(moment().unix()<payload.expr){
+          //Check if the token is expired, If sessionOpen is setted, the token never expired
+          if((payload.sessionOpen!=undefined && payload.sessionOpen) || moment().unix()<payload.expr){
             //Token not expired
             //Take information of the user from the db
             User.findOne({_id: payload.id}, function(err, user) {
@@ -32,6 +33,14 @@ module.exports = function(req, res, next) {
               //User exist, return of the user id
               if (user) {
                 req.userId = payload.id;
+                //Creazone del payload del token
+                var newPayload = {
+                    id: req.userId,
+                    sessionOpen:(payload.sessionOpen != undefined) ? payload.sessionOpen :false,
+                    expr:moment().add(cfg.timeSessionToken, "hours").unix()
+                };
+                //Risetto il token aggiungendo al tempo attuale altro tempo
+                res.cookie('token',jwt.encode(newPayload, cfg.jwtSecret), { /*maxAge: 900000,*/ httpOnly: true });
                 next();
               } else {
                 res.status(401).json({
@@ -59,9 +68,10 @@ module.exports = function(req, res, next) {
       },
       authenticateAdmin: function(req, res, next) {
         try{
-        var token = req.headers.authorization.split(' ')[1];
+        //var token = req.headers.authorization.split(' ')[1];
+        var token = req.cookies.token;
         var payload = jwt.decode(token, cfg.jwtSecret);//esiste libreria per farlo in modo asincrono
-        if(moment().unix()<payload.exp){
+        if((payload.sessionOpen!=undefined && payload.sessionOpen) || moment().unix()<payload.expr){
           User.findOne({_id: payload.id}, function(err, user) {
             if (err) {
               res.status(401).json({
@@ -73,6 +83,14 @@ module.exports = function(req, res, next) {
             }
             if (user && user.isAdmin) {
               req.userId = payload.id;
+              //Creazone del payload del token
+              var newPayload = {
+                  id: req.userId,
+                  sessionOpen:(payload.sessionOpen != undefined) ? payload.sessionOpen :false,
+                  expr:moment().add(cfg.timeSessionToken, "hours").unix()
+              };
+              //Risetto il token aggiungendo al tempo attuale altro tempo
+              res.cookie('token',jwt.encode(newPayload, cfg.jwtSecret), { /*maxAge: 900000,*/ httpOnly: true });
               next();
             } else {
                 res.status(401).json({

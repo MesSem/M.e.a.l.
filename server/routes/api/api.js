@@ -46,12 +46,15 @@ apiRoutes.post('/login', function(req, res, next) {
     //Creazone del payload del token
     var payload = {
         id: user.id,
+        sessionOpen:req.body.sessionOpen,
         expr:moment().add(cfg.timeSessionToken, "hours").unix()
     };
+    //ho commentato maxAge perchè già c'è il parametro expr dentro al token. Da discutere se togliere expr e utilizzare maxAge
+      res.cookie('token',jwt.encode(payload, cfg.jwtSecret), { /*maxAge: 900000,*/ httpOnly: true });
     //Codifica del token e restituzione
-    var token = jwt.encode(payload, cfg.jwtSecret);
+    //var token = jwt.encode(payload, cfg.jwtSecret);
     res.status(200).json({
-        token: token,
+        //token: token,
         status: 'Login successful!'
     });
   })(req, res, next);

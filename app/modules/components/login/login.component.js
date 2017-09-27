@@ -10,7 +10,7 @@ angular.module('mealApp').component('login', {
                   $scope.disabled = true;
 
                   // call login from service
-                  UserService.login($scope.loginForm.username, $scope.loginForm.password)
+                  UserService.login($scope.loginForm.username, $scope.loginForm.password, $scope.loginForm.sessionOpen)
                     // handle success
                     .then(function () {
                       $location.path('/');

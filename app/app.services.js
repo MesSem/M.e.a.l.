@@ -52,14 +52,14 @@ function ($q, $timeout, $http) {
     });
   }
 
-  function login(username, password) {
+  function login(username, password,sessionOpen) {
 
     // create a new instance of deferred
     var deferred = $q.defer();
 
     // send a post request to the server
     $http.post('/api/login',
-      {username: username, password: password})
+      {username: username, password: password, sessionOpen:sessionOpen})
       // handle success
       .then(function (success) {
         if(success.status === 200 && success.data.status){
@@ -69,8 +69,8 @@ function ($q, $timeout, $http) {
                //$localStorage.currentUser = { username: username, token: response.token }; può essere utile???
 
                // add jwt token to auth header for all requests made by the $http service
-               window.sessionStorage.accessToken = success.data.token;
-               $http.defaults.headers.common.Authorization = 'JWT ' + success.data.token;
+               //window.sessionStorage.accessToken = success.data.token;
+               //$http.defaults.headers.common.Authorization = 'JWT ' + success.data.token;
              }
           deferred.resolve();
         } else {

@@ -11,7 +11,7 @@ var Project = new Schema({
   startDate: {type:Date, default:Date.now, required:true},
   endDate: {type:Date, min:Date.now, required:true},
   restitution: {
-    date:{type:Date, max:Date.now, required:true},
+    date:{type:Date, min:Date.now, required:true},
     interests:{type:Number}
     },
   accepted: {type:Boolean, default:false},

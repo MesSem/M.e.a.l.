@@ -92,7 +92,6 @@ userRoutes.get('/user', function(req, res) {
       res.send("error");
         //return done(err, false);
     }
-    console.log(user);
     if (user) {
       res.status(200).json({
         user: user
