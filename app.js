@@ -64,6 +64,10 @@ app.use('/api/user',auth.authenticate, userRoutes);
 // =======================
 var adminRoutes = require('./server/routes/admin/admin');
 app.use('/api/admin', auth.authenticateAdmin,adminRoutes);
+/*
+app.get('/images/',auth.authenticate, function (req, res) {
+    // res.sendFile(filepath);
+});*/
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '/app', 'index.html'));

@@ -25,6 +25,7 @@ function ($q, $timeout, $http) {
     getUserList: getUserList,
     sendMoney: sendMoney,
     getTransactions: getTransactions,
+    getProjects: getProjects,
     createProject:createProject
   });
 
@@ -272,6 +273,12 @@ function ($q, $timeout, $http) {
   function getTransactions() {
     if(!cachedTransactions) cachedTransactions = $http.get('/api/user/transaction');
     return cachedTransactions;
+  }
+
+  var cachedProjects = null;
+  function getProjects() {
+    if(!cachedProjects) cachedProjects = $http.get('/api/user/listProjects');
+    return cachedProjects;
   }
 
 }]);

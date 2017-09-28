@@ -32,6 +32,8 @@
   <script src="modules/pages/profile/profile.component.js"></script>
   <script src="modules/pages/register/register.component.js"></script>
   <script src="modules/pages/create-project/create-project.component.js"></script>
+  <script src="modules/pages/projects/projects.component.js"></script>
+
   <script src="modules/components/login/login.component.js"></script>
 
   <script src="modules/widgets/carte-associate/carte-associate.component.js"></script>
@@ -57,6 +59,7 @@
       <div ng-controller="loggedController">
         <div ng-show='isLoggedIn()'><a class="btn btn-success" href="#!newProject" >Nuovo progetto</a></div>
         <div ng-show='isLoggedIn()'><a class="btn btn-success" href="#!profile" >Profilo</a></div>
+        <div ng-show='isLoggedIn()'><a class="btn btn-success" href="#!projects" >Progetti</a></div>
         <div ng-show='isLoggedIn()'><a ng-click='logout()' class="btn btn-success">Logout</a></div>
 
         <div ng-show='!isLoggedIn()'><a class="btn btn-success" href="#!login">Login</a></div>

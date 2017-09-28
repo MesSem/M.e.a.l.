@@ -13,7 +13,7 @@ angular.module('mealApp').controller('storico',
                     angular.forEach($scope.transactions, function(tran, key) {//associo l'id di ogni utente con il proprio nome
                       $scope.transactions[key].date = moment(tran.date).toDate();//parse per manipolazione moment
                       $scope.transactions[key].senderName = $filter('filter')($scope.usersList, {_id: tran.sender })[0].username;
-                      $scope.transactions[key].recipientName = $filter('filter')($scope.usersList, {_id: tran.recipient })[0].username;  
+                      $scope.transactions[key].recipientName = $filter('filter')($scope.usersList, {_id: tran.recipient })[0].username;
                     });
                   })
                 });

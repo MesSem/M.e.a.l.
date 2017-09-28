@@ -1,0 +1,20 @@
+<!--<div ng-controller="projects">-->
+    <div class="col-xs-6 col-md-4">
+        <div class="project">
+            <h4>PROGETTI</h4>
+            <div ng-repeat="proj in projectsList">
+                <hr>
+                <div>Richiedente: {{proj.owner.name+" "+proj.owner.surname}}</div>
+                <div>Nome Progetto: {{proj.name}}</div>
+                <div>Descrizione: {{proj.description}}</div>
+                <div>Data di inizio: {{proj.startDate | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
+                <div>Data di fine: {{proj.endDate | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
+                <div>Data di restituzione: {{proj.restitution.date | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
+                <div>Interessi: {{proj.restitution.interests}}</div>
+                <div>Obiettivo: {{proj.requestedMoney}}</div>
+                <div>Valore raggiunto: {{proj.actualMoney.money}}</div>
+                <img src="{{proj.image}}"  alt="Mountain View" style="width:304px;height:228px;">
+            </div>
+        </div>
+    </div>
+<!--</div>-->

@@ -382,13 +382,7 @@ userRoutes.post('/project', upload, function(req, res) {//registrazione o update
  * @apiSuccess {[Transaction]} transactions list of all transactions of thi user
  */
 userRoutes.get('/listProjects', function(req, res) {
-  var query;
-  if (req.query.onlyMy!=undefined && req.query.onlyMy){
-    query={'owner': req.userId};
-  }else {
-    query={};
-  }
-  Project.find(query, function (err, result) {
+  var afterGetProjects=function (err, result) {
     if (err) {
       return res.status(500).json({
         err: err
@@ -397,7 +391,15 @@ userRoutes.get('/listProjects', function(req, res) {
     res.status(200).json({
       projects: result
     });
-  });
+  };
+  if (req.query.onlyMy!=undefined && req.query.onlyMy){
+    Project.find({'owner': req.userId}, afterGetProjects );
+  }else {
+    Project.find({'accepted': true})
+    .populate('owner',['name', 'surname'])
+    .exec(afterGetProjects);
+  }
+
 
 });
 
