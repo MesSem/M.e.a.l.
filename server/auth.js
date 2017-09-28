@@ -115,6 +115,9 @@ module.exports = function(req, res, next) {
             message: 'No JWT token in the header'
           });
         }
+      },
+      deauthenticate:function(req, res, next) {
+        res.cookie('token','deleted', { /*maxAge: 900000,*/ httpOnly: true });
       }
   };
 };

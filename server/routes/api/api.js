@@ -80,7 +80,8 @@ apiRoutes.post('/register', function(req, res) {
     req.body.password, function(err, account) {
     if (err) {
       return res.status(500).json({
-        err: err
+        errMessage: err.message,
+        err:err
       });
     }
     passport.authenticate('local')(req, res, function () {

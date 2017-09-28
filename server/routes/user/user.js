@@ -10,6 +10,7 @@ var uuid = require('node-uuid');
 var fs = require('fs');
 var path = require('path');
 
+var auth = require("../../auth.js")();
 var errorCodes= require('../../errorCodes.js');
 
 var User = require('../../models/user.js');
@@ -50,6 +51,13 @@ res.status(400).json({ success: false,
  */
 userRoutes.get('/logout', function(req, res) {
   req.logout();
+  /*var newPayload = {
+      id: req.userId,
+      expr:moment().unix()
+  };
+  //Setto il cookie al tempo attuale così il client non avrà più un coockie valido e sarà obbligato a uscire
+  res.cookie('token',jwt.encode(newPayload, cfg.jwtSecret), { /*maxAge: 900000,*/ /*httpOnly: true });*/
+  auth.deauthenticate(req, res, null)
   res.status(200).json({
     status: 'Bye!'
   });
@@ -63,11 +71,6 @@ userRoutes.get('/logout', function(req, res) {
  * @apiSuccess {Boolean} logged True if the user is logged, false elsewhere
  */
 userRoutes.get('/status', function(req, res) {
-  /*if (!req.isAuthenticated()) {
-    return res.status(200).json({
-      logged: false
-    });
-  }*/
   res.status(200).json({
     status: true
   });
@@ -82,11 +85,6 @@ userRoutes.get('/status', function(req, res) {
  * @apiSuccess {User} user The current user
  */
 userRoutes.get('/user', function(req, res) {
-  /*if (!req.isAuthenticated()) {
-    return res.status(200).json({
-      logged: false
-    });
-  }*/
   User.findOne({_id: req.userId}, function(err, user) {
     if (err) {
       res.send("error");
@@ -103,11 +101,6 @@ userRoutes.get('/user', function(req, res) {
         // return done(new Error("User not found"), null);
     }
   });
-
-
-
-
-
 });
 
 /**
@@ -121,7 +114,6 @@ userRoutes.get('/user', function(req, res) {
  *
  */
 userRoutes.post('/user', function(req, res) {
-
     var userData = req.body;
 
     if (userData.username)
@@ -156,12 +148,6 @@ userRoutes.post('/user', function(req, res) {
  *
  */
 userRoutes.post('/card', function(req, res) {//registrazione o update
-    /*if (!req.isAuthenticated()) {
-      return res.status(200).json({
-        logged: false
-      });
-    }*/
-
     if(!req.body._id) {
       return res.status(200).json({
         error: 'Id not included'
@@ -197,12 +183,6 @@ userRoutes.post('/card', function(req, res) {//registrazione o update
  * @apiSuccess {String} status
  */
 userRoutes.delete('/card', function(req, res) {//registrazione o update
-  /*if (!req.isAuthenticated()) {
-    return res.status(200).json({
-      logged: false
-    });
-  }*/
-
   var userId = req.query.user;
   var cardId = req.query.card;
 
@@ -234,12 +214,6 @@ userRoutes.delete('/card', function(req, res) {//registrazione o update
  *
  */
 userRoutes.get('/list', function(req, res) {
-  /*if (!req.isAuthenticated()) {
-    return res.status(200).json({
-      logged: false
-    });
-  }*/
-
   User.find({}, '_id username', function (err, result) {
     if (err) {
       return res.status(500).json({
@@ -263,18 +237,6 @@ userRoutes.get('/list', function(req, res) {
  * @apiSuccess {String} status message
  */
 userRoutes.post('/transaction', function(req, res) {//registrazione o update
-  /*if (!req.isAuthenticated()) {
-    return res.status(200).json({
-      logged: false
-    });
-  }*/
-
-  /*if(!req.body.sender || !req.body.recipient) {
-    return res.status(200).json({
-      error: 'Id not included'
-    });
-  }*/
-
   var tran = new Transaction({
     sender: req.body.sender,
     recipient: req.body.recipient,
@@ -301,7 +263,6 @@ userRoutes.post('/transaction', function(req, res) {//registrazione o update
  * @apiName GetTransactions
  * @apiGroup User
  *
- * @apiParam {Number} UserId
  *
  * @apiSuccess {[Transaction]} transactions list of all transactions of thi user
  */
@@ -406,6 +367,35 @@ userRoutes.post('/project', upload, function(req, res) {//registrazione o update
     }
     res.status(200).json({
       status: 'Added successfully!'
+    });
+  });
+
+});
+
+/**
+ * @api {get} /api/user/listProjects Get all projects
+ * @apiName listProjects
+ * @apiGroup User
+ *
+ * @apiParam {Boolean} onlyMy If true the result is only the projects create from thi user
+ *
+ * @apiSuccess {[Transaction]} transactions list of all transactions of thi user
+ */
+userRoutes.get('/listProjects', function(req, res) {
+  var query;
+  if (req.query.onlyMy!=undefined && req.query.onlyMy){
+    query={'owner': req.userId};
+  }else {
+    query={};
+  }
+  Project.find(query, function (err, result) {
+    if (err) {
+      return res.status(500).json({
+        err: err
+      });
+    }
+    res.status(200).json({
+      projects: result
     });
   });
 

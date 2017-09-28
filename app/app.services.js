@@ -99,13 +99,11 @@ function ($q, $timeout, $http) {
       // handle success
       .then(function (success) {
         user = false;
-        window.sessionStorage.accessToken=null;
         deferred.resolve();
       })
       // handle error
       .catch(function (error) {
         user = false;
-        window.sessionStorage.accessToken=null;
         deferred.reject();
       });
 
