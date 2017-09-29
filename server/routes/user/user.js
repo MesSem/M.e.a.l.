@@ -281,7 +281,8 @@ userRoutes.get('/transaction', function(req, res) {
 
 });
 
-uploadDir = 'uploads';
+rsDir = 'uploads';
+uploadDir = 'app/' + rsDir;
 tempDir = uploadDir + path.sep + 'temp';
 //controllo se esistono cartelle, in caso negativo le creo - cartella temporanea prima di mettere il record nel db
 if (!fs.existsSync(uploadDir))
@@ -331,8 +332,8 @@ userRoutes.post('/project', upload, function(req, res) {//registrazione o update
     owner: req.userId,
     name: form.name,
     description: form.description,
-    image: req.files[0].path,
-    imagesGallery: gallery,
+    image: 'temp',//req.files[0].path,
+    imagesGallery: [],//gallery,
     endDate:form.endDate,
     restitution: {
       date: form.restitution.dateRestitution,
@@ -341,7 +342,7 @@ userRoutes.post('/project', upload, function(req, res) {//registrazione o update
     requestedMoney: form.requestedMoney,
     actualMoney:{money:0, date:Date.now()}
   });
-  console.log(proj);
+  //console.log(proj);
   proj.save(function (err, results) {
     if (err) {
       //in caso di errore elimino tutte le immagini caricate
@@ -355,16 +356,30 @@ userRoutes.post('/project', upload, function(req, res) {//registrazione o update
     }
     //sposto le immagini nella cartella una volta che ho _id del progetto - rename(vecchia_dir, nuova_dir)
     projDir = uploadDir + path.sep + proj._id;
+    realProjDir = rsDir + path.sep + proj._id;
     if (!fs.existsSync(projDir))
       fs.mkdirSync(projDir);
 
     var mainImageName = mainImage.split(path.sep).pop();
-    console.log(path.sep);
-    fs.renameSync(mainImage, projDir + path.sep + mainImageName);
+    //console.log(path.sep);
+    var mainImagePath = projDir + path.sep + mainImageName;
+    fs.renameSync(mainImage, mainImagePath);
+    mainImagePath = realProjDir + path.sep + mainImageName;
     for (var key in gallery) {
       var galleryName = gallery[key].split(path.sep).pop();
-      fs.renameSync(gallery[key], projDir + path.sep + galleryName);
+      var galleryPath = projDir + path.sep + galleryName;
+      fs.renameSync(gallery[key], galleryPath);
+      galleryPath = realProjDir + path.sep + galleryName;
     }
+
+    Project.update({_id: proj._id}, {'$set': {image: mainImagePath, imagesGallery: gallery}}, function (err) {
+      if (err) {
+        return res.status(500).json({
+          err: err
+        });
+      }
+    });
+
     res.status(200).json({
       status: 'Added successfully!'
     });

@@ -11,8 +11,10 @@
         <input type="password" class="form-control" name="password" ng-model="loginForm.password" required>
       </div>
       <div>
-        <input type="checkbox" class="form-control" name="sessionOpen" ng-model="loginForm.sessionOpen">
-        <label>Resta collegato</label>
+        <label>
+          <input type="checkbox" name="sessionOpen" ng-model="loginForm.sessionOpen">
+          Resta collegato
+        </label>
       </div>
       <div>
         <button type="submit" class="btn btn-success btn-lg btn-block" ng-disabled="disabled" >Login</button>

@@ -1,4 +1,4 @@
-<div class="form-div">
+<div class="form-div" style="max-width: 700px;;margin: 15px auto;">
   <h1>Project</h1>
   <div ng-show="error" class="alert alert-danger">{{errorMessage}}</div>
   <form class="form" ng-submit="createProject()" enctype="multipart/form-data" >
@@ -6,9 +6,10 @@
       <label>Nome*</label>
       <input type="text" class="form-control" minlength="6" maxlength="20" ng-model="projectForm.name" required>
     </div>
-    <div class="form-group">
+    <div class="form-textarea">
       <label>Descrizione*</label>
-      <input type="textarea" class="form-control" minlength="8" maxlength="500" ng-model="projectForm.description" required>
+      <!--<input type="textarea" class="form-control" minlength="8" maxlength="500" ng-model="projectForm.description" required>-->
+      <text-angular ng-model="projectForm.description" required></text-angular>
     </div>
     <div class="form-group">
       <label>Data di fine*</label>
@@ -23,7 +24,8 @@
     </div>
       <div class="form-group"><label style="width: 20%;">Data</label><input type="date" class="form-control inline" ng-model="projectForm.restitution.dateRestitution" style="width: 80%;"></div>
       <div class="form-group"><label style="width: 20%;">Interessi(in percentuale)*</label><input type="number" class="form-control inline" ng-model="projectForm.restitution.interests" style="width: 80%;"></div>
-    <div><i>* obbligatorio</i></div>
+
+    <!--Immagine principale
     <input
                type="file"
                ngf-select
@@ -32,16 +34,29 @@
                accept="image/*"
                ngf-max-size="20MB"
                />
-            Image thumbnail: <img style="width:100px;" ngf-thumbnail="projectForm.mainImage || '/thumb.jpg'"/>
+            Image thumbnail: <img style="width:100px;" ngf-thumbnail="projectForm.mainImage"/>-->
             <!--<i ng-show="up.upload_form.file.$error.required">*required</i><br>
             <i ng-show="up.upload_form.file.$error.maxSize">File too large
             {{up.file.size / 1000000|number:1}}MB: max 20M</i>-->
-            <p>{{progress}}
-    <br>
+            <!--<p>{{progress}}</p>-->
+    <hr>
 
-    Galleria:
-    <div class="btn btn-primary" ngf-select="uploadFiles($files)" ngf-pattern="'image/*'" accept="image/*" ng-model="projectForm.gallery" multiple="multiple">Seleziona file galleria</div>
-    <br><br>
+    <div class="btn btn-primary" ngf-select="uploadFiles($files)" ngf-pattern="'image/*'" accept="image/*" ng-model="projectForm.mainImage" ngf-max-size="20MB">Seleziona immagine principale*</div>
+    <div class="clear"></div>
+    <div style="margin-right:5px; margin-top:5px;">
+        <img style="width:150px;" ngf-thumbnail="projectForm.mainImage"/>
+    </div>
+
+    <hr>
+    
+    <div class="btn btn-primary" ngf-select="uploadFiles($files)" ngf-pattern="'image/*'" accept="image/*" ng-model="projectForm.gallery" multiple="multiple">Seleziona immagini galleria</div>
+    <div class="clear"></div>
+    <div ng-repeat="gal in projectForm.gallery" style="display:inline-block; margin-right:5px; margin-top:5px;">
+        <img style="width:100px;" ngf-thumbnail="gal"/>
+    </div>
+    <br>
+    <div><i>* obbligatorio</i></div>
+    <br>
     <div>
       <button type="submit" class="btn btn-success btn-lg btn-block">Crea progetto</button>
     </div>

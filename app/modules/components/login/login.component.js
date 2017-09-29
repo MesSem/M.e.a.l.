@@ -3,6 +3,9 @@ angular.module('mealApp').component('login', {
   controller: ['$scope', '$location', 'UserService',
               function ($scope, $location, UserService) {
 
+                $scope.loginForm = {};
+                $scope.loginForm.sessionOpen = true;
+
                 $scope.login = function () {
 
                   // initial values
