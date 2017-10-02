@@ -22,6 +22,9 @@ mealApp.config(['$locationProvider', '$routeProvider',
           }).
       when('/projects',{
             template: '<projects></projects>'
+          }).
+      when('/projectDetails',{
+            template: '<project-details></project-details>'
           });
         /*
       otherwise('/students');*/
