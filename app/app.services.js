@@ -26,7 +26,8 @@ function ($q, $timeout, $http) {
     sendMoney: sendMoney,
     getTransactions: getTransactions,
     getProjects: getProjects,
-    createProject:createProject
+    createProject:createProject,
+    getProject: getProject,
   });
 
   function isLoggedIn() {
@@ -279,6 +280,11 @@ function ($q, $timeout, $http) {
   function getProjects() {
     if(!cachedProjects) cachedProjects = $http.get('/api/user/listProjects');
     return cachedProjects;
+  }
+
+  function getProject(id) {
+    Project = $http.get('/api/user/detailsProject?id='+id);
+    return Project;
   }
 
 }]);

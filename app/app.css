@@ -35,6 +35,13 @@ body {background-color: #F7F5F2;}
     text-align: left;
 }
 
+.project, .showcase-details {
+    background-color: #ffffff;
+    overflow-y: auto;
+    padding: 10px;
+    text-align: left;
+}
+
 .col-md-4 {
     margin-bottom: 15px;
     text-align: center;
@@ -117,5 +124,5 @@ input::-webkit-inner-spin-button {
 
 .form-group, .form-textarea {
     margin: auto auto 15px;
-    
+
 }

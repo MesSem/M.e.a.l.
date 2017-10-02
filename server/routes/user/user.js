@@ -416,14 +416,12 @@ userRoutes.post('/project', upload, function(req, res) {//registrazione o update
  *
  * @apiParam {Boolean} onlyMy If true the result is only the projects create from thi user
  *
- * @apiSuccess {[Transaction]} transactions list of all transactions of thi user
+ * @apiSuccess {[Project]} projects list of all projects of the user
  */
 userRoutes.get('/listProjects', function(req, res) {
   var afterGetProjects=function (err, result) {
     if (err) {
-      return res.status(500).json({
-        err: err
-      });
+      return errorCodes.sendError(res, errorCodes.ERR_ELEMENT_NOT_FOUND,'Not projects found',err,500 );
     }
     res.status(200).json({
       projects: result
@@ -436,8 +434,38 @@ userRoutes.get('/listProjects', function(req, res) {
     .populate('owner',['username'])
     .exec(afterGetProjects);
   }
+});
 
-
+/**
+ * @api {get} /api/user/detailsProject Get details of one Project
+ * @apiName detailsProject
+ * @apiGroup User
+ *
+ * @apiParam {int} id Id of one project
+ *
+ * @apiSuccess {Project} project Information of requested project
+ */
+userRoutes.get('/detailsProject', function(req, res) {
+  var afterGetProject=function (err, result) {
+    if (err) {
+      return errorCodes.sendError(res, errorCodes.ERR_ELEMENT_NOT_FOUND,'Not project found',err,500 );
+    }else{
+      if(result.accepted==false){
+        return errorCodes.sendError(res, errorCodes.ERR_PROJECT_NOT_ACCEPTED,'Project isn\'t accepted' ,new Error('Accepted field of the project is false'),500 );
+      }else{
+        res.status(200).json({
+          project: result[0]
+        });
+      }
+    }
+  };
+  if (req.query.id!=undefined){
+    Project.find({'_id': req.query.id})
+    .populate('owner',['name', 'surname'])
+    .exec(afterGetProject);
+  }else {
+    return errorCodes.sendError(res, errorCodes.ERR_QUERY_PARAMETER,'There isn\'t id in the query',new Error('Query without id'),500 );
+  }
 });
 
 
