@@ -3,12 +3,13 @@
         <div class="col-xs-6 col-md-4">
             <div class="showcase">
                 <div style="max-height: 200px;overflow: hidden;">
-                    <img ng-src="{{proj.image}}"  alt="Mountain View" style="width:100%;height:auto;">
+                    <img ng-src="{{proj.image}}" alt="{{proj.name}} main image" style="width:100%;height:auto;">
                 </div>
                 <div style="padding:10px;">
                     <h4 style="text-align:center;">{{proj.name}}</h4>
                 
                     <hr>
+                    <div><a><i class="fa fa-user"></i> {{proj.owner.username}}</a></div>
                     <div>Interessi: {{proj.restitution.interests}}%</div>
                     <div>Raccolti: €{{proj.actualMoney.money}} / €{{proj.requestedMoney}}</div>
                     <timer end-time="proj.endDate">{{days}} days, {{hours}} hours, {{minutes}} minutes, {{seconds}} seconds</timer>

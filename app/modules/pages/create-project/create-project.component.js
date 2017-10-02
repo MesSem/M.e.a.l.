@@ -18,12 +18,14 @@ angular.module('mealApp').component('createProject', {
                       arrayKey: '',
                       data:{file: {main: mainImage, gallery: gallery}, form: $scope.projectForm} //pass file as data, should be user ng-model
                     }).then(function (resp) { //upload function returns a promise
-                      if(resp.data.error_code === 0){ //validate success
+                      alert('Inserimento avvenuto con successo. Il tuo progetto sarà visibile quando sarà stato controllato dagli admin.');
+                      /*if(resp.data.error_code === 0){ //validate success
                         alert('Success ' + resp.config.data.file.name + 'uploaded. Response: ');
                       } else {
                         alert('an error occured');
-                      }
+                      }*/
                     }, function (resp) { //catch error
+                      alert('An error occured. See console.');
                       console.log('Error status: ' + resp.status);
                       //$window.alert('Error status: ' + resp.status);
                     }, function (evt) {

@@ -9,6 +9,7 @@ var Q=require('q');
 var uuid = require('node-uuid');
 var fs = require('fs');
 var path = require('path');
+var sharp = require("sharp");
 
 var auth = require("../../auth.js")();
 var errorCodes= require('../../errorCodes.js');
@@ -285,8 +286,10 @@ rsDir = 'uploads';
 uploadDir = 'app/' + rsDir;
 tempDir = uploadDir + path.sep + 'temp';
 //controllo se esistono cartelle, in caso negativo le creo - cartella temporanea prima di mettere il record nel db
-if (!fs.existsSync(uploadDir))
+if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
+}
+  
 if (!fs.existsSync(tempDir))
   fs.mkdirSync(tempDir);
 
@@ -296,8 +299,7 @@ var storage = multer.diskStorage({ //multers disk storage settings
     cb(null, tempDir)
   },
   filename: function (req, file, cb) {
-    var datetimestamp = Date.now();
-      cb(null, uuid.v4() + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])//genero nome file
+    cb(null, uuid.v4() + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])//genero nome file
   }
 });
 //ci sarebbe da metterlo dentro la route, se esterno potrebbe causare problemi di sicurezza, ma a quanto pare non funziona da dentro
@@ -313,10 +315,26 @@ var upload = multer({ //multer settings
                 }
             }).any();//uso any perchè sembra l'unico funzionante
 
+function resizeImage(input, output) {//ridimensiona con dimensioni massime 1024
+  sharp.cache(false);//fix per risorse occupate - windows
+  sharp(input)
+  .resize(1024, 1024)
+  .max()
+  .toFormat('jpeg')
+  .toFile(output)
+  .then(function() {
+    fs.unlinkSync(input);
+  });
+}
+
 //SE SI VUOLE FILTRARE IL FILE ESISTE OPZIONE fileFilter, guardare sulla guida di multer
 userRoutes.post('/project', upload, function(req, res) {//registrazione o update
   var form = req.body.form;
-  //console.log(req.files);
+
+  if (req.files.length < 1)//controllo la presenza di immagini
+    return res.status(500).json({
+      err: 'Main image missing'
+    });
 
   var gallery = [];
 
@@ -342,7 +360,7 @@ userRoutes.post('/project', upload, function(req, res) {//registrazione o update
     requestedMoney: form.requestedMoney,
     actualMoney:{money:0, date:Date.now()}
   });
-  //console.log(proj);
+
   proj.save(function (err, results) {
     if (err) {
       //in caso di errore elimino tutte le immagini caricate
@@ -360,16 +378,20 @@ userRoutes.post('/project', upload, function(req, res) {//registrazione o update
     if (!fs.existsSync(projDir))
       fs.mkdirSync(projDir);
 
+
     var mainImageName = mainImage.split(path.sep).pop();
-    //console.log(path.sep);
-    var mainImagePath = projDir + path.sep + mainImageName;
-    fs.renameSync(mainImage, mainImagePath);
-    mainImagePath = realProjDir + path.sep + mainImageName;
+
+    resizeImage(mainImage, projDir + path.sep + mainImageName);
+    
+    var mainImagePath = realProjDir + path.sep + mainImageName;
+    
+    
     for (var key in gallery) {
       var galleryName = gallery[key].split(path.sep).pop();
-      var galleryPath = projDir + path.sep + galleryName;
-      fs.renameSync(gallery[key], galleryPath);
-      galleryPath = realProjDir + path.sep + galleryName;
+
+      resizeImage(gallery[key], projDir + path.sep + galleryName);
+
+      var galleryPath = realProjDir + path.sep + galleryName;
     }
 
     Project.update({_id: proj._id}, {'$set': {image: mainImagePath, imagesGallery: gallery}}, function (err) {
@@ -411,7 +433,7 @@ userRoutes.get('/listProjects', function(req, res) {
     Project.find({'owner': req.userId}, afterGetProjects );
   }else {
     Project.find({'accepted': true})
-    .populate('owner',['name', 'surname'])
+    .populate('owner',['username'])
     .exec(afterGetProjects);
   }
 
