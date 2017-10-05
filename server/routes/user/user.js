@@ -106,7 +106,7 @@ userRoutes.get('/user', function(req, res) {
 });
 
 /**
- * @api {post} /api/user/user Insert a new user or update an old one
+ * @api {post} /api/user/user Update user info
  * @apiName User
  * @apiGroup User
  *

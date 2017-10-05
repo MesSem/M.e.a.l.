@@ -11,5 +11,6 @@ module.exports =
     jwtSession: {
         session: false
     },
-    timeSessionToken: 1//espresso in ore
+    timeSessionToken: 1,//espresso in ore
+    cookieAge: 1000 * 60 * 60 * 24 * 7//ultimo numero sono i giorni
 };
