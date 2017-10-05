@@ -28,6 +28,7 @@ function ($q, $timeout, $http) {
     getProjects: getProjects,
     createProject:createProject,
     getProject: getProject,
+    createLoan:createLoan
   });
 
   function isLoggedIn() {
@@ -285,6 +286,29 @@ function ($q, $timeout, $http) {
   function getProject(id) {
     Project = $http.get('/api/user/detailsProject?id='+id);
     return Project;
+  }
+
+  function createLoan(form) {
+    // create a new instance of deferred
+    var deferred = $q.defer();
+
+    // send a post request to the server
+    $http.post('/api/user/loan', form)
+      // handle success
+      .then(function (success) {
+        if(success.status === 200 && success.data.status){
+          deferred.resolve();
+        } else {
+          deferred.reject();
+        }
+      })
+      // handle error
+      .catch(function (error) {
+        deferred.reject(error);
+      });
+
+    // return promise object
+    return deferred.promise;
   }
 
 }]);

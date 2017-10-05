@@ -10,6 +10,7 @@ var cfg = require("../../config.js");
 
 var User = require('../../models/user.js');
 var Transaction = require('../../models/transaction.js');
+var Project = require('../../models/project.js');
 
 var adminRoutes = express.Router();
 var userRoutes = express.Router();
@@ -91,4 +92,26 @@ apiRoutes.post('/register', function(req, res) {
     });
   });
 
+});
+
+/**
+ * @api {get} /api/listProjects Get some examples Projects
+ * @apiName listProjects
+ * @apiGroup Api
+ *
+ * @apiSuccess {[Project]} projects list of all examples projects
+ */
+apiRoutes.get('/listProjects', function(req, res) {
+  var afterGetProjects=function (err, result) {
+    if (err) {
+      return errorCodes.sendError(res, errorCodes.ERR_ELEMENT_NOT_FOUND,'Not projects found',err,500 );
+    }
+    res.status(200).json({
+      projects: result
+    });
+  };
+    Project.find({ $and:[{'accepted': true},{'isExample':true}]})
+    .limit(6)
+    .populate('owner',['username'])
+    .exec(afterGetProjects);
 });

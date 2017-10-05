@@ -26,8 +26,16 @@
                 </div>
             </div>
             <div>
-              <label>Fai una donazione</label>
-              <input type="number" class="form-control" ng-model="loanForm.loan" required>
+              <form class="form"  ng-submit="createLoan()">
+                <label>Fai una donazione</label>
+                <input type="number" class="form-control" ng-model="loanForm.loanValue" required>
+                <p>
+                    <span>Messaggio: </span>
+                    <textarea class="form-control" ng-model="loanForm.message"></textarea>
+                </p>
+                <button class="btn btn-success" type="submit">Invia</button>
+                <div ng-show="moneyError" class="alert alert-danger">{{moneyErrorMessage}}</div>
+              </form>
             </div>
         </div>
 </div>

@@ -20,7 +20,8 @@ var Project = new Schema({
   actualMoney:{
     money:Number,
     cacheDate:Date
-  }
+  },
+  isExample: {type:Boolean, default:false}
 });
 
 // set up a mongoose model and pass it using module.exports

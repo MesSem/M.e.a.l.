@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 var Loan = new Schema({
   sender:{type: mongoose.Schema.Types.ObjectId, ref: 'users', required:true},
-  projecyRecipient:{type: mongoose.Schema.Types.ObjectId, ref: 'projects', required:true},
+  projectRecipient:{type: mongoose.Schema.Types.ObjectId, ref: 'projects', required:true},
   money:{type:Number,required:true},
   date:{type:Date, default:Date.now,required:true},
   notes:String

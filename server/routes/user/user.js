@@ -17,6 +17,7 @@ var errorCodes= require('../../errorCodes.js');
 var User = require('../../models/user.js');
 var Transaction = require('../../models/transaction.js');
 var Project= require('../../models/project.js');
+var Loan= require('../../models/loan.js');
 
 var adminRoutes = express.Router();
 var userRoutes = express.Router();
@@ -289,7 +290,7 @@ tempDir = uploadDir + path.sep + 'temp';
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }
-  
+
 if (!fs.existsSync(tempDir))
   fs.mkdirSync(tempDir);
 
@@ -382,10 +383,10 @@ userRoutes.post('/project', upload, function(req, res) {//registrazione o update
     var mainImageName = mainImage.split(path.sep).pop();
 
     resizeImage(mainImage, projDir + path.sep + mainImageName);
-    
+
     var mainImagePath = realProjDir + path.sep + mainImageName;
-    
-    
+
+
     for (var key in gallery) {
       var galleryName = gallery[key].split(path.sep).pop();
 
@@ -468,5 +469,34 @@ userRoutes.get('/detailsProject', function(req, res) {
   }
 });
 
+/**
+ * @api {post} /api/user/loan Create a loan
+ * @apiName CreateLoan
+ * @apiGroup User
+ *
+ * @apiParam {Loan} body
+ *
+ * @apiSuccess {String} status message
+ */
+userRoutes.post('/loan', function(req, res) {//registrazione o update
+  var tran = new Loan({
+    sender: req.userId,
+    projectRecipient: req.body.projectRecipient,
+    money: req.body.money,
+    notes: req.body.notes
+
+  });
+
+  tran.save(function (err, results) {
+    if (err) {
+      res=errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION,'Error during the creation of the loan',err,500 );
+      return res;
+    }
+    res.status(200).json({
+      status: 'Added successfully!'
+    });
+  });
+
+});
 
 module.exports = userRoutes;
