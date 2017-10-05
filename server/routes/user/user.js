@@ -121,7 +121,7 @@ userRoutes.post('/user', function(req, res) {
     if (userData.username)
       delete userData.username;
 
-    var userId = req.body._id;
+    var userId = req.userId;
     // Delete the _id property, otherwise Mongo will return a "Mod on _id not allowed" error
     delete userData._id;
 
@@ -150,13 +150,7 @@ userRoutes.post('/user', function(req, res) {
  *
  */
 userRoutes.post('/card', function(req, res) {//registrazione o update
-    if(!req.body._id) {
-      return res.status(200).json({
-        error: 'Id not included'
-      });
-    }
-
-    var userId = req.body._id;
+    var userId = req.userId;
 
     var newCard = {number: req.body.number, endDate: req.body.endDate, cvv: req.body.cvv};
 
@@ -185,7 +179,7 @@ userRoutes.post('/card', function(req, res) {//registrazione o update
  * @apiSuccess {String} status
  */
 userRoutes.delete('/card', function(req, res) {//registrazione o update
-  var userId = req.query.user;
+  var userId = req.userId;
   var cardId = req.query.card;
 
   if(!userId || !cardId) {
