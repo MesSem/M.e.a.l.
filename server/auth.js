@@ -34,7 +34,7 @@ module.exports = function(req, res, next) {
                     expr:moment().add(cfg.timeSessionToken, "hours").unix()
                 };
                 //Risetto il token aggiungendo al tempo attuale altro tempo
-                res.cookie('token',jwt.encode(newPayload, cfg.jwtSecret), { /*maxAge: 900000,*/ httpOnly: true });
+                res.cookie('token', jwt.encode(newPayload, cfg.jwtSecret), { maxAge: cfg.cookieAge, httpOnly: true });
                 next();
               } else {
                 res=errorCodes.sendError(res, errorCodes.ERR_API_UNAUTHORIZED,'User unauthorized, it\' isn\'t an user',new Error("Error in auth.authenticate()"),401 );
@@ -69,7 +69,7 @@ module.exports = function(req, res, next) {
                   expr:moment().add(cfg.timeSessionToken, "hours").unix()
               };
               //Risetto il token aggiungendo al tempo attuale altro tempo
-              res.cookie('token',jwt.encode(newPayload, cfg.jwtSecret), { /*maxAge: 900000,*/ httpOnly: true });
+              res.cookie('token',jwt.encode(newPayload, cfg.jwtSecret), { maxAge: cfg.cookieAge, httpOnly: true });
               next();
             } else {
               res=errorCodes.sendError(res, errorCodes.ERR_API_UNAUTHORIZED,'User unauthorized, it\' isn\'t an admin',new Error("Error in auth.authenticateAdmin()"),401 );
