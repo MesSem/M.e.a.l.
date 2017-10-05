@@ -9,21 +9,27 @@ angular.module('mealApp').component('register', {
                   $scope.error = false;
                   $scope.disabled = true;
 
-                  // call register from service
-                  UserService.register($scope.registerForm)
-                    // handle success
-                    .then(function () {
-                      $location.path('/login');
-                      $scope.disabled = false;
-                      $scope.registerForm = {};
-                    })
-                    // handle error
-                    .catch(function () {
-                      $scope.error = true;
-                      $scope.errorMessage = "Something went wrong!";
-                      $scope.disabled = false;
-                      $scope.registerForm = {};
-                    });
+                  if ($scope.registerForm.password != $scope.repeat_password) {
+                    $scope.error = true;
+                    $scope.errorMessage = "Password is not the same in the check input!";
+                  }
+                  else {
+                    // call register from service
+                    UserService.register($scope.registerForm)
+                      // handle success
+                      .then(function () {
+                        $location.path('/login');
+                        $scope.disabled = false;
+                        $scope.registerForm = {};
+                      })
+                      // handle error
+                      .catch(function () {
+                        $scope.error = true;
+                        $scope.errorMessage = "Something went wrong!";
+                        //$scope.disabled = false;
+                        //$scope.registerForm = {};
+                      });
+                  }
 
                 };
               }]

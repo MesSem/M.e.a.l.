@@ -499,4 +499,35 @@ userRoutes.post('/loan', function(req, res) {//registrazione o update
 
 });
 
+/**
+ * @api {get} /api/user/changePw Change password
+ * @apiName changePw
+ * @apiGroup User
+ *
+ * @apiParam {newPw} new password
+ *
+ * @apiSuccess {success}
+ */
+userRoutes.post('/changePw', function(req, res) {
+  oldPw = req.body.oldPw;
+  newPw = req.body.newPw;
+  
+  User.findOne({_id: req.userId}, function(err, user) {
+
+    if (user) {
+      user.changePassword(oldPw, newPw, function(err, result) {
+        if (err) {
+          return res.status(500).json({
+            err: err
+          });
+        }
+        res.status(200).json({
+          status: 'Password changed!'
+        });
+      });
+    }
+  });
+
+});
+
 module.exports = userRoutes;

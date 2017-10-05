@@ -28,7 +28,8 @@ function ($q, $timeout, $http) {
     getProjects: getProjects,
     createProject:createProject,
     getProject: getProject,
-    createLoan:createLoan
+    createLoan:createLoan,
+    changePw: changePw
   });
 
   function isLoggedIn() {
@@ -55,89 +56,16 @@ function ($q, $timeout, $http) {
     });
   }
 
-  function login(username, password,sessionOpen) {
-
-    // create a new instance of deferred
-    var deferred = $q.defer();
-
-    // send a post request to the server
-    $http.post('/api/login',
-      {username: username, password: password, sessionOpen:sessionOpen})
-      // handle success
-      .then(function (success) {
-        if(success.status === 200 && success.data.status){
-          user = true;
-          if (success.data.token) {
-               // store username and token in local storage to keep user logged in between page refreshes
-               //$localStorage.currentUser = { username: username, token: response.token }; può essere utile???
-
-               // add jwt token to auth header for all requests made by the $http service
-               //window.sessionStorage.accessToken = success.data.token;
-               //$http.defaults.headers.common.Authorization = 'JWT ' + success.data.token;
-             }
-          deferred.resolve();
-        } else {
-          user = false;
-          deferred.reject();
-        }
-      })
-      // handle error
-      .catch(function (error) {
-        user = false;
-        deferred.reject();
-      });
-
-    // return promise object
-    return deferred.promise;
-
+  function login(username, password, sessionOpen) {
+    return $http.post('/api/login', {username: username, password: password, sessionOpen:sessionOpen});
   }
 
   function logout() {
-
-    // create a new instance of deferred
-    var deferred = $q.defer();
-
-    // send a get request to the server
-    $http.get('/api/user/logout')
-      // handle success
-      .then(function (success) {
-        user = false;
-        deferred.resolve();
-      })
-      // handle error
-      .catch(function (error) {
-        user = false;
-        deferred.reject();
-      });
-
-    // return promise object
-    return deferred.promise;
-
+    return $http.get('/api/user/logout');
   }
 
   function register(form) {
-
-    // create a new instance of deferred
-    var deferred = $q.defer();
-
-    // send a post request to the server
-    $http.post('/api/register/', form)
-      // handle success
-      .then(function (success) {
-        if(success.status === 200 && success.data.status){
-          deferred.resolve();
-        } else {
-          deferred.reject();
-        }
-      })
-      // handle error
-      .catch(function (data) {
-        deferred.reject();
-      });
-
-    // return promise object
-    return deferred.promise;
-
+    return $http.post('/api/register/', form);
   }
 
   var cachedUser = null;
@@ -147,72 +75,15 @@ function ($q, $timeout, $http) {
   }
 
   function updateUser(form) {
-    // create a new instance of deferred
-    var deferred = $q.defer();
-
-    // send a post request to the server
-    $http.post('/api/user/user', form)
-      // handle success
-      .then(function (success) {
-        if(success.status === 200 && success.data.status){
-          deferred.resolve();
-        } else {
-          deferred.reject();
-        }
-      })
-      // handle error
-      .catch(function (error) {
-        deferred.reject(error);
-      });
-
-    // return promise object
-    return deferred.promise;
+    return $http.post('/api/user/user', form);
   }
 
   function addCard(form) {
-    // create a new instance of deferred
-    var deferred = $q.defer();
-
-    // send a post request to the server
-    $http.post('/api/user/card', form)
-      // handle success
-      .then(function (success) {
-        if(success.status === 200 && success.data.status){
-          deferred.resolve();
-        } else {
-          deferred.reject();
-        }
-      })
-      // handle error
-      .catch(function (error) {
-        deferred.reject(error);
-      });
-
-    // return promise object
-    return deferred.promise;
+    return $http.post('/api/user/card', form);
   }
 
   function deleteCard(cardId, userId) {
-    // create a new instance of deferred
-    var deferred = $q.defer();
-
-    // send a post request to the server
-    $http.delete('/api/user/card?user=' + userId + '&card=' + cardId)
-      // handle success
-      .then(function (success) {
-        if(success.status === 200 && success.data.status){
-          deferred.resolve();
-        } else {
-          deferred.reject();
-        }
-      })
-      // handle error
-      .catch(function (error) {
-        deferred.reject(error);
-      });
-
-    // return promise object
-    return deferred.promise;
+    return $http.delete('/api/user/card?user=' + userId + '&card=' + cardId);
   }
 
   var cachedUserList = null;
@@ -222,52 +93,12 @@ function ($q, $timeout, $http) {
   }
 
   function sendMoney(form) {
-    // create a new instance of deferred
-    var deferred = $q.defer();
-
-    // send a post request to the server
-    $http.post('/api/user/transaction', form)
-      // handle success
-      .then(function (success) {
-        if(success.status === 200 && success.data.status){
-          deferred.resolve();
-        } else {
-          deferred.reject();
-        }
-      })
-      // handle error
-      .catch(function (error) {
-        deferred.reject(error);
-      });
-
-    // return promise object
-    return deferred.promise;
+    return $http.post('/api/user/transaction', form);
   }
 
 //NON UTILIZZATA
   function createProject(form) {
-
-    // create a new instance of deferred
-    var deferred = $q.defer();
-
-    // send a post request to the server
-    $http.post('/api/user/project', form)
-      // handle success
-      .then(function (success) {
-        if(success.status === 200 && success.data.status){
-          deferred.resolve();
-        } else {
-          deferred.reject();
-        }
-      })
-      // handle error
-      .catch(function (data) {
-        deferred.reject();
-      });
-
-    // return promise object
-    return deferred.promise;
-
+    return $http.post('/api/user/project', form);
   }
 
 
@@ -287,6 +118,7 @@ function ($q, $timeout, $http) {
     Project = $http.get('/api/user/detailsProject?id='+id);
     return Project;
   }
+
 
   function createLoan(form) {
     // create a new instance of deferred
@@ -309,6 +141,10 @@ function ($q, $timeout, $http) {
 
     // return promise object
     return deferred.promise;
+  }
+
+  function changePw(oldPw, newPw) {
+    return $http.post('/api/user/changePw', {oldPw, newPw});
   }
 
 }]);

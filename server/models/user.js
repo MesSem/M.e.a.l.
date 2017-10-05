@@ -18,7 +18,7 @@ var Card=new Schema({
 });
 
 var User = new Schema({
-  _id:Schema.Types.ObjectId,
+  _id: {type: Schema.Types.ObjectId, auto: true},
   username: {type:String, minlength: 6, maxlength: 20, required:true, index: true, unique: true},
   //password: {type:String, required:true}, Creata automaticamente tramite modulo passport
   name: {type:String, required:true},
@@ -33,33 +33,7 @@ var User = new Schema({
 });
 
 
-
 User.plugin(passportLocalMongoose);
 
 // set up a mongoose model and pass it using module.exports
 module.exports = mongoose.model('users', User);
-
-
-/*
-var User = mongoose.model('User', new Schema({
-    name    : { type:String , unique:true, required:true },
-    email   : String,
-    password: String,
-    admin   : {type:Boolean , default:false},
-    date: { type: Date, default: Date.now },
-    hidden: Boolean
-
-    name: {
-      first: String,
-      last: { type: String, trim: true }
-    },
-    age: { type: Number, min: 0 }
-  });
-}));
-
-trk : [{
-    lat : String,
-    lng : String
-     }]
-
-*/

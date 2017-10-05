@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Project = new Schema({
-  _id:Schema.Types.ObjectId,
+  _id: {type: Schema.Types.ObjectId, auto: true},
   owner:{type: mongoose.Schema.Types.ObjectId, ref: 'users', required:true},
   name:{type:String, required:true},
   description:{type:String, required:true},
