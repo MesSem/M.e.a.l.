@@ -23,9 +23,9 @@ angular.module('mealApp').component('register', {
                         $scope.registerForm = {};
                       })
                       // handle error
-                      .catch(function () {
+                      .catch(function (error) {
                         $scope.error = true;
-                        $scope.errorMessage = "Something went wrong!";
+                        $scope.errorMessage = error.data.message;
                         //$scope.disabled = false;
                         //$scope.registerForm = {};
                       });

@@ -20,7 +20,7 @@ angular.module('mealApp').controller('cambio-password',
                 .catch(function (error) {
                     console.log(error);
                     $scope.pwError = true;
-                    $scope.pwErrorMessage = 'Error: ' + error.data.err.name;
+                    $scope.pwErrorMessage = error.data.message;
                 });
             else {
                 $scope.pwError = true;

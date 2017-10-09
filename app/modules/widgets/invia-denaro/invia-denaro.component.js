@@ -29,7 +29,7 @@ angular.module('mealApp').controller('invia-denaro',
                         .catch(function (error) {
                             console.log(error);
                             $scope.moneyError = true;
-                            $scope.moneyErrorMessage = 'Error: ' + error.data.err.name;
+                            $scope.moneyErrorMessage = error.data.message;
                         });
 
                     }

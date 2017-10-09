@@ -89,7 +89,8 @@ userRoutes.get('/status', function(req, res) {
 userRoutes.get('/user', function(req, res) {
   User.findOne({_id: req.userId}, function(err, user) {
     if (err) {
-      res.send("error");
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error finding user', err, 500);
+      //res.send("error");
         //return done(err, false);
     }
     if (user) {
@@ -97,7 +98,8 @@ userRoutes.get('/user', function(req, res) {
         user: user
       });
     } else {
-      res.send("error");
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error finding user', err, 500);
+      //res.send("error");
       //  done(null, false);
         // or you could create a new account
         // return done(new Error("User not found"), null);
@@ -127,9 +129,10 @@ userRoutes.post('/user', function(req, res) {
 
     User.update({_id : userId}, {"$set" : userData}, function(err){
       if (err) {
-        return res.status(500).json({
+        return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error updating user info', err, 500);
+        /*return res.status(500).json({
           err: err
-        });
+        });*/
       }
     });
 
@@ -156,9 +159,10 @@ userRoutes.post('/card', function(req, res) {//registrazione o update
 
     User.update({_id: userId}, {$push: {cards: newCard}}, function (err) {
       if (err) {
-        return res.status(500).json({
+        return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error adding new card', err, 500);
+        /*return res.status(500).json({
           err: err
-        });
+        });*/
       }
 
       res.status(200).json({
@@ -183,16 +187,12 @@ userRoutes.delete('/card', function(req, res) {//registrazione o update
   var cardId = req.query.card;
 
   if(!userId || !cardId) {
-    return res.status(200).json({
-      error: 'Id not included'
-    });
+    return errorCodes.sendError(res, errorCodes.ERR_INVALID_REQUEST, 'Invalid parameters!', err, 500);
   }
 
   User.update({_id: userId}, {$pull: {cards: {_id: cardId}}}, function (err) {
     if (err) {
-      return res.status(500).json({
-        err: err
-      });
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error deleting card', err, 500);
     }
 
     res.status(200).json({
@@ -212,9 +212,7 @@ userRoutes.delete('/card', function(req, res) {//registrazione o update
 userRoutes.get('/list', function(req, res) {
   User.find({}, '_id username', function (err, result) {
     if (err) {
-      return res.status(500).json({
-        err: err
-      });
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error getting users list', err, 500);
     }
     return res.status(200).json({
       users: result
@@ -243,9 +241,7 @@ userRoutes.post('/transaction', function(req, res) {//registrazione o update
 
   tran.save(function (err, results) {
     if (err) {
-      return res.status(500).json({
-        err: err
-      });
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error creating transaction', err, 500);
     }
     res.status(200).json({
       status: 'Added successfully!'
@@ -266,9 +262,7 @@ userRoutes.get('/transaction', function(req, res) {
   //Transaction.find({$or: [{'sender': req.user._id}, {recipient: req.user._id}]}, function (err, result) {
   Transaction.find({$or: [{'sender': req.userId}, {recipient: req.userId}]}, function (err, result) {
     if (err) {
-      return res.status(500).json({
-        err: err
-      });
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error getting transactions list', err, 500);
     }
     res.status(200).json({
       transactions: result
@@ -303,10 +297,7 @@ var upload = multer({ //multer settings
                 storage: storage,
                 onError : function(err, next) {
                   console.log("err.message");
-                  if(err){
-                       res.json({error_code:1,err_desc:err});
-                  }
-                   res.json({error_code:0,err_desc:null});
+                  return errorCodes.sendError(res, errorCodes.ERR_INVALID_REQUEST, 'Error in request parameters', err, 500);
                 }
             }).any();//uso any perchè sembra l'unico funzionante
 
@@ -327,9 +318,7 @@ userRoutes.post('/project', upload, function(req, res) {//registrazione o update
   var form = req.body.form;
 
   if (req.files.length < 1)//controllo la presenza di immagini
-    return res.status(500).json({
-      err: 'Main image missing'
-    });
+    return errorCodes.sendError(res, errorCodes.ERR_INVALID_REQUEST, 'Main image missing', err, 500);
 
   var gallery = [];
 
@@ -363,9 +352,7 @@ userRoutes.post('/project', upload, function(req, res) {//registrazione o update
       for (var key in gallery) {
         fs.unlinkSync(gallery[key]);
       }
-      return res.status(500).json({
-        err: err
-      });
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error saving new project', err, 500);
     }
     //sposto le immagini nella cartella una volta che ho _id del progetto - rename(vecchia_dir, nuova_dir)
     projDir = uploadDir + path.sep + proj._id;
@@ -391,9 +378,7 @@ userRoutes.post('/project', upload, function(req, res) {//registrazione o update
 
     Project.update({_id: proj._id}, {'$set': {image: mainImagePath, imagesGallery: gallery}}, function (err) {
       if (err) {
-        return res.status(500).json({
-          err: err
-        });
+        return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error saving images inside project', err, 500);
       }
     });
 
@@ -511,9 +496,7 @@ userRoutes.post('/changePw', function(req, res) {
     if (user) {
       user.changePassword(oldPw, newPw, function(err, result) {
         if (err) {
-          return res.status(500).json({
-            err: err
-          });
+          return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error changing password', err, 500);
         }
         res.status(200).json({
           status: 'Password changed!'

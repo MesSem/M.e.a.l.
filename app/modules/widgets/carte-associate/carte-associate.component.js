@@ -39,7 +39,7 @@ angular.module('mealApp').controller('carte-associate',
                         .catch(function (error) {
                           console.log(error);
                           $scope.cardError = true;
-                          $scope.cardErrorMessage = 'Error: ' + error.data.err.name;
+                          $scope.cardErrorMessage = error.data.message;
                         });
                     }
 
@@ -58,7 +58,7 @@ angular.module('mealApp').controller('carte-associate',
                       .catch(function (error) {
                         console.log(error);
                         $scope.cardError = true;
-                        $scope.cardErrorMessage = 'Error: ' + error.data.err.name;
+                        $scope.cardErrorMessage = error.data.message;
                       });
 
                   }
