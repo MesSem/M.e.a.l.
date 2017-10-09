@@ -37,12 +37,14 @@ apiRoutes.get('/prova', function(req, res) {
 apiRoutes.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) {
-      return next(err);
+      //return next(err);
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error during authentication', next(err), 500);
     }
     if (!user) {
-      return res.status(401).json({
+      return errorCodes.sendError(res, errorCodes.ERR_API_WRONG_PSW, 'User not found', info, 500);
+      /*return res.status(401).json({
         err: info
-      });
+      });*/
     }
     //Creazone del payload del token
     var payload = {
@@ -71,19 +73,21 @@ apiRoutes.post('/login', function(req, res, next) {
 apiRoutes.post('/register', function(req, res) {
 
   if (req.body.password.length < 8 || req.body.password.length > 100) {
-    return res.status(500).json({
+    return errorCodes.sendError(res, errorCodes.ERR_INVALID_REQUEST, 'Password must be between 8 and 100 characters long', '', 500);
+    /*return res.status(500).json({
       err: 'Password must be between 8 and 100 characters long'
-    });
+    });*/
   }
 
 
   User.register(new User(req.body),
     req.body.password, function(err, account) {
     if (err) {
-      return res.status(500).json({
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error during registration', err, 500);
+      /*return res.status(500).json({
         errMessage: err.message,
         err:err
-      });
+      });*/
     }
     passport.authenticate('local')(req, res, function () {
       return res.status(200).json({
@@ -104,7 +108,7 @@ apiRoutes.post('/register', function(req, res) {
 apiRoutes.get('/listProjects', function(req, res) {
   var afterGetProjects=function (err, result) {
     if (err) {
-      return errorCodes.sendError(res, errorCodes.ERR_ELEMENT_NOT_FOUND,'Not projects found',err,500 );
+      return errorCodes.sendError(res, errorCodes.ERR_ELEMENT_NOT_FOUND, 'No projects found', err, 500);
     }
     res.status(200).json({
       projects: result

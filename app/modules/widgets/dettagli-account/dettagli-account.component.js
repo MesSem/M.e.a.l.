@@ -30,9 +30,9 @@ angular.module('mealApp').controller('dettagli-account',
                         $scope.disabled = false;
                       })
                       // handle error
-                      .catch(function () {
+                      .catch(function (error) {
                         $scope.error = true;
-                        $scope.errorMessage = "Something went wrong!";
+                        $scope.errorMessage = error.data.message;
                         $scope.disabled = true;
                         $scope.updateForm = {};
                       });

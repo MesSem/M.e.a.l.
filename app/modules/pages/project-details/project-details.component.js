@@ -23,7 +23,7 @@ angular.module('mealApp').component('projectDetails', {
                           .catch(function (error) {
                               console.log(error);
                               $scope.moneyError = true;
-                              $scope.moneyErrorMessage = 'Error: ' + error.data.err.name;
+                              $scope.moneyErrorMessage = error.data.message;
                           });
 
                       }
