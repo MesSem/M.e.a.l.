@@ -12,5 +12,6 @@ module.exports =
         session: false
     },
     timeSessionToken: 1,//espresso in ore
-    cookieAge: 1000 * 60 * 60 * 24 * 7//ultimo numero sono i giorni
+    cookieAge: 1000 * 60 * 60 * 24 * 7,//ultimo numero sono i giorni
+    timeCallMethodPeriodically:"00 22 16 * * 0-6"/* Runs every weekday (Sunday through Saturday) at 16:22:00 AM. It does not run on Saturday or Sunday. */
 };

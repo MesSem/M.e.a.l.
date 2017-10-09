@@ -8,6 +8,7 @@ var jwt = require("jwt-simple");
 var moment = require('moment');//gestione date e tempo
 var cfg = require("../../config.js");
 
+
 var User = require('../../models/user.js');
 var Transaction = require('../../models/transaction.js');
 var Project = require('../../models/project.js');
@@ -22,7 +23,7 @@ module.exports = apiRoutes;
  * Api di prova per fare testing
  */
 apiRoutes.get('/prova', function(req, res) {
-  res.status(200).json({
+    res.status(200).json({
     message: "Complimenti, puoi accedere alle api"
   });
 });

@@ -10,6 +10,8 @@ var path = require('path');
 var passport = require('passport');
 var localStrategy = require('passport-local' ).Strategy;
 var auth = require("./server/auth.js")();
+var utils = require("./server/utils.js");
+var config = require("./server/config.js");
 
 // mongoose
 mongoose.connect('mongodb://localhost/meal');
@@ -44,6 +46,19 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
+
+var CronJob = require('cron').CronJob;
+var job = new CronJob({
+  cronTime: config.timeCallMethodPeriodically,
+  onTick:function() {
+    /* Runs every weekday (Sunday through Saturday) at 16:10:00 AM. It does not run on Saturday or Sunday. */
+    utils.updateActualMoney();
+    //PUT HERE METHODS TO CALL PERIODICALY
+  },
+  start: true,
+  timeZone: 'Europe/Rome'
+});
+job.start();
 
 // =======================
 // API ROUTES
