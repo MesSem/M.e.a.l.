@@ -17,7 +17,6 @@ var errorCodes= require('../../errorCodes.js');
 var User = require('../../models/user.js');
 var Transaction = require('../../models/transaction.js');
 var Project= require('../../models/project.js');
-var Loan= require('../../models/loan.js');
 
 var adminRoutes = express.Router();
 var userRoutes = express.Router();
@@ -374,11 +373,14 @@ userRoutes.get('/listProjects', function(req, res) {
       projects: result
     });
   };
+  console.log(req.query.onlyMy);
   if (req.query.onlyMy!=undefined && req.query.onlyMy){
-    Project.find({'owner': req.userId}, afterGetProjects );
+    Project.find({'owner': req.userId})
+    .populate('owner',{username:'username', _id:'id'})
+    .exec(afterGetProjects);
   }else {
     Project.find({"status.value" : 'ACCEPTED'})
-    .populate('owner',['username'])
+    .populate('owner',{username:'username', _id:'id'})
     .exec(afterGetProjects);
   }
 });
@@ -408,7 +410,7 @@ userRoutes.get('/detailsProject', function(req, res) {
   };
   if (req.query.id!=undefined){
     Project.find({'_id': req.query.id})
-    .populate('owner',['name', 'surname'])
+    .populate('owner',{name:'name',username:'username', _id:'id'})
     .exec(afterGetProject);
   }else {
     return errorCodes.sendError(res, errorCodes.ERR_QUERY_PARAMETER,'There isn\'t id in the query',new Error('Query without id'),500 );
@@ -425,12 +427,13 @@ userRoutes.get('/detailsProject', function(req, res) {
  * @apiSuccess {String} status message
  */
 userRoutes.post('/loan', function(req, res) {//registrazione o update
-  var tran = new Loan({
+  var tran = new Transaction({
     sender: req.userId,
+    recipient:req.userId,//#TODO METTERE UTENTE DI DEFAULT SERVER
     projectRecipient: req.body.projectRecipient,
     money: req.body.money,
-    notes: req.body.notes
-
+    notes: req.body.notes,
+    type:'LOAN'
   });
 
   tran.save(function (err, results) {
@@ -487,21 +490,61 @@ userRoutes.post('/changePw', function(req, res) {
  */
 userRoutes.post('/editProject', function(req, res) {
   var projectData ={
-    description:req.body.description,
+    description:req.body.description
     ////image:req.body.name,
     ///imagesGallery:[{type:String}]
   };
-
   var userId = req.userId;
-  var projectId=req.projectId;
+  var projectId=req.body._id;
 
-  User.update({$and:[{_id : projectId},{ownwe:userId}]}, {"$set" : projectData}, function(err){
+  Project.update({$and:[{_id : projectId},{owner:userId}]}, {description:req.body.description}, function(err, affected){
+    console.log(affected);
     if (err) {
       return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error updating project info', err, 500);
+    }else if(affected.ok==0){
+      return errorCodes.sendError(res, errorCodes.ERR_OPERATION_UNAUTHORIZED, 'You can\'t edit other project', new Error("On editing project"), 500);
     }
+
     res.status(200).json({
       status: 'Update successful!'
     });
+  });
+});
+//.map funzione interessante per applicare funzione per ogni elemento di un array
+/**
+ * @api {get} /api/user/listLoanForProject Get loans for one project
+ * @apiName listLoanForProject
+ * @apiGroup User
+ *
+ * @apiParam {Int} idP Id of the project
+ *
+ * @apiSuccess {[Loan]} loans list of all loans of the project
+ */
+userRoutes.get('/listLoanForProject', function(req, res) {
+  /*Project.find({$and:[{'owner':req.userId},{'_id':req.query.idP}]}).exec();/*.select("post")*/
+/*  promise.then(function (project) {*/
+  Project
+  .findOne({$and:[{'owner':req.userId},{'_id':req.query.idP}]})
+  .then(function (project) {
+    if(project.length==0){
+      return errorCodes.sendError(res, errorCodes.ERR_OPERATION_UNAUTHORIZED ,'Id of another user\'s project',new Error("You are asking information of another user's project"),500 );
+      }
+    return Transaction
+              .find({'projectRecipient':project._id})
+              .populate('sender',{username:'username', _id:'id'})
+              .exec();
+  }).catch(function(err){
+    if (err) {
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION,'The id of the project is wrong',err,500 );
+    }
+  }).then(function (result) {
+    return res.status(200).json({
+      loans: result
+    });
+  }).catch(function(err){
+    if (err) {
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION,'Error',err,500 );
+    }
   });
 });
 

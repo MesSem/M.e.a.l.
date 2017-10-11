@@ -18,7 +18,7 @@ var Project = new Schema({
   status: {
     value:{
       type:String,
-      enum: ['TO_CHECK', 'NOT_ACCEPTED' ,'ACCEPTED'],
+      enum: ['TO_CHECK', 'NOT_ACCEPTED' ,'ACCEPTED', 'CLOSED', 'CLOSED_&_RESTITUTED'],
       default:'TO_CHECK'
     },
     messageFromAdmin:{type: String}

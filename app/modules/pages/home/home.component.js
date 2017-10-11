@@ -13,6 +13,5 @@ angular.module('mealApp').component('home', {
                     if(!cachedProjects) cachedProjects = $http.get('/api/listProjects');
                     return cachedProjects;
                   }
-
               }]
   });

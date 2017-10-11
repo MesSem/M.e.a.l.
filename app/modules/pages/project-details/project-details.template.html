@@ -22,11 +22,12 @@
                     <div>Obiettivo: {{project.requestedMoney}}</div>
                     <div>Valore raggiunto: {{project.actualMoney.money}}</div>
                 <!--    <img ng-src="{{project.image}}"  alt="Mountain View" style="width:304px;height:228px;">-->
+                     <a href="#!projectManagement?id={{project._id}}" ng-show="project.owner._id==user._id">Gestisci il progetto</a>
 
                 </div>
             </div>
             <div>
-              <form class="form"  ng-submit="createLoan()">
+              <form class="form"  ng-submit="createLoan()" ng-show="project.owner._id!=user._id">
                 <label>Fai una donazione</label>
                 <input type="number" class="form-control" ng-model="loanForm.loanValue" required>
                 <p>

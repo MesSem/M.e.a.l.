@@ -29,7 +29,9 @@ function ($q, $timeout, $http) {
     createProject:createProject,
     getProject: getProject,
     createLoan:createLoan,
-    changePw: changePw
+    changePw: changePw,
+    updateProject:updateProject,
+    getLoansOfProject:getLoansOfProject
   });
 
   function isLoggedIn() {
@@ -109,8 +111,12 @@ function ($q, $timeout, $http) {
   }
 
   var cachedProjects = null;
-  function getProjects() {
-    if(!cachedProjects) cachedProjects = $http.get('/api/user/listProjects');
+  function getProjects(onlyMy) {
+    query='/api/user/listProjects';
+    if(onlyMy){
+      query=query+'?onlyMy=true';
+    }
+    cachedProjects = $http.get(query);
     return cachedProjects;
   }
 
@@ -145,6 +151,14 @@ function ($q, $timeout, $http) {
 
   function changePw(oldPw, newPw) {
     return $http.post('/api/user/changePw', {oldPw, newPw});
+  }
+
+  function updateProject(form) {
+    return $http.post('/api/user/editProject', form);
+  }
+
+  function getLoansOfProject(idProject){
+    return $http.get('/api/user/listLoanForProject?idP='+idProject);
   }
 
 }]);

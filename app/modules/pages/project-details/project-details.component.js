@@ -6,6 +6,9 @@ angular.module('mealApp').component('projectDetails', {
                     .then(function(response) {
                         $scope.project = response.data.project;
                       });
+                      UserService.getUser().then(function(response) {
+                        $scope.user = response.data.user;
+                      });
 
                       $scope.createLoan = function () {
                         console.log($scope);

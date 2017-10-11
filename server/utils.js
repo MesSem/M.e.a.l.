@@ -3,7 +3,6 @@ var moment = require('moment');//gestione date e tempo
 
 var cfg = require("./config.js");
 var Project = require('./models/project.js');
-var Loan = require('./models/loan.js');
 var GenericData = require('./models/genericData.js');
 var errorCodes= require('./errorCodes.js');
 
@@ -40,15 +39,20 @@ this.updateActualMoney= function(){
     console.log("Da updateActualMoney : Ultimo update "+lastUpdateDate);
     var jobQueries = [];
 
-    Loan
+    Transaction
     .aggregate([
     {
         "$match": {
-          date: {
-            $gte:lastUpdateDate,
-            $lt: tmpDate
-          }
-      }},
+          $and:[
+              {
+                date:{
+                $gte:lastUpdateDate,
+                $lt: tmpDate
+              }
+            },{type:'LOAN'}
+          ]
+        }
+      },
       {
         "$group": {
           "_id": "$projectRecipient",

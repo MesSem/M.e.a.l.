@@ -13,6 +13,7 @@ var auth = require("./server/auth.js")();
 var utils = require("./server/utils.js");
 var config = require("./server/config.js");
 
+mongoose.Promise = global.Promise;
 // mongoose
 mongoose.connect('mongodb://localhost/meal');
 
