@@ -13,6 +13,7 @@ var sharp = require("sharp");
 
 var auth = require("../../auth.js")();
 var errorCodes= require('../../errorCodes.js');
+var utils= require('../../utils.js');
 
 var User = require('../../models/user.js');
 var Transaction = require('../../models/transaction.js');
@@ -474,7 +475,6 @@ userRoutes.post('/changePw', function(req, res) {
       });
     }
   });
-
 });
 
 /**
@@ -498,7 +498,6 @@ userRoutes.post('/editProject', function(req, res) {
   var projectId=req.body._id;
 
   Project.update({$and:[{_id : projectId},{owner:userId}]}, {description:req.body.description}, function(err, affected){
-    console.log(affected);
     if (err) {
       return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error updating project info', err, 500);
     }else if(affected.ok==0){
@@ -510,6 +509,7 @@ userRoutes.post('/editProject', function(req, res) {
     });
   });
 });
+
 //.map funzione interessante per applicare funzione per ogni elemento di un array
 /**
  * @api {get} /api/user/listLoanForProject Get loans for one project
@@ -540,6 +540,28 @@ userRoutes.get('/listLoanForProject', function(req, res) {
   }).then(function (result) {
     return res.status(200).json({
       loans: result
+    });
+  }).catch(function(err){
+    if (err) {
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION,'Error',err,500 );
+    }
+  });
+});
+
+/**
+ * @api {get} /api/user/closeProject Close a project
+ * @apiName closeProject
+ * @apiGroup User
+ *
+ * @apiParam {idPr} id of the project
+ *
+ * @apiSuccess {success}
+ */
+userRoutes.get('/closeProject', function(req, res) {
+  utils.closeProject(req.query.idP, req.userId)
+  .then(function (result) {
+    return res.status(200).json({
+      status: 'Update successful!'
     });
   }).catch(function(err){
     if (err) {

@@ -31,7 +31,8 @@ function ($q, $timeout, $http) {
     createLoan:createLoan,
     changePw: changePw,
     updateProject:updateProject,
-    getLoansOfProject:getLoansOfProject
+    getLoansOfProject:getLoansOfProject,
+    closeProject:closeProject
   });
 
   function isLoggedIn() {
@@ -159,6 +160,10 @@ function ($q, $timeout, $http) {
 
   function getLoansOfProject(idProject){
     return $http.get('/api/user/listLoanForProject?idP='+idProject);
+  }
+
+  function closeProject(idProject){
+    return $http.get('/api/user/closeProject?idP='+idProject);
   }
 
 }]);
