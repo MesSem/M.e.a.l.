@@ -4,6 +4,7 @@ var moment = require('moment');//gestione date e tempo
 var cfg = require("./config.js");
 var Project = require('./models/project.js');
 var GenericData = require('./models/genericData.js');
+var Transaction = require('./models/transaction.js');
 var errorCodes= require('./errorCodes.js');
 
 var apiUtilities = this;

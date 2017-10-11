@@ -13,5 +13,5 @@ module.exports =
     },
     timeSessionToken: 1,//espresso in ore
     cookieAge: 1000 * 60 * 60 * 24 * 7,//ultimo numero sono i giorni
-    timeCallMethodPeriodically:"00 22 16 * * 0-6"/* Runs every weekday (Sunday through Saturday) at 16:22:00 AM. It does not run on Saturday or Sunday. */
+    timeCallMethodPeriodically:"00 16 22 * * 0-6"/* Runs every weekday (Sunday through Saturday) at 22:15:00 AM. It does not run on Saturday or Sunday. */
 };
