@@ -3,7 +3,7 @@
               <div class="showcase-details">
                 <div>
                   <a class="btn btn-success" ng-click='updateProject()'>Salva Modifiche</a>
-                  <a class="btn btn-success" ng-click='' ng-show="project.status.value=='ACCEPTED'">Chiudi il progetto e prendi i soldi</a>
+                  <a class="btn btn-success" ng-click='closeProject()' ng-show="project.status.value=='ACCEPTED'">Chiudi il progetto e prendi i soldi</a>
                   <a class="btn btn-success" ng-click='' ng-show="project.status.value=='CLOSED'">Restituisci i soldi in anticipo</a>
                 </div>
                 <div ng-show="messageProjectVisibile" class="alert alert-danger">{{messageProject}}</div>

@@ -82,5 +82,18 @@ this.updateActualMoney= function(){
         console.log("Da updateActualMoney "+ errorCodes.ERR_DATABASE_OPERATION +' Generic Database error '+ error);
     });
   });
-
 };
+
+this.closeProject=function(idProject){
+  var afterUpdate=function (err, affected) {
+    if (err) {
+        console.log(err);
+    }
+    console.log("Da closeProject: Progetti chiusi="+ affected.ok);
+  };
+  if(idProject!=null){
+      return Project.update({$and:[{_id:idProject},{'status.value':'ACCEPTED'}]},{'$set': {'status.value': 'CLOSED'}}).exec();
+  }else{
+      Project.update({$and:[{endDate:{$lt: Date.now()}},{'status.value':'ACCEPTED'}]},{'$set': {'status.value': 'CLOSED'}}).exec(afterUpdate);
+  }
+}
