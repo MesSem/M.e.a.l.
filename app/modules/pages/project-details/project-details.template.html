@@ -1,6 +1,7 @@
 <div class="row" style="padding: 15px;">
         <div class="col-xs-offset-2 col-md-offset-2 col-xs-8 col-md-8">
             <div class="showcase-details">
+              <div ng-show="messageProjectVisibile" class="alert alert-danger">{{messageProject}}</div>
                 <div style="max-height: 300px;overflow: hidden;">
                     <img ng-src="{{project.image}}"  alt="Mountain View" style="width:100%;height:auto;">
                 </div>

@@ -15,7 +15,14 @@ var Project = new Schema({
     date:{type:Date, min:Date.now, required:true},
     interests:{type:Number, required:true}
     },
-  accepted: {type:Boolean, default:false},
+  status: {
+    value:{
+      type:String,
+      enum: ['TO_CHECK', 'NOT_ACCEPTED' ,'ACCEPTED'],
+      default:'TO_CHECK'
+    },
+    messageFromAdmin:{type: String}
+  },
   requestedMoney:{type:Number, required:true},
   actualMoney:{
     money:Number,

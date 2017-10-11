@@ -410,7 +410,7 @@ userRoutes.get('/listProjects', function(req, res) {
   if (req.query.onlyMy!=undefined && req.query.onlyMy){
     Project.find({'owner': req.userId}, afterGetProjects );
   }else {
-    Project.find({'accepted': true})
+    Project.find({"status.value" : 'ACCEPTED'})
     .populate('owner',['username'])
     .exec(afterGetProjects);
   }
@@ -490,7 +490,7 @@ userRoutes.post('/loan', function(req, res) {//registrazione o update
 userRoutes.post('/changePw', function(req, res) {
   oldPw = req.body.oldPw;
   newPw = req.body.newPw;
-  
+
   User.findOne({_id: req.userId}, function(err, user) {
 
     if (user) {

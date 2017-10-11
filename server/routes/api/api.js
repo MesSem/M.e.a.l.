@@ -115,7 +115,7 @@ apiRoutes.get('/listProjects', function(req, res) {
       projects: result
     });
   };
-    Project.find({ $and:[{'accepted': true},{'isExample':true}]})
+    Project.find({ $and:[{"status.value" : 'ACCEPTED'},{'isExample':true}]})
     .limit(6)
     .populate('owner',['username'])
     .exec(afterGetProjects);

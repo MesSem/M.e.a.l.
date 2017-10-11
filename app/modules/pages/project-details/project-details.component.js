@@ -5,6 +5,14 @@ angular.module('mealApp').component('projectDetails', {
                     UserService.getProject($location.search().id)
                     .then(function(response) {
                       $scope.project = response.data.project;
+                      $scope.messageProjectVisibile=false;
+                      if($scope.project.status.value=="NOT_ACCEPTED" ){
+                        $scope.messageProjectVisibile=true;
+                        $scope.messageProject=$scope.project.status.messageFromAdmin;
+                      }else if($scope.project.status.value=="TO_CHECK" ){
+                        $scope.messageProjectVisibile=true;
+                        $scope.messageProject="L'amministratore deve ancora controllare il progetto";
+                      }
                       });
 
                       $scope.createLoan = function () {
