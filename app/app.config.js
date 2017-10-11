@@ -31,6 +31,9 @@ mealApp.config(['$locationProvider', '$routeProvider',
             template: '<project-management></project-management>',
             access: {restricted: true}
           }).
+      when('/show/:id/:username',{
+            template: '<show></show>'
+          }).
       otherwise('/profile');
   }
 ]);

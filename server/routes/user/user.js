@@ -548,4 +548,31 @@ userRoutes.get('/listLoanForProject', function(req, res) {
   });
 });
 
+/**
+ * @api {get} /api/publicUser Get public info about user
+ * @apiName publicUser
+ * @apiGroup Api
+ *
+ * @apiSuccess {[User]} info about user
+ */
+userRoutes.post('/publicUser', function(req, res) {
+  
+  id = req.body.id;
+
+  User.findOne({_id: id}, 'username', function(err, user) {
+    if (user) {
+      Project.find({ $and:[{'accepted': true},{'owner': id}]}, function(err, projects) {
+        res.status(200).json({
+          user: user,
+          projects: projects
+        });
+      
+      });
+    }
+    else {
+      return errorCodes.sendError(res, errorCodes.ERR_ELEMENT_NOT_FOUND, 'No user found', err, 500);
+    }
+  });
+});
+
 module.exports = userRoutes;
