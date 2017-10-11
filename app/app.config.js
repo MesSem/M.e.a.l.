@@ -30,7 +30,7 @@ mealApp.config(['$locationProvider', '$routeProvider',
       when('/projectManagement',{
             template: '<project-management></project-management>',
             access: {restricted: true}
-          })
+          }).
       otherwise('/profile');
   }
 ]);
