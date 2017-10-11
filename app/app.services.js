@@ -32,6 +32,7 @@ function ($q, $timeout, $http) {
     changePw: changePw,
     updateProject:updateProject,
     getLoansOfProject:getLoansOfProject,
+    closeProject:closeProject,
     getPublicUser: getPublicUser
   });
 
@@ -160,6 +161,10 @@ function ($q, $timeout, $http) {
 
   function getLoansOfProject(idProject){
     return $http.get('/api/user/listLoanForProject?idP='+idProject);
+  }
+
+  function closeProject(idProject){
+    return $http.get('/api/user/closeProject?idP='+idProject);
   }
 
   function getPublicUser(id) {
