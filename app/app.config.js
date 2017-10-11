@@ -52,8 +52,8 @@ mealApp.run(function ($rootScope, $location, $route, UserService) {
 });
 
 angular.module('mealApp').controller('loggedController',
-['$scope', '$location', 'UserService',
-function ($scope, $location, UserService) {
+['$scope', '$window', 'UserService',
+function ($scope, $window, UserService) {
 
   $scope.isLoggedIn = function() {
     return UserService.isLoggedIn();
@@ -63,7 +63,7 @@ function ($scope, $location, UserService) {
     // call logout from service
     UserService.logout()
       .then(function () {
-        $location.path('/login');
+        $window.location.reload();
       });
   }
 

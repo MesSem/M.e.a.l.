@@ -10,24 +10,7 @@
 <div class="row" style="padding: 15px;width: 100%;">
   <div class="row" style="padding: 15px;">
       <div ng-repeat="proj in projectsList">
-          <div class="col-xs-6 col-md-4">
-              <div class="showcase">
-                <a href="#!projectDetails?id={{proj._id}}">
-                  <div style="max-height: 200px;overflow: hidden;">
-                      <img ng-src="{{proj.image}}" alt="{{proj.name}} main image" style="width:100%;height:auto;">
-                  </div>
-                </a>
-                  <div style="padding:10px;">
-                      <a href="#!projectDetails?id={{proj._id}}"><h4 style="text-align:center;">{{proj.name}}</h4></a>
-
-                      <hr>
-                      <div><a><i class="fa fa-user"></i> {{proj.owner.username}}</a></div>
-                      <div>Interessi: {{proj.restitution.interests}}%</div>
-                      <div>Raccolti: €{{proj.actualMoney.money}} / €{{proj.requestedMoney}}</div>
-                      <timer end-time="proj.endDate">{{days}} days, {{hours}} hours, {{minutes}} minutes, {{seconds}} seconds</timer>
-                  </div>
-              </div>
-          </div>
+            <div ng-include="'modules/elements/project.template.html'"></div>
       </div>
   </div>
 <!--

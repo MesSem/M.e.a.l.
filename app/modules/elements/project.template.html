@@ -10,7 +10,12 @@
             <a href="#!projectDetails?id={{proj._id}}"><h4 style="text-align:center;">{{proj.name}}</h4></a>
 
             <hr>
-            <div><a><i class="fa fa-user"></i> {{proj.owner.username}}</a></div>
+            <div>
+                <!-- se loggato visualizzo link -->
+                <a href="#!show/{{proj.owner._id}}/{{proj.owner.username}}" ng-show="user._id"><i class="fa fa-user"></i> {{proj.owner.username}}</a>
+                <!-- in caso contratio solo nome -->
+                <div ng-show="!user._id"><i class="fa fa-user"></i> {{proj.owner.username}}</div>
+            </div>
             <div>Interessi: {{proj.restitution.interests}}%</div>
             <div>Raccolti: €{{proj.actualMoney.money}} / €{{proj.requestedMoney}}</div>
             <timer end-time="proj.endDate">{{days}} days, {{hours}} hours, {{minutes}} minutes, {{seconds}} seconds</timer>

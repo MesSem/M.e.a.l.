@@ -583,7 +583,7 @@ userRoutes.post('/publicUser', function(req, res) {
 
   User.findOne({_id: id}, 'username', function(err, user) {
     if (user) {
-      Project.find({ $and:[{'accepted': true},{'owner': id}]}, function(err, projects) {
+      Project.find({ $and:[{'status': {'value' : 'ACCEPTED'}},{'owner': id}]}, function(err, projects) {
         res.status(200).json({
           user: user,
           projects: projects
