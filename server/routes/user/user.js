@@ -23,19 +23,6 @@ var adminRoutes = express.Router();
 var userRoutes = express.Router();
 var apiRoutes = express.Router();
 a=errorCodes.ERR_API_NOT_FOUND;
-/*
-res.status(400).json({ success: false,
-                         code: err.code,
-                         message: err.msg
-                        });
-
-  res.status(400).json({ success: false,
-             message: 'Bad Request. name and password required.' });
-
-             res.status(201).json({success: true,
-                                   message: 'Enjoy your token!',
-                                   data: {'token':token}});
- */
 
  /**
   * Api di prova per fare testing
@@ -53,12 +40,6 @@ res.status(400).json({ success: false,
  */
 userRoutes.get('/logout', function(req, res) {
   req.logout();
-  /*var newPayload = {
-      id: req.userId,
-      expr:moment().unix()
-  };
-  //Setto il cookie al tempo attuale così il client non avrà più un coockie valido e sarà obbligato a uscire
-  res.cookie('token',jwt.encode(newPayload, cfg.jwtSecret), { /*maxAge: 900000,*/ /*httpOnly: true });*/
   auth.deauthenticate(req, res, null)
   res.status(200).json({
     status: 'Bye!'
@@ -90,8 +71,6 @@ userRoutes.get('/user', function(req, res) {
   User.findOne({_id: req.userId}, function(err, user) {
     if (err) {
       return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error finding user', err, 500);
-      //res.send("error");
-        //return done(err, false);
     }
     if (user) {
       res.status(200).json({
@@ -99,10 +78,7 @@ userRoutes.get('/user', function(req, res) {
       });
     } else {
       return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error finding user', err, 500);
-      //res.send("error");
-      //  done(null, false);
         // or you could create a new account
-        // return done(new Error("User not found"), null);
     }
   });
 });
@@ -130,16 +106,11 @@ userRoutes.post('/user', function(req, res) {
     User.update({_id : userId}, {"$set" : userData}, function(err){
       if (err) {
         return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error updating user info', err, 500);
-        /*return res.status(500).json({
-          err: err
-        });*/
       }
+      res.status(200).json({
+        status: 'Update successful!'
+      });
     });
-
-    res.status(200).json({
-      status: 'Update successful!'
-    });
-
 });
 
 /**
@@ -160,11 +131,7 @@ userRoutes.post('/card', function(req, res) {//registrazione o update
     User.update({_id: userId}, {$push: {cards: newCard}}, function (err) {
       if (err) {
         return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error adding new card', err, 500);
-        /*return res.status(500).json({
-          err: err
-        });*/
       }
-
       res.status(200).json({
         status: 'Added successfully!'
       });
@@ -505,6 +472,37 @@ userRoutes.post('/changePw', function(req, res) {
     }
   });
 
+});
+
+/**
+ * @api {get} /api/user/editProject Edit a project
+ * @apiName editProject
+ * @apiGroup User
+ *
+ * @apiParam {description}
+ * @apiParam {image}
+ * @apiParam {imagesGallery}
+ *
+ * @apiSuccess {success}
+ */
+userRoutes.post('/editProject', function(req, res) {
+  var projectData ={
+    description:req.body.description,
+    ////image:req.body.name,
+    ///imagesGallery:[{type:String}]
+  };
+
+  var userId = req.userId;
+  var projectId=req.projectId;
+
+  User.update({$and[{_id : projectId},{ownwe:userId}]}, {"$set" : projectData}, function(err){
+    if (err) {
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error updating project info', err, 500);
+    }
+    res.status(200).json({
+      status: 'Update successful!'
+    });
+  });
 });
 
 module.exports = userRoutes;
