@@ -24,10 +24,14 @@ mealApp.config(['$locationProvider', '$routeProvider',
             template: '<projects></projects>'
           }).
       when('/projectDetails',{
-            template: '<project-details></project-details>'
-          });
-        /*
-      otherwise('/students');*/
+            template: '<project-details></project-details>',
+            access: {restricted: true}//penso che dei progetti sulla home page basta la versione short
+          }).
+      when('/projectManagement',{
+            template: '<project-management></project-management>',
+            access: {restricted: true}
+          })
+      otherwise('/profile');
   }
 ]);
 

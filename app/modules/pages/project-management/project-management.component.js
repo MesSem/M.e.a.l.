@@ -1,10 +1,18 @@
-angular.module('mealApp').component('projectDetails', {
-  templateUrl: 'modules/pages/project-details/project-details.template.html',
+angular.module('mealApp').component('projectManagement', {
+  templateUrl: 'modules/pages/project-details/project-management.template.html',
   controller: ['$scope', '$location','UserService', 'moment',
                   function($scope,$location, UserService, moment) {
                     UserService.getProject($location.search().id)
                     .then(function(response) {
-                        $scope.project = response.data.project;
+                      $scope.project = response.data.project;
+                      $scope.messageProjectVisibile=false;
+                      if($scope.project.status.value=="NOT_ACCEPTED" ){
+                        $scope.messageProjectVisibile=true;
+                        $scope.messageProject=$scope.project.status.messageFromAdmin;
+                      }else if($scope.project.status.value=="TO_CHECK" ){
+                        $scope.messageProjectVisibile=true;
+                        $scope.messageProject="L'amministratore deve ancora controllare il progetto";
+                      }
                       });
 
                       $scope.createLoan = function () {

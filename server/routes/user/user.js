@@ -495,7 +495,7 @@ userRoutes.post('/editProject', function(req, res) {
   var userId = req.userId;
   var projectId=req.projectId;
 
-  User.update({$and[{_id : projectId},{ownwe:userId}]}, {"$set" : projectData}, function(err){
+  User.update({$and:[{_id : projectId},{ownwe:userId}]}, {"$set" : projectData}, function(err){
     if (err) {
       return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error updating project info', err, 500);
     }
