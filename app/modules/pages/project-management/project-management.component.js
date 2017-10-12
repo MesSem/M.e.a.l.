@@ -45,5 +45,16 @@ angular.module('mealApp').component('projectManagement', {
                           console.log(error);
                       });
                     }
+                    $scope.returnMoney = function () {
+                      UserService.returnMoney($scope.project._id)//aggiungo prestito
+                      // handle success
+                      .then(function () {
+                          window.location.reload();
+                      })
+                      // handle error
+                      .catch(function (error) {
+                          console.log(error);
+                      });
+                    }
               }]
 });

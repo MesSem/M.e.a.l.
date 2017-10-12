@@ -571,6 +571,28 @@ userRoutes.get('/closeProject', function(req, res) {
 });
 
 /**
+  * @api {get} /api/user/returnMoney return the money of one project
+ * @apiName returnMoney
+ * @apiGroup User
+ *
+ * @apiParam {idPr} id of the project
+ *
+ * @apiSuccess {success}
+ */
+userRoutes.get('/returnMoney', function(req, res) {
+  utils.returnMoney(req.query.idP, req.userId)
+  .then(function (a) {
+    return res.status(200).json({
+      status: 'Update successful!'
+    });
+  }).catch(function(err){
+    if (err) {
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION,'Error',err,500 );
+    }
+  });
+});
+
+/**
  * @api {get} /api/publicUser Get public info about user
  * @apiName publicUser
  * @apiGroup Api
@@ -578,7 +600,7 @@ userRoutes.get('/closeProject', function(req, res) {
  * @apiSuccess {[User]} info about user
  */
 userRoutes.post('/publicUser', function(req, res) {
-  
+
   id = req.body.id;
 
   User.findOne({_id: id}, 'username', function(err, user) {
@@ -588,7 +610,7 @@ userRoutes.post('/publicUser', function(req, res) {
           user: user,
           projects: projects
         });
-      
+
       });
     }
     else {

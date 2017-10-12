@@ -38,14 +38,10 @@ apiRoutes.get('/prova', function(req, res) {
 apiRoutes.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) {
-      //return next(err);
       return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error during authentication', next(err), 500);
     }
     if (!user) {
       return errorCodes.sendError(res, errorCodes.ERR_API_WRONG_PSW, 'User not found', info, 500);
-      /*return res.status(401).json({
-        err: info
-      });*/
     }
     //Creazone del payload del token
     var payload = {
@@ -72,23 +68,13 @@ apiRoutes.post('/login', function(req, res, next) {
  * @apiParam {User} the user data--->mettere meglio
  */
 apiRoutes.post('/register', function(req, res) {
-
   if (req.body.password.length < 8 || req.body.password.length > 100) {
     return errorCodes.sendError(res, errorCodes.ERR_INVALID_REQUEST, 'Password must be between 8 and 100 characters long', '', 500);
-    /*return res.status(500).json({
-      err: 'Password must be between 8 and 100 characters long'
-    });*/
   }
-
-
   User.register(new User(req.body),
     req.body.password, function(err, account) {
     if (err) {
       return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error during registration', err, 500);
-      /*return res.status(500).json({
-        errMessage: err.message,
-        err:err
-      });*/
     }
     passport.authenticate('local')(req, res, function () {
       return res.status(200).json({
