@@ -64,7 +64,7 @@ this.updateActualMoney= function(){
     ], function(err,results) {
         if(results!=undefined){
           results.forEach(function(p) {
-            jobQueries.push(Project.update({_id:p._id},{actualMoney:{money:p.totalMoney,cacheDate:tmpDate}}).exec());//aggiungere quelle già sommate in passato
+            jobQueries.push(Project.update({_id:p._id},{'actualMoney.cacheDate':tmpDate, $inc:{'actualMoney.money':p.totalMoney}}).exec());//aggiungere quelle già sommate in passato
           });
         }
     });
@@ -89,7 +89,7 @@ this.closeProject=function(idProject, idUser){
     if (err) {
         console.log(err);
     }
-    console.log("Da closeProject: Progetti chiusi(non restituisce il parametro giusto)="+ affected.ok);
+    console.log("Da closeProject: Progetti chiusi(non restituisce il parametro giusto)="+ affected);
   };
   if(idProject!=null){
       return Project.update({$and:[{_id:idProject},{'status.value':'ACCEPTED'},{'owner':idUser}]},{'$set': {'status.value': 'CLOSED'}}).exec();
