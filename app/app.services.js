@@ -32,9 +32,9 @@ function ($q, $timeout, $http) {
     changePw: changePw,
     updateProject:updateProject,
     getLoansOfProject:getLoansOfProject,
-  //  closeProject:closeProject,
     getPublicUser: getPublicUser,
-    returnMoney:returnMoney
+    returnMoney:returnMoney,
+    getDoneLoans:getDoneLoans
   });
 
   function isLoggedIn() {
@@ -170,6 +170,12 @@ function ($q, $timeout, $http) {
 
   function returnMoney(idProject) {
     return $http.get('/api/user/returnMoney?idP='+idProject);
+  }
+
+  var cachedLoansDone = null;
+  function getDoneLoans() {
+    if(!cachedLoansDone) cachedLoansDone = $http.get('/api/user/listLoans');
+    return cachedLoansDone;
   }
 
 }]);

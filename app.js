@@ -54,7 +54,7 @@ var job = new CronJob({
   onTick:function() {
     /* Runs every weekday (Sunday through Saturday) at 16:10:00 AM. It does not run on Saturday or Sunday. */
     utils.updateActualMoney();
-    utils.closeProject();
+    utils.closeProjectAll();
     utils.returnMoneyAll();
     //PUT HERE METHODS TO CALL PERIODICALY
   },

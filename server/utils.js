@@ -94,7 +94,7 @@ this.closeProject=function(idProject, idUser){
   }else{
     query={$and:[{_id:idProject},{'status.value':'ACCEPTED'}]};
   }
-  //aggiornare monete
+      console.log(query);
   Project
   .findOneAndUpdate(query,{'$set': {'status.value': 'CLOSED'}},{new: true})
   .exec(function (err, project) {
@@ -102,6 +102,7 @@ this.closeProject=function(idProject, idUser){
         console.log("closeProject(idProject, idUser)"+err.message);
         throw err;
     }
+
     var tran = new Transaction({
       sender: global.idMEALMEAL,
       recipient: project.owner,
@@ -124,9 +125,10 @@ this.closeProject=function(idProject, idUser){
 
 this.closeProjectAll=function(){
   Project
-  .find({$and:[{'status.value':'ACCEPTED'}, {'restitution.date':{$lt: Date.now()}}]})
+  .find({$and:[{'status.value':'ACCEPTED'}, {'endDate':{$lt: Date.now()}}]})
   .stream()
   .on('data', function(project){
+    console.log(project);
     apiUtilities.closeProject(project._id, project.owner);
   })
   .on('error', function(err){
@@ -162,6 +164,7 @@ this.returnMoney=function(idProject, idUser){
         recipient:loan.sender,
         projectRecipient: loan.projectRecipient,
         money: money,
+        loanId: loan._id,
         notes: "Restituzione soldi adempimento prestito",
         type:'LOAN_RESTITUTION_FROM_OWNER'
       });

@@ -1,0 +1,15 @@
+<div ng-controller="storico-prestiti">
+    <div class="col-xs-6 col-md-4">
+        <div class="project">
+            <h4>STORICO PRESTITI</h4>
+            <div ng-repeat="loan in loans">
+                <hr>
+                <div>Data: {{loan.date | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
+                <div>Progetto:<a href="#!projectDetails?id={{loan.projectRecipient._id}}"> {{loan.projectRecipient.name}}</a></div>
+                <div>Importo: € {{loan.money | number:2}}</div>
+                <div>Data restituzione: {{loan.returnDate | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
+                <div>Importo restituzione: € {{loan.returnMoney | number:2}}</div>
+            </div>
+        </div>
+    </div>
+</div>

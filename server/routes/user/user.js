@@ -618,4 +618,51 @@ userRoutes.delete('/deleteNotifications', function(req, res) {
   });
 });
 
+/**
+ * @api {get} /api/user/listLoans Get all loans of this user
+ * @apiName listLoans
+ * @apiGroup User
+ *
+ *
+ * @apiSuccess {[Loan]} loans list of all loans of this user
+ */
+userRoutes.get('/listLoans', function(req, res) {
+  var arrayOfLoans=[];
+  var promises=[];
+  Transaction
+  .find({$and:[{sender: req.userId}, {type:'LOAN'}]})
+  .populate('projectRecipient',{name:'name', _id:'id'})
+  .lean()
+  .stream()
+  .on('data', function(loan){
+    promise=Transaction.find({$and:[{loanId: loan._id}, {type:'LOAN_RESTITUTION_FROM_OWNER'}]}, function (err, result) {
+      if (err) {
+        return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error getting loan data', err, 500);
+      }
+      if(result.length!=0){
+      //  loan.toJSON();
+        loan['returnMoney']=result[0].money;
+        loan['returnDate']=result[0].date;
+
+      }
+      console.log( loan);
+      arrayOfLoans.push(loan);
+    }).exec();
+    promises.push(promise);
+  })
+  .on('error', function(err){
+    console.log( "catch");
+    return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error getting loan data', err, 500);
+  })
+  .on('end', function(){
+    console.log( "end");
+    Q.all(promises).then(function(){
+      return res.status(200).json({
+        loans: arrayOfLoans
+      });
+    });
+
+  });
+});
+
 module.exports = userRoutes;
