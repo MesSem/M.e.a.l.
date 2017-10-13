@@ -229,14 +229,19 @@ userRoutes.post('/transaction', function(req, res) {//registrazione o update
  */
 userRoutes.get('/transaction', function(req, res) {
   //Transaction.find({$or: [{'sender': req.user._id}, {recipient: req.user._id}]}, function (err, result) {
-  Transaction.find({$and :[{$or: [{'sender': req.userId}, {recipient: req.userId}]}, {type:''}]}, function (err, result) {
+  Transaction.find({$and :[{$or: [{'sender': req.userId}, {recipient: req.userId}]}, {type:''}]})
+  .populate('sender', '_id, username')
+  .populate('recipient', '_id, username')
+  .exec(function (err, result) {
     if (err) {
       return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error getting transactions list', err, 500);
     }
+    console.log(result);
     res.status(200).json({
       transactions: result
     });
   });
+
 
 });
 

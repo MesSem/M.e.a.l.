@@ -34,7 +34,11 @@ function ($q, $timeout, $http) {
     getLoansOfProject:getLoansOfProject,
     getPublicUser: getPublicUser,
     returnMoney:returnMoney,
+<<<<<<< HEAD
     getDoneLoans:getDoneLoans
+=======
+    deleteNotifications:deleteNotifications
+>>>>>>> f8bafdaff7463dbdd3fa85fa9ba4a20f8fcd18e4
   });
 
   function isLoggedIn() {
@@ -172,10 +176,15 @@ function ($q, $timeout, $http) {
     return $http.get('/api/user/returnMoney?idP='+idProject);
   }
 
+<<<<<<< HEAD
   var cachedLoansDone = null;
   function getDoneLoans() {
     if(!cachedLoansDone) cachedLoansDone = $http.get('/api/user/listLoans');
     return cachedLoansDone;
+=======
+  function deleteNotifications(idProject) {
+    return $http.delete('/api/user/deleteNotifications');
+>>>>>>> f8bafdaff7463dbdd3fa85fa9ba4a20f8fcd18e4
   }
 
 }]);

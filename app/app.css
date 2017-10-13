@@ -8,7 +8,6 @@
 
 .upper-div {
     padding: .5rem 1rem;
-    color: white;
     display: flex;
     justify-content: space-between;
     font-size: 22px;
@@ -125,4 +124,10 @@ input::-webkit-inner-spin-button {
 .form-group, .form-textarea {
     margin: auto auto 15px;
 
+}
+
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
