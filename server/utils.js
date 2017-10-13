@@ -237,19 +237,18 @@ this.checkMEALAccountOrCreate=function(){
   });
 }
 
-
-/*
+/**
+ * Create a notification for a user
+ *
+ * @param  {[type]} recipient id of the user
+ * @param  {[type]} message
+ * @param  {[type]} type      Choose from the enum in Model.User or add a new one in the Model
+ */
 this.createNotification=function(recipient, message,type){
-  Project
-  .find({$and:[{'status.value':'CLOSED'}, {'restitution.date':{$lt: Date.now()}}]})
-  .stream()
-  .on('data', function(project){
-    apiUtilities.returnMoney(project._id, project.owner);
-  })
-  .on('error', function(err){
-    console.log("Error in return money of one of the multiple project "+ err);
-  })
-  .on('end', function(){
-    console.log("Money return successfully");
+  var newNotification = {message: message, type: type};
+  User.update({_id: recipient}, {$push: {notifications: newNotification}}, function (err) {
+    if (err) {
+      console.log("Error in Create notification: "+err.message);
+    }
   });
-}*/
+}

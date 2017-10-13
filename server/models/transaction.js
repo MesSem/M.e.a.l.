@@ -11,9 +11,9 @@ var Transaction = new Schema({
   notes:String,
   type: {
       type:String,
-      enum: ['LOAN', 'LOAN_RESTITUTION_FROM_OWNER' ,'LOAN_RESTITUTION_FROM_SERVER', 'MOVEMENT_TO_OWNER'],
+      enum: ['LOAN', 'LOAN_RESTITUTION_FROM_OWNER' ,'LOAN_RESTITUTION_FROM_SERVER', 'MOVEMENT_TO_OWNER', ''],
       default:''//INDICA UNA TRANSAZIONE CLASSICA
-    },
+    }
 });
 
 ////GUIDA oggetto type:

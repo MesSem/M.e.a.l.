@@ -17,6 +17,16 @@ var Card=new Schema({
   cvv:{type:String, minlength: 3, maxlength: 4, required:true}
 });
 
+var Notification=new Schema({
+  message:{type:String, required:true, required:true},
+  type: {
+      type:String,
+      enum: ['GENERAL', 'RECEIVED_TRANSACTION' ,'REFUNDED_FROM_OTHER_PROJECT', 'YOUR_PROJECT_CLOSED'],//YOUR_PROJECT_CLOSED:Project clsoed, site send you all money achieved
+      default:'GENERAL'//INDICA UNA TRANSAZIONE CLASSICA
+    },
+    date:{type:Date,default:Date.now, required:true}
+});
+
 var User = new Schema({
   _id: {type: Schema.Types.ObjectId, auto: true},
   username: {type:String, minlength: 6, maxlength: 20, required:true, index: true, unique: true},
@@ -29,7 +39,8 @@ var User = new Schema({
   address:  Address,
   cards: [Card],
   idCard: String,
-  isAdmin:{type:Boolean, default:false}
+  isAdmin:{type:Boolean, default:false},
+  notifications:[Notification]
 });
 
 

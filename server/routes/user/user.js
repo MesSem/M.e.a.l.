@@ -213,6 +213,8 @@ userRoutes.post('/transaction', function(req, res) {//registrazione o update
     res.status(200).json({
       status: 'Added successfully!'
     });
+    console.log("fin qui");
+    utils.createNotification(req.body.recipient, "Hai ricevuto "+req.body.money + "€ da un utente. Per più informazioni guarda lo storico","RECEIVED_TRANSACTION");
   });
 
 });
@@ -547,30 +549,7 @@ userRoutes.get('/listLoanForProject', function(req, res) {
     }
   });
 });
-/*
-/**
-  * @api {get} /api/user/closeProject Close a project
- * @apiName closeProject
- * @apiGroup User
- *
- * @apiParam {idPr} id of the project
- *
- * @apiSuccess {success}
- */
-/*
-userRoutes.get('/closeProject', function(req, res) {
-  utils.closeProject(req.query.idP, req.userId)
-  .then(function (result) {
-    return res.status(200).json({
-      status: 'Update successful!'
-    });
-  }).catch(function(err){
-    if (err) {
-      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION,'Error',err,500 );
-    }
-  });
-});
-*/
+
 /**
   * @api {get} /api/user/returnMoney return the money of one project
  * @apiName returnMoney
@@ -617,6 +596,25 @@ userRoutes.post('/publicUser', function(req, res) {
     else {
       return errorCodes.sendError(res, errorCodes.ERR_ELEMENT_NOT_FOUND, 'No user found', err, 500);
     }
+  });
+});
+
+/**
+ * @api {delete} /api/deleteNotifications Delete notifications of the current user
+ * @apiName deleteNotifications
+ * @apiGroup User
+ *
+ * @apiSuccess {String} info about user
+ */
+userRoutes.delete('/deleteNotifications', function(req, res) {
+  User.update({'_id':req.userId},{$unset: {notifications:1}}, function(err){
+    if (err) {
+      console.log(err.message);
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error in deleting notification of current user', err, 500);
+    }
+    res.status(200).json({
+      status: 'Notification delted successful!'
+    });
   });
 });
 

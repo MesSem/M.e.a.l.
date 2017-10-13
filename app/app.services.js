@@ -32,7 +32,7 @@ function ($q, $timeout, $http) {
     changePw: changePw,
     updateProject:updateProject,
     getLoansOfProject:getLoansOfProject,
-    closeProject:closeProject,
+  //  closeProject:closeProject,
     getPublicUser: getPublicUser,
     returnMoney:returnMoney
   });
