@@ -68,4 +68,22 @@ function ($scope, $window, UserService) {
       });
   }
 
+  $scope.deleteNotifications = function () {
+    //delete all notifications
+    UserService.deleteNotifications()
+      .then(function () {
+        $scope.notifications = [];
+      });
+  }
+
+  UserService.getUser()
+    .then(function (response) {
+      userInfo = response;
+      //console.log(userInfo);
+      $scope.notifications = userInfo.data.user.notifications;
+      //if (notifications.length > 0)
+        //console.log(notifications);
+    });
+  
+
 }]);

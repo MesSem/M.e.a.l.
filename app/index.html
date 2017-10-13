@@ -71,14 +71,25 @@
 
     <div class="access-div">
       <div ng-controller="loggedController">
-        <div ng-show='isLoggedIn()'><a class="btn btn-success" href="#!newProject" >Nuovo progetto</a></div>
-        <div ng-show='isLoggedIn()'><a class="btn btn-success" href="#!profile" >Profilo</a></div>
-        <div ng-show='isLoggedIn()'><a class="btn btn-success" href="#!projects" >Progetti</a></div>
-        <div ng-show='isLoggedIn()'><a class="btn btn-success" href="#!projects?onlyMy=true" >I miei progetti</a></div>
-        <div ng-show='isLoggedIn()'><a ng-click='logout()' class="btn btn-success">Logout</a></div>
+        <div class="btn-group show-on-hover" ng-show='isLoggedIn()'>
+          <a class="btn btn-success" ng-click="show = !show">Notifiche <span class="badge">{{notifications.length}}</span></a>
+          <ul class="dropdown-menu" role="menu" ng-show="show" ng-if="notifications.length" style="display:block;max-width: 100%;">
+            <li ng-repeat="notif in notifications"><a class="ellipsis">{{notif.message}}</a></li>
+            <li class="divider"></li>
+            <li><a href="" ng-click='deleteNotifications()'>Cancella tutto</a></li>
+          </ul>
+        
+          <a class="btn btn-success" href="#!newProject">Nuovo progetto</a>
+          <a class="btn btn-success" href="#!profile">Profilo</a>
+          <a class="btn btn-success" href="#!projects">Progetti</a>
+          <a class="btn btn-success" href="#!projects?onlyMy=true">I miei progetti</a>
+          <a class="btn btn-success" ng-click='logout()'>Logout</a>
+        </div>
 
-        <div ng-show='!isLoggedIn()'><a class="btn btn-success" href="#!login">Login</a></div>
-        <div ng-show='!isLoggedIn()'><a class="btn btn-success" href="#!register">Register</a></div>
+        <div class="btn-group" ng-show='!isLoggedIn()'>
+          <a class="btn btn-success" href="#!login">Login</a>
+          <a class="btn btn-success" href="#!register">Register</a>
+        </div>
       </div>
     </div>
 

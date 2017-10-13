@@ -34,7 +34,8 @@ function ($q, $timeout, $http) {
     getLoansOfProject:getLoansOfProject,
   //  closeProject:closeProject,
     getPublicUser: getPublicUser,
-    returnMoney:returnMoney
+    returnMoney:returnMoney,
+    deleteNotifications:deleteNotifications
   });
 
   function isLoggedIn() {
@@ -170,6 +171,10 @@ function ($q, $timeout, $http) {
 
   function returnMoney(idProject) {
     return $http.get('/api/user/returnMoney?idP='+idProject);
+  }
+
+  function deleteNotifications(idProject) {
+    return $http.delete('/api/user/deleteNotifications');
   }
 
 }]);
