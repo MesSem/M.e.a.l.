@@ -5,8 +5,8 @@
             <div ng-repeat="tran in transactions">
                 <hr>
                 <div>Data: {{tran.date | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
-                <div>Mittente: {{tran.senderName}}</div>
-                <div>Destinatario: {{tran.recipientName}}</div>
+                <div>Mittente: <a href="#!show/{{tran.sender._id}}/{{tran.sender.username}}"><i class="fa fa-user"></i> {{tran.sender.username}}</a></div>
+                <div>Destinatario: <a href="#!show/{{tran.recipient._id}}/{{tran.recipient.username}}"><i class="fa fa-user"></i> {{tran.recipient.username}}</a></div>
                 <div>Importo: € {{tran.money | number:2}}</div>
                 <div ng-if="tran.notes">Messaggio: {{tran.notes}}</div>
             </div>

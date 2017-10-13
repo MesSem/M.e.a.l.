@@ -20,7 +20,7 @@
             <div>Interessi: {{proj.restitution.interests}}%</div>
             <div>Raccolti: €{{proj.actualMoney.money}} / €{{proj.requestedMoney}}</div>
             <timer end-time="proj.endDate">{{days}} days, {{hours}} hours, {{minutes}} minutes, {{seconds}} seconds</timer>
-            <a href="#!projectManagement?id={{proj._id}}" ng-show="proj.owner._id==user._id">Gestisci il progetto</a>
+            <a href="#!projectManagement?id={{proj._id}}" ng-show="proj.owner._id==user._id && user != 'undefined'">Gestisci il progetto</a>
         </div>
     </div>
 </div>
