@@ -164,10 +164,6 @@ function ($q, $timeout, $http) {
     return $http.get('/api/user/listLoanForProject?idP='+idProject);
   }
 
-  function closeProject(idProject){
-    return $http.get('/api/user/closeProject?idP='+idProject);
-  }
-
   function getPublicUser(id) {
     return $http.post('/api/user/publicUser', {id});
   }

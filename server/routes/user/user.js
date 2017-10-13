@@ -227,7 +227,7 @@ userRoutes.post('/transaction', function(req, res) {//registrazione o update
  */
 userRoutes.get('/transaction', function(req, res) {
   //Transaction.find({$or: [{'sender': req.user._id}, {recipient: req.user._id}]}, function (err, result) {
-  Transaction.find({$or: [{'sender': req.userId}, {recipient: req.userId}]}, function (err, result) {
+  Transaction.find({$and :[{$or: [{'sender': req.userId}, {recipient: req.userId}]}, {type:''}]}, function (err, result) {
     if (err) {
       return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error getting transactions list', err, 500);
     }
@@ -430,7 +430,7 @@ userRoutes.get('/detailsProject', function(req, res) {
 userRoutes.post('/loan', function(req, res) {//registrazione o update
   var tran = new Transaction({
     sender: req.userId,
-    recipient:req.userId,//#TODO METTERE UTENTE DI DEFAULT SERVER
+    recipient:global.idMEALMEAL,
     projectRecipient: req.body.projectRecipient,
     money: req.body.money,
     notes: req.body.notes,
@@ -547,7 +547,7 @@ userRoutes.get('/listLoanForProject', function(req, res) {
     }
   });
 });
-
+/*
 /**
   * @api {get} /api/user/closeProject Close a project
  * @apiName closeProject
@@ -557,6 +557,7 @@ userRoutes.get('/listLoanForProject', function(req, res) {
  *
  * @apiSuccess {success}
  */
+/*
 userRoutes.get('/closeProject', function(req, res) {
   utils.closeProject(req.query.idP, req.userId)
   .then(function (result) {
@@ -569,7 +570,7 @@ userRoutes.get('/closeProject', function(req, res) {
     }
   });
 });
-
+*/
 /**
   * @api {get} /api/user/returnMoney return the money of one project
  * @apiName returnMoney

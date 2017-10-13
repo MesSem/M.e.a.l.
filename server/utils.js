@@ -1,10 +1,12 @@
 var Q=require('q');
 var moment = require('moment');//gestione date e tempo
+var passport = require('passport');
 
 var cfg = require("./config.js");
 var Project = require('./models/project.js');
 var GenericData = require('./models/genericData.js');
 var Transaction = require('./models/transaction.js');
+var User = require('./models/user.js');
 var errorCodes= require('./errorCodes.js');
 
 var apiUtilities = this;
@@ -85,17 +87,54 @@ this.updateActualMoney= function(){
 };
 
 this.closeProject=function(idProject, idUser){
-  var afterUpdate=function (err, affected) {
-    if (err) {
-        console.log(err);
-    }
-    console.log("Da closeProject: Progetti chiusi(non restituisce il parametro giusto)="+ affected);
-  };
-  if(idProject!=null){
-      return Project.update({$and:[{_id:idProject},{'status.value':'ACCEPTED'},{'owner':idUser}]},{'$set': {'status.value': 'CLOSED'}}).exec();
+  var deferred = Q.defer();
+  var query=null;
+  if(idUser!=null && idUser!=undefined){
+    query={$and:[{_id:idProject},{'status.value':'ACCEPTED'},{'owner':idUser}]};
   }else{
-      Project.update({$and:[{endDate:{$lt: Date.now()}},{'status.value':'ACCEPTED'}]},{'$set': {'status.value': 'CLOSED'}}, {multi: true}).exec(afterUpdate);
+    query={$and:[{_id:idProject},{'status.value':'ACCEPTED'}]};
   }
+  //aggiornare monete
+  Project
+  .findOneAndUpdate(query,{'$set': {'status.value': 'CLOSED'}},{new: true})
+  .exec(function (err, project) {
+    if (err) {
+        console.log("closeProject(idProject, idUser)"+err.message);
+        throw err;
+    }
+    var tran = new Transaction({
+      sender: global.idMEALMEAL,
+      recipient: project.owner,
+      money: project.actualMoney.money,
+      notes: 'Money collected for a project',
+      projectRecipient:project._id,
+      type:'MOVEMENT_TO_OWNER'
+    });
+    tran.save(function (err, results) {
+      if (err) {
+        console.log("Error in close project "+ err);
+        deferred.reject(err);
+      }
+      console.log("Project closed successfully");
+      deferred.resolve("ok");
+    });
+  });
+  return deferred.promise;
+}
+
+this.closeProjectAll=function(){
+  Project
+  .find({$and:[{'status.value':'ACCEPTED'}, {'restitution.date':{$lt: Date.now()}}]})
+  .stream()
+  .on('data', function(project){
+    apiUtilities.closeProject(project._id, project.owner);
+  })
+  .on('error', function(err){
+    console.log("Error in close project of one of the multiple project "+ err);
+  })
+  .on('end', function(){
+    console.log("Project closed successfully");
+  });
 }
 
 this.returnMoney=function(idProject, idUser){
@@ -159,3 +198,58 @@ this.returnMoneyAll=function(){
     console.log("Money return successfully");
   });
 }
+
+this.checkMEALAccountOrCreate=function(){
+  User.find({username:'MEALMEAL'})
+  .then(function(result, err){
+    if(err){
+      console.log(err.stack);
+    }else {
+      if(result.length==0){
+        var user=new User({
+          username: 'MEALMEAL',
+          //password: {type:String, required:true}, Creata automaticamente tramite modulo passport
+          name: 'SitoSito',
+          surname: 'SitoSito',
+          email: 'Sito@MEAL.it',
+          bornDate: Date.now(),
+          phoneNumber: '123456789',
+          address:  {
+            city:'Camerino',
+            nation:'Italia',
+            CAP:'12345'
+          },
+          isAdmin:true
+        });
+        User.register(user,
+          'password', function(err, account) {
+          if (err) {
+            console.log(err);
+          }
+          console.log("Utente MEALMEAL creato");
+          global.idMEALMEAL = account._id;
+        });
+      }else{
+        console.log("Utente MEALMEAL già esistente");
+        global.idMEALMEAL = result[0]._id;
+      }
+    }
+  });
+}
+
+
+/*
+this.createNotification=function(recipient, message,type){
+  Project
+  .find({$and:[{'status.value':'CLOSED'}, {'restitution.date':{$lt: Date.now()}}]})
+  .stream()
+  .on('data', function(project){
+    apiUtilities.returnMoney(project._id, project.owner);
+  })
+  .on('error', function(err){
+    console.log("Error in return money of one of the multiple project "+ err);
+  })
+  .on('end', function(){
+    console.log("Money return successfully");
+  });
+}*/

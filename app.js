@@ -62,6 +62,7 @@ var job = new CronJob({
   timeZone: 'Europe/Rome'
 });
 job.start();
+utils.checkMEALAccountOrCreate();
 
 // =======================
 // API ROUTES
