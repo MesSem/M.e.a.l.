@@ -13,7 +13,7 @@
                     <timer end-time="project.endDate">{{days}} days, {{hours}} hours, {{minutes}} minutes, {{seconds}} seconds</timer>
 
 
-                    <div>Richiedente: {{project.owner.name+" "+project.owner.surname}}</div>
+                    <div>Richiedente: <a href="#!show/{{project.owner._id}}/{{project.owner.username}}" ng-show="user._id"><i class="fa fa-user"></i> {{project.owner.username}}</a></div>
                     <div>Descrizione: <div ng-bind-html="project.description"></div></div>
                     <div>Data di inizio: {{project.startDate | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
                     <div>Data di fine: {{project.endDate | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>

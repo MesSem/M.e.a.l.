@@ -1,13 +1,15 @@
-<div>
+<div class="form-div" style="max-width: 700px;;margin: 15px auto;">
 
     Nome: {{userInfo.username}}
+    <br>
+    <div ng-show="count==0">L'utente non ha progetti attivi</div>
+    <div ng-show="count==1">L'utente ha attivo un solo progetto</div>
+    <div ng-show="count>1">L'utente ha attivi {{count}} progetti</div>
 
+</div>
 
-    <div ng-repeat="proj in projects">
+<div class="row" ng-repeat="proj in projects">
 
-        <div ng-include="'modules/elements/project.template.html'"></div>
-
-    </div>
-
+    <div ng-include="'modules/elements/project.template.html'"></div>
 
 </div>

@@ -7,6 +7,7 @@ angular.module('mealApp').component('show', {
                             .then(function(response) {
                                 $scope.userInfo = response.data.user;
                                 $scope.projects = response.data.projects;
+                                $scope.count = $scope.projects.length;
                             })
                             .catch(function (error) {
                                 $scope.error = true;

@@ -1,20 +1,21 @@
 <!-- crea elemento html per progetti a partire da variabile proj -->
-<div class="col-xs-6 col-md-4">
+<div class="col-xs-6 col-md-4" ng-controller="loggedController">
     <div class="showcase">
         <a href="#!projectDetails?id={{proj._id}}">
         <div style="max-height: 200px;overflow: hidden;">
             <img ng-src="{{proj.image}}" alt="{{proj.name}} main image" style="width:100%;height:auto;">
         </div>
         </a>
+
         <div style="padding:10px;">
             <a href="#!projectDetails?id={{proj._id}}"><h4 style="text-align:center;">{{proj.name}}</h4></a>
 
-            <hr>
+            <hr style="margin-bottom: 10px;">
             <div>
                 <!-- se loggato visualizzo link -->
-                <a href="#!show/{{proj.owner._id}}/{{proj.owner.username}}" ng-show="user._id"><i class="fa fa-user"></i> {{proj.owner.username}}</a>
+                <a href="#!show/{{proj.owner._id}}/{{proj.owner.username}}" ng-show='isLoggedIn()'><i class="fa fa-user"></i> {{proj.owner.username}}</a>
                 <!-- in caso contratio solo nome -->
-                <div ng-show="!user._id"><i class="fa fa-user"></i> {{proj.owner.username}}</div>
+                <div ng-show='!isLoggedIn()'><i class="fa fa-user"></i> {{proj.owner.username}}</div>
             </div>
             <div>Interessi: {{proj.restitution.interests}}%</div>
             <div>Raccolti: €{{proj.actualMoney.money}} / €{{proj.requestedMoney}}</div>
