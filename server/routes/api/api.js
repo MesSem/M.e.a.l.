@@ -7,7 +7,7 @@ var passport = require('passport');
 var jwt = require("jwt-simple");
 var moment = require('moment');//gestione date e tempo
 var cfg = require("../../config.js");
-
+var errorCodes= require('../../errorCodes.js');
 
 var User = require('../../models/user.js');
 var Transaction = require('../../models/transaction.js');
@@ -74,7 +74,7 @@ apiRoutes.post('/register', function(req, res) {
   User.register(new User(req.body),
     req.body.password, function(err, account) {
     if (err) {
-      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error during registration', err, 500);
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error during registration: '+err.message, err, 500);
     }
     passport.authenticate('local')(req, res, function () {
       return res.status(200).json({
