@@ -1,0 +1,22 @@
+<div class="row" style="padding: 15px;">
+    <div class="col-xs-6 col-md-4">
+        <div class="project">
+            <h4>DA APPROVARE</h4>
+
+            <input type="text" class="form-control" placeholder="Search" ng-model="search">
+            <hr>
+
+            <div style="max-height: 500px; overflow: auto;">
+                <!-- filtro cerca dentro nome progetto, username e interessi -->
+                <div ng-repeat="proj in projectsList | filterBy: ['name', 'owner.username', 'restitution.interests']: search">
+                    <a href="#!projectDetails?id={{proj._id}}"><h4>{{proj.name}}</h4></a>
+                    <a href="#!show/{{proj.owner._id}}/{{proj.owner.username}}"><i class="fa fa-user"></i> {{proj.owner.username}}</a>
+                    <div>Interessi: {{proj.restitution.interests}}%</div>
+
+                    <hr ng-if="!$last">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

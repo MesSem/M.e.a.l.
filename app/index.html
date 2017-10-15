@@ -32,6 +32,8 @@
   <script src='bower_components/textAngular/dist/textAngular-sanitize.min.js'></script>
   <script src='bower_components/textAngular/dist/textAngular.min.js'></script>
 
+  <script src='bower_components/angular-filter/dist/angular-filter.min.js'></script>
+
   <!--<script src="app.module.js"></script>-->
   <script src="app.config.js"></script>
   <script src="app.services.js"></script>
@@ -46,6 +48,7 @@
   <script src="modules/pages/project-details/project-details.component.js"></script>
   <script src="modules/pages/project-management/project-management.component.js"></script>
   <script src="modules/pages/show/show.component.js"></script>
+  <script src="modules/pages/admin/admin.component.js"></script>
 
   <script src="modules/components/login/login.component.js"></script>
 
@@ -71,7 +74,8 @@
 
     <div class="access-div">
       <div ng-controller="loggedController">
-        <div class="btn-group show-on-hover" ng-show='isLoggedIn()'>
+        <a class="btn btn-success" href="#!admin" ng-show='isAdmin()'>Admin</a>
+        <div class="btn-group show-on-hover" ng-show='isLoggedIn()' ng-controller="loggedController">
           <a class="btn btn-success" ng-click="show = !show">Notifiche <span class="badge">{{notifications.length}}</span></a>
           <ul class="dropdown-menu" role="menu" ng-show="show" ng-if="notifications.length" style="display:block;max-width: 100%;">
             <li ng-repeat="notif in notifications"><a class="ellipsis">{{notif.message}}</a></li>

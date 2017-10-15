@@ -9,7 +9,7 @@ function ($q, $timeout, $http) {
   }
 
   // create user variable
-  var user = null;
+  var user = admin = null;
 
   // return available functions for use in the controllers
   return ({
@@ -34,11 +34,11 @@ function ($q, $timeout, $http) {
     getLoansOfProject:getLoansOfProject,
     getPublicUser: getPublicUser,
     returnMoney:returnMoney,
-<<<<<<< HEAD
-    getDoneLoans:getDoneLoans
-=======
-    deleteNotifications:deleteNotifications
->>>>>>> f8bafdaff7463dbdd3fa85fa9ba4a20f8fcd18e4
+    getDoneLoans:getDoneLoans,
+    deleteNotifications:deleteNotifications,
+    isAdmin:isAdmin,
+    getAdminStatus:getAdminStatus,
+    listWaitingProjects:listWaitingProjects
   });
 
   function isLoggedIn() {
@@ -176,15 +176,42 @@ function ($q, $timeout, $http) {
     return $http.get('/api/user/returnMoney?idP='+idProject);
   }
 
-<<<<<<< HEAD
   var cachedLoansDone = null;
   function getDoneLoans() {
     if(!cachedLoansDone) cachedLoansDone = $http.get('/api/user/listLoans');
     return cachedLoansDone;
-=======
+  }
+  
   function deleteNotifications(idProject) {
     return $http.delete('/api/user/deleteNotifications');
->>>>>>> f8bafdaff7463dbdd3fa85fa9ba4a20f8fcd18e4
+  }
+
+  function isAdmin() {
+    if(admin) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function getAdminStatus() {
+    return $http.get('/api/admin/status')
+    // handle success
+    .then(function (success) {
+      if(success.data.status){
+        admin = true;
+      } else {
+        admin = false;
+      }
+    })
+    // handle error
+    .catch(function (error) {
+      admin = false;
+    });
+  }
+
+  function listWaitingProjects(idProject) {
+    return $http.get('/api/admin/listWaitingProjects');
   }
 
 }]);
