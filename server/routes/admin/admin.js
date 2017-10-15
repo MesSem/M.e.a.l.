@@ -36,14 +36,14 @@ adminRoutes.get('/status', function(req, res) {
 });
 
 /**
- * @api {get} /api/admin/list List of all the user
- * @apiName ListWaitingProjects
- * @apiGroup User
+ * @api {get} /api/admin/list List of all the unaccepted projects
+ * @apiName ListNotAcceptedProjects
+ * @apiGroup Admin
  *
- * @apiSuccess {[User]} list of unaccepted projects
+ * @apiSuccess {[Project]} list of unaccepted projects
  *
  */
-adminRoutes.get('/listWaitingProjects', function(req, res) {
+adminRoutes.get('/listNotAcceptedProjects', function(req, res) {
   Project.find({"status.value" : {'$ne': 'ACCEPTED'}}, function (err, result) {
     if (err) {
       return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error getting projects list', err, 500);
@@ -53,6 +53,31 @@ adminRoutes.get('/listWaitingProjects', function(req, res) {
     });
   })
   .populate('owner',{username:'username', _id:'id'});
+
+});
+
+/**
+ * @api {get} /api/admin/changeProjectStatus change the status of a project
+ * @apiName ChangeProjectStatus
+ * @apiGroup Admin
+ *
+ * @apiSuccess {String} status Message if the editing it's ok
+ *
+ */
+adminRoutes.post('/changeProjectStatus', function(req, res) {
+
+  var projectId = req.body.projectId;
+  var newStatus = req.body.newStatus;
+
+  Project.update({_id : projectId}, {status:{value:newStatus}}, function(err){
+    if (err) {
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error updating project status', err, 500);
+    }
+
+    res.status(200).json({
+      status: 'Update successful!'
+    });
+  });
 
 });
 

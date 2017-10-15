@@ -4,15 +4,38 @@
             <h4>DA APPROVARE</h4>
 
             <input type="text" class="form-control" placeholder="Search" ng-model="search">
+            <div ng-show="projectsSuccess" class="alert alert-success">{{projectsSuccessMessage}}</div>
+            <div ng-show="projectsError" class="alert alert-danger">{{projectsErrorMessage}}</div>
             <hr>
 
             <div style="max-height: 500px; overflow: auto;">
                 <!-- filtro cerca dentro nome progetto, username e interessi -->
-                <div ng-repeat="proj in projectsList | filterBy: ['name', 'owner.username', 'restitution.interests']: search">
+                <div ng-repeat="proj in waiting | filterBy: ['name', 'owner.username', 'restitution.interests']: search">
                     <a href="#!projectDetails?id={{proj._id}}"><h4>{{proj.name}}</h4></a>
                     <a href="#!show/{{proj.owner._id}}/{{proj.owner.username}}"><i class="fa fa-user"></i> {{proj.owner.username}}</a>
                     <div>Interessi: {{proj.restitution.interests}}%</div>
+                    <button class="btn btn-success" ng-click="changeStatus(proj._id, 'ACCEPTED')">Accetta</button>
+                    <button class="btn btn-danger" ng-click="changeStatus(proj._id, 'NOT_ACCEPTED')">Rifiuta</button>
+                    <hr ng-if="!$last">
+                </div>
+            </div>
 
+        </div>
+    </div>
+
+    <div class="col-xs-6 col-md-4">
+        <div class="project">
+            <h4>RESPINTI</h4>
+
+            <input type="text" class="form-control" placeholder="Search" ng-model="search">
+            <hr>
+
+            <div style="max-height: 500px; overflow: auto;">
+                <!-- filtro cerca dentro nome progetto, username e interessi -->
+                <div ng-repeat="proj in rejected | filterBy: ['name', 'owner.username', 'restitution.interests']: search">
+                    <a href="#!projectDetails?id={{proj._id}}"><h4>{{proj.name}}</h4></a>
+                    <a href="#!show/{{proj.owner._id}}/{{proj.owner.username}}"><i class="fa fa-user"></i> {{proj.owner.username}}</a>
+                    <div>Interessi: {{proj.restitution.interests}}%</div>
                     <hr ng-if="!$last">
                 </div>
             </div>

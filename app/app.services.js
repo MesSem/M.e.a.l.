@@ -38,7 +38,8 @@ function ($q, $timeout, $http) {
     deleteNotifications:deleteNotifications,
     isAdmin:isAdmin,
     getAdminStatus:getAdminStatus,
-    listWaitingProjects:listWaitingProjects
+    listNotAcceptedProjects:listNotAcceptedProjects,
+    changeProjectStatus:changeProjectStatus
   });
 
   function isLoggedIn() {
@@ -210,8 +211,12 @@ function ($q, $timeout, $http) {
     });
   }
 
-  function listWaitingProjects(idProject) {
-    return $http.get('/api/admin/listWaitingProjects');
+  function listNotAcceptedProjects() {
+    return $http.get('/api/admin/listNotAcceptedProjects');
+  }
+
+  function changeProjectStatus(projectId, newStatus) {
+    return $http.post('/api/admin/changeProjectStatus', {projectId, newStatus});
   }
 
 }]);
