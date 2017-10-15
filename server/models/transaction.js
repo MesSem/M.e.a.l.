@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Transaction = new Schema({
+  _id: {type: Schema.Types.ObjectId, auto: true},
   sender:{type: mongoose.Schema.Types.ObjectId, ref: 'users', required:true},
   recipient:{type: mongoose.Schema.Types.ObjectId, ref: 'users', required:true}, //sempre richiesta. Nel caso di un prestito ci va l'id del server
   projectRecipient:{type: mongoose.Schema.Types.ObjectId, ref: 'projects'},
@@ -13,7 +14,8 @@ var Transaction = new Schema({
       type:String,
       enum: ['LOAN', 'LOAN_RESTITUTION_FROM_OWNER' ,'LOAN_RESTITUTION_FROM_SERVER', 'MOVEMENT_TO_OWNER', ''],
       default:''//INDICA UNA TRANSAZIONE CLASSICA
-    }
+    },
+  loanId:{type: mongoose.Schema.Types.ObjectId, ref: 'transactions'}
 });
 
 ////GUIDA oggetto type:
