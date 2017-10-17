@@ -5,6 +5,9 @@
 var express = require('express');
 var router = express.Router();
 
+var errorCodes= require('../../errorCodes.js');
+var utils= require('../../utils.js');
+
 var User = require('../../models/user.js');
 var Transaction = require('../../models/transaction.js');
 var Project= require('../../models/project.js');
@@ -36,15 +39,15 @@ adminRoutes.get('/status', function(req, res) {
 });
 
 /**
- * @api {get} /api/admin/list List of all the unaccepted projects
- * @apiName ListNotAcceptedProjects
+ * @api {get} /api/admin/list List of all the projects
+ * @apiName ListAllProjects
  * @apiGroup Admin
  *
- * @apiSuccess {[Project]} list of unaccepted projects
+ * @apiSuccess {[Project]} list of all the projects
  *
  */
-adminRoutes.get('/listNotAcceptedProjects', function(req, res) {
-  Project.find({"status.value" : {'$ne': 'ACCEPTED'}}, function (err, result) {
+adminRoutes.get('/listAllProjects', function(req, res) {
+  Project.find({}, function (err, result) {
     if (err) {
       return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error getting projects list', err, 500);
     }
@@ -57,7 +60,7 @@ adminRoutes.get('/listNotAcceptedProjects', function(req, res) {
 });
 
 /**
- * @api {get} /api/admin/changeProjectStatus change the status of a project
+ * @api {post} /api/admin/changeProjectStatus change the status of a project
  * @apiName ChangeProjectStatus
  * @apiGroup Admin
  *
@@ -80,5 +83,34 @@ adminRoutes.post('/changeProjectStatus', function(req, res) {
   });
 
 });
+
+/**
+ * @api {post} /api/admin/setPublic change public status of a project
+ * @apiName SetPublic
+ * @apiGroup Admin
+ *
+ * @apiSuccess {String} status Message if the editing it's ok
+ *
+ */
+adminRoutes.post('/setPublic', function(req, res) {
+  
+    var projectId = req.body.projectId;
+    var newStatus = req.body.newStatus;
+  
+    Project.findByIdAndUpdate({_id : projectId}, {isExample:newStatus}, function(err, project){//findByIdAndUpdate per far tornare nome progetto
+      if (err) {
+        return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error updating project public status', err, 500);
+      }
+  
+      res.status(200).json({
+        status: 'Update successful!'
+      });
+      if (newStatus)//controllo per testo notifica
+        utils.createNotification(project.owner, 'Il tuo progetto "' + project.name + '" è ora pubblico!','YOUR_PROJECT_PUBLIC');
+      else
+        utils.createNotification(project.owner, 'Il tuo progetto "' + project.name + '" non è più','YOUR_PROJECT_PUBLIC');
+    });
+  
+  });
 
 module.exports = adminRoutes;

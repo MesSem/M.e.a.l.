@@ -1,9 +1,9 @@
 angular.module('mealApp').component('admin', {
     templateUrl: 'modules/pages/admin/admin.template.html',
-    controller: ['$scope', '$location','UserService',
-                    function($scope, $location, UserService) {
+    controller: ['$scope', '$location','UserService', 'moment',
+                    function($scope, $location, UserService, moment) {
                       //UserService.cachedProject=null;
-                      UserService.listNotAcceptedProjects()//prendo lista progetti
+                      UserService.listAllProjects()//prendo lista progetti
                       .then(function(response) {
                         projects = response.data.projects;
 
@@ -19,16 +19,35 @@ angular.module('mealApp').component('admin', {
                             return item.status.value === 'CLOSED';
                         });
 
+                        $scope.accepted = projects.filter(function(item) {//da controllare
+                            return item.status.value === 'ACCEPTED';
+                        });
+
                         $scope.returned = projects.filter(function(item) {//da controllare
                             return item.status.value === 'CLOSED_&_RESTITUTED';
                         });
 
                       });
 
-                      $scope.changeStatus = function (projectId, newStatus) {
+                    $scope.changeStatus = function (projectId, newStatus) {
                         $scope.projectsError = $scope.projectsSuccess = false;
                         UserService.changeProjectStatus(projectId, newStatus)
                         .then(function(response) {
+                            $scope.projectsSuccess = true;
+                            $scope.projectsSuccessMessage = response.data.status;
+                        })
+                        .catch(function(error) {
+                            $scope.projectsError = true;
+                            $scope.projectsErrorMessage = error.data.message;
+                        });
+                    };
+
+                    $scope.setPublic = function (project) {
+
+                        $scope.projectsError = $scope.projectsSuccess = false;
+                        UserService.setPublic(project._id, !project.isExample)
+                        .then(function(response) {
+                            project.isExample = !project.isExample;
                             $scope.projectsSuccess = true;
                             $scope.projectsSuccessMessage = response.data.status;
                         })
