@@ -67,12 +67,12 @@ adminRoutes.get('/listAllProjects', function(req, res) {
  * @apiSuccess {String} status Message if the editing it's ok
  *
  */
-adminRoutes.post('/changeProjectStatus', function(req, res) {
+adminRoutes.post('/changeProjectStatus', function(req, res) {//findByIdAndUpdate per far tornare nome progetto
 
   var projectId = req.body.projectId;
   var newStatus = req.body.newStatus;
 
-  Project.update({_id : projectId}, {status:{value:newStatus}}, function(err){
+  Project.findByIdAndUpdate({_id : projectId}, {status:{value:newStatus}}, function(err, project){
     if (err) {
       return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error updating project status', err, 500);
     }
@@ -80,6 +80,7 @@ adminRoutes.post('/changeProjectStatus', function(req, res) {
     res.status(200).json({
       status: 'Update successful!'
     });
+    utils.createNotification(project.owner, 'Il tuo progetto "' + project.name + '" è stato impostato come ' + newStatus,'YOUR_PROJECT_PUBLIC');
   });
 
 });
@@ -94,23 +95,55 @@ adminRoutes.post('/changeProjectStatus', function(req, res) {
  */
 adminRoutes.post('/setPublic', function(req, res) {
   
-    var projectId = req.body.projectId;
-    var newStatus = req.body.newStatus;
-  
-    Project.findByIdAndUpdate({_id : projectId}, {isExample:newStatus}, function(err, project){//findByIdAndUpdate per far tornare nome progetto
-      if (err) {
-        return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error updating project public status', err, 500);
-      }
-  
-      res.status(200).json({
-        status: 'Update successful!'
-      });
-      if (newStatus)//controllo per testo notifica
-        utils.createNotification(project.owner, 'Il tuo progetto "' + project.name + '" è ora pubblico!','YOUR_PROJECT_PUBLIC');
-      else
-        utils.createNotification(project.owner, 'Il tuo progetto "' + project.name + '" non è più','YOUR_PROJECT_PUBLIC');
+  var projectId = req.body.projectId;
+  var newStatus = req.body.newStatus;
+
+  Project.findByIdAndUpdate({_id : projectId}, {isExample:newStatus}, function(err, project){//findByIdAndUpdate per far tornare nome progetto
+    if (err) {
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error updating project public status', err, 500);
+    }
+
+    res.status(200).json({
+      status: 'Update successful!'
     });
-  
+    if (newStatus)//controllo per testo notifica
+      utils.createNotification(project.owner, 'Il tuo progetto "' + project.name + '" è ora pubblico!','YOUR_PROJECT_PUBLIC');
+    else
+      utils.createNotification(project.owner, 'Il tuo progetto "' + project.name + '" non è più pubblico','YOUR_PROJECT_PUBLIC');
   });
+
+});
+
+/**
+ * @api {post} /api/admin/closeAndReturn close a project and return the money
+ * @apiName CloseAndReturn
+ * @apiGroup Admin
+ *
+ * @apiSuccess {String} status Message if the closing it's ok
+ *
+ */
+adminRoutes.post('/closeAndReturn', function(req, res) {
+
+  var projectId = req.body.projectId;
+
+  Project.find({_id: projectId}, function (err, project) {
+    if (err) {
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error getting the project', err, 500);
+    }
+    try {
+      utils.forceClosing(projectId);
+    } catch(err) {
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error closing the project and returning money', err, 500);
+    }
+
+    res.status(200).json({
+      status: 'Closing successful!'
+    });
+    utils.createNotification(project.owner, 'Il tuo progetto "' + project.name + '" è stato chiuso e i soldi rimborsati','YOUR_PROJECT_FORCED');
+  })
+
+  
+
+});
 
 module.exports = adminRoutes;

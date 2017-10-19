@@ -40,7 +40,8 @@ function ($q, $timeout, $http) {
     getAdminStatus:getAdminStatus,
     listAllProjects:listAllProjects,
     changeProjectStatus:changeProjectStatus,
-    setPublic:setPublic
+    setPublic:setPublic,
+    closeAndReturn:closeAndReturn
   });
 
   function isLoggedIn() {
@@ -222,6 +223,10 @@ function ($q, $timeout, $http) {
 
   function setPublic(projectId, newStatus) {
     return $http.post('/api/admin/setPublic', {projectId, newStatus});
+  }
+
+  function closeAndReturn(projectId) {
+    return $http.post('/api/admin/closeAndReturn', {projectId});
   }
 
 }]);

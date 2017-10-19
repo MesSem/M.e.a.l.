@@ -40,6 +40,7 @@ angular.module('mealApp').component('admin', {
                             $scope.projectsError = true;
                             $scope.projectsErrorMessage = error.data.message;
                         });
+                        
                     };
 
                     $scope.setPublic = function (project) {
@@ -55,6 +56,22 @@ angular.module('mealApp').component('admin', {
                             $scope.projectsError = true;
                             $scope.projectsErrorMessage = error.data.message;
                         });
+
+                    };
+
+                    $scope.closeAndReturn = function (projectId) {
+                        
+                        $scope.projectsError = $scope.projectsSuccess = false;
+                        UserService.closeAndReturn(projectId)
+                        .then(function(response) {
+                            $scope.projectsSuccess = true;
+                            $scope.projectsSuccessMessage = response.data.status;
+                        })
+                        .catch(function(error) {
+                            $scope.projectsError = true;
+                            $scope.projectsErrorMessage = error.data.message;
+                        });
+
                     };
 
 

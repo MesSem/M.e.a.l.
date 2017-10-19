@@ -635,8 +635,9 @@ userRoutes.get('/listLoans', function(req, res) {
   var arrayOfLoans=[];
   var promises=[];
   Transaction
-  .find({$and:[{sender: req.userId}, {type:'LOAN'}]})
+  .find({$and:[{sender: req.userId}, {type:{ $ne: '' }}]})
   .populate('projectRecipient',{name:'name', _id:'id'})
+  .populate('sender',{username:'username'})
   .lean()
   .stream()
   .on('data', function(loan){

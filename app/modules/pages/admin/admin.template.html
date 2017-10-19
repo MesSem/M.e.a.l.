@@ -57,11 +57,12 @@
                     <a href="#!projectDetails?id={{proj._id}}"><h4>{{proj.name}}</h4></a>
                     <a href="#!show/{{proj.owner._id}}/{{proj.owner.username}}"><i class="fa fa-user"></i> {{proj.owner.username}}</a>
                     <div>Interessi: {{proj.restitution.interests}}%</div>
+                    <div>Raccolti: €{{proj.actualMoney.money}} / €{{proj.requestedMoney}}</div>
                     Chiusura tra: 
                     <timer end-time="proj.endDate">{{days}} giorni, {{hours}} ore, {{minutes}} minuti, {{seconds}} secondi</timer>
                     <br>
                     <button class="btn " ng-class="{'btn-success': proj.isExample, 'btn-warning': !proj.isExample}" ng-click="setPublic(proj)"><i class="fa"  ng-class="{'fa-check': proj.isExample, 'fa-ban': !proj.isExample}"></i> Pubblico</button>
-                    <!--<button class="btn btn-danger" ng-click="changeStatus(proj._id, 'NOT_ACCEPTED')">Chiudi e restituisci</button>-->
+                    <button class="btn btn-danger" ng-click="closeAndReturn(proj._id)">Chiudi e restituisci</button>
                     <hr ng-if="!$last">
                 </div>
             </div>

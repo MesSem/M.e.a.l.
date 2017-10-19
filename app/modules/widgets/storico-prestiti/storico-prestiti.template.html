@@ -7,8 +7,10 @@
                 <div>Data: {{loan.date | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
                 <div>Progetto:<a href="#!projectDetails?id={{loan.projectRecipient._id}}"> {{loan.projectRecipient.name}}</a></div>
                 <div>Importo: € {{loan.money | number:2}}</div>
+                <div>Utente: <a href="#!show/{{loan.sender._id}}/{{loan.sender.username}}"><i class="fa fa-user"></i> {{loan.sender.username}}</a></div>
                 <div ng-show={{loan.returnDate}}>Data restituzione: {{loan.returnDate | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
                 <div ng-show={{loan.returnMoney}}>Importo restituzione: € {{loan.returnMoney | number:2}}</div>
+                <div ng-if="loan.notes">Messaggio: {{loan.notes}}</div>
             </div>
         </div>
     </div>
