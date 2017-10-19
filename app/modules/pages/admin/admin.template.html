@@ -28,12 +28,12 @@
             <input type="text" class="form-control" placeholder="Search" ng-model="search">
             
             <div class="filters" style="margin-top:10px;">
-                <button class="btn btn-info" ng-click="filterStatus('ACCEPTED')">Accettati</button>
-                <button class="btn btn-info" ng-click="filterStatus('TO_CHECK')">In attesa</button>
-                <button class="btn btn-info" ng-click="filterStatus('NOT_ACCEPTED')">Respinti</button>
-                <button class="btn btn-info" ng-click="filterStatus('CLOSED')">Chiusi</button>
-                <button class="btn btn-info" ng-click="filterStatus('CLOSED_&_RESTITUTED')">Chiusi e restituiti</button>
-                <button class="btn btn-info" ng-click="filterStatus('FORCED_CLOSING')">Chiusura forzata</button>
+                <button class="btn btn-info" ng-click="filterStatus('ACCEPTED')">{{enumProjects['ACCEPTED']}}</button>
+                <button class="btn btn-info" ng-click="filterStatus('TO_CHECK')">{{enumProjects['TO_CHECK']}}</button>
+                <button class="btn btn-info" ng-click="filterStatus('NOT_ACCEPTED')">{{enumProjects['NOT_ACCEPTED']}}</button>
+                <button class="btn btn-info" ng-click="filterStatus('CLOSED')">{{enumProjects['CLOSED']}}</button>
+                <button class="btn btn-info" ng-click="filterStatus('CLOSED_&_RESTITUTED')">{{enumProjects['CLOSED_&_RESTITUTED']}}</button>
+                <button class="btn btn-info" ng-click="filterStatus('FORCED_CLOSING')">{{enumProjects['FORCED_CLOSING']}}</button>
                 <span>|</span>
                 <button class="btn btn-warning" ng-click="filterStatus(null); search = null">Reset</button>
             </div>
@@ -49,8 +49,8 @@
                         <td>Azioni</td>
                     </tr>
                 </thead>
-                <tr ng-repeat="proj in projects | filterBy: ['name', 'owner.username', 'proj.endDate']: search | filterBy: ['status.value']: status : true">
-                    <td>{{proj.status.value}}</td>
+                <tr ng-repeat="proj in projects | filterBy: ['name', 'owner.username', 'proj.endDate']: search | filterBy: ['status.value']: status : true | orderBy:'status.value'">
+                    <td>{{enumProjects[proj.status.value]}}</td>
                     <td><a href="#!projectDetails?id={{proj._id}}"><h4>{{proj.name}}</h4></a></td>
                     <td><a href="#!show/{{proj.owner._id}}/{{proj.owner.username}}"><i class="fa fa-user"></i> {{proj.owner.username}}</a></td>
                     <td>Raccolti: €{{proj.actualMoney.money}} / €{{proj.requestedMoney}}</td>

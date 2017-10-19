@@ -49,17 +49,15 @@ mealApp.run(function ($rootScope, $location, $route, UserService) {
       
       UserService.getUserStatus()
       .then(function(){
-        if (!angular.isUndefined(next.access)){ //check access
-          if (next.access.onlyUser && !UserService.isLoggedIn()) { //check logged
-            $location.path('/login');
-            $route.reload();
-          }
+        if (!angular.isUndefined(next.access) && next.access.onlyUser && !UserService.isLoggedIn()) { //check logged
+          $location.path('/login');
+          $route.reload();
         }
       });
 
       UserService.getAdminStatus()
       .then(function(){
-        if (next.access.onlyAdmin && !UserService.isAdmin()) { //check admin
+        if (!angular.isUndefined(next.access) && next.access.onlyAdmin && !UserService.isAdmin()) { //check admin
           $location.path('/profile');
           $route.reload();
         }

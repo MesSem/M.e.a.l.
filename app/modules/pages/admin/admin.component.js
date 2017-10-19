@@ -82,7 +82,8 @@ angular.module('mealApp').component('admin', {
                             else
                                 $scope.status = status;
                         }
-                    
+
+                    $scope.enumProjects = UserService.getEnumProjects();
                       
                 }]
   });

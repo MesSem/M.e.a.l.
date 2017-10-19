@@ -13,6 +13,7 @@ function ($q, $timeout, $http) {
 
   // return available functions for use in the controllers
   return ({
+    getEnumProjects:getEnumProjects,
     isLoggedIn: isLoggedIn,
     getUserStatus: getUserStatus,
     login: login,
@@ -46,6 +47,9 @@ function ($q, $timeout, $http) {
     newAdmin:newAdmin
   });
 
+  function getEnumProjects() {//traduco da enum in italiano
+    return {ACCEPTED : 'Accettato', TO_CHECK : 'In attesa', NOT_ACCEPTED : 'Respinto', CLOSED : 'Chiuso', 'CLOSED_&_RESTITUTED' : 'Chiuso e restituito', FORCED_CLOSING : 'Chiusura forzata'};
+  }
   function isLoggedIn() {
     if(user) {
       return true;

@@ -21,7 +21,7 @@
             <div>Raccolti: €{{proj.actualMoney.money}} / €{{proj.requestedMoney}}</div>
             <timer end-time="proj.endDate">{{days}} giorni, {{hours}} ore, {{minutes}} minuti, {{seconds}} secondi</timer>
             <div ng-show="proj.owner._id==user._id && user != 'undefined'">
-                <div>{{proj.status.value}}</div>
+                <div>{{enumProjects[proj.status.value]}}</div>
                 <a href="#!projectManagement?id={{proj._id}}">Gestisci il progetto</a>
             </div>
             
