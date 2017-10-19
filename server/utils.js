@@ -250,7 +250,7 @@ this.forceClosing=function(idProject){
     query={$and:[{_id:idProject},{'status.value':'CLOSED'}]};
   }*/
   Project
-  .findOneAndUpdate({_id:idProject}, {'$set': {'status.value': 'CLOSED_&FORCED_CLOSING'}})
+  .findOneAndUpdate({_id:idProject}, {'$set': {'status.value': 'FORCED_CLOSING'}})
   .exec(function (err, project) {
     if (err) {
         console.log("Error finding project: "+err.message);

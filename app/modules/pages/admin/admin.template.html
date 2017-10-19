@@ -4,114 +4,6 @@
 
     <div class="col-xs-6 col-md-4">
         <div class="project">
-            <h4>DA APPROVARE</h4>
-
-            <input type="text" class="form-control" placeholder="Search" ng-model="search">
-            <hr>
-
-            <div style="max-height: 500px; overflow: auto;">
-                <!-- filtro cerca dentro nome progetto, username e interessi -->
-                <div ng-repeat="proj in waiting | filterBy: ['name', 'owner.username', 'restitution.interests']: search">
-                    <a href="#!projectDetails?id={{proj._id}}"><h4>{{proj.name}}</h4></a>
-                    <a href="#!show/{{proj.owner._id}}/{{proj.owner.username}}"><i class="fa fa-user"></i> {{proj.owner.username}}</a>
-                    <div>Interessi: {{proj.restitution.interests}}%</div>
-                    <button class="btn btn-success" ng-click="changeStatus(proj._id, 'ACCEPTED')">Accetta</button>
-                    <button class="btn btn-danger" ng-click="changeStatus(proj._id, 'NOT_ACCEPTED')">Rifiuta</button>
-                    <hr ng-if="!$last">
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="col-xs-6 col-md-4">
-        <div class="project">
-            <h4>RESPINTI</h4>
-
-            <input type="text" class="form-control" placeholder="Search" ng-model="search">
-            <hr>
-
-            <div style="max-height: 500px; overflow: auto;">
-                <!-- filtro cerca dentro nome progetto, username e interessi -->
-                <div ng-repeat="proj in rejected | filterBy: ['name', 'owner.username', 'restitution.interests']: search">
-                    <a href="#!projectDetails?id={{proj._id}}"><h4>{{proj.name}}</h4></a>
-                    <a href="#!show/{{proj.owner._id}}/{{proj.owner.username}}"><i class="fa fa-user"></i> {{proj.owner.username}}</a>
-                    <div>Interessi: {{proj.restitution.interests}}%</div>
-                    <hr ng-if="!$last">
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="col-xs-6 col-md-4">
-        <div class="project">
-            <h4>IN CORSO</h4>
-
-            <input type="text" class="form-control" placeholder="Search" ng-model="search">
-            <hr>
-
-            <div style="max-height: 500px; overflow: auto;">
-                <!-- filtro cerca dentro nome progetto, username e interessi -->
-                <div ng-repeat="proj in accepted | filterBy: ['name', 'owner.username', 'restitution.interests']: search">
-                    <a href="#!projectDetails?id={{proj._id}}"><h4>{{proj.name}}</h4></a>
-                    <a href="#!show/{{proj.owner._id}}/{{proj.owner.username}}"><i class="fa fa-user"></i> {{proj.owner.username}}</a>
-                    <div>Interessi: {{proj.restitution.interests}}%</div>
-                    <div>Raccolti: €{{proj.actualMoney.money}} / €{{proj.requestedMoney}}</div>
-                    Chiusura tra: 
-                    <timer end-time="proj.endDate">{{days}} giorni, {{hours}} ore, {{minutes}} minuti, {{seconds}} secondi</timer>
-                    <br>
-                    <button class="btn " ng-class="{'btn-success': proj.isExample, 'btn-warning': !proj.isExample}" ng-click="setPublic(proj)"><i class="fa"  ng-class="{'fa-check': proj.isExample, 'fa-ban': !proj.isExample}"></i> Pubblico</button>
-                    <button class="btn btn-danger" ng-click="closeAndReturn(proj._id)">Chiudi e restituisci</button>
-                    <hr ng-if="!$last">
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="col-xs-6 col-md-4">
-        <div class="project">
-            <h4>CHIUSI</h4>
-
-            <input type="text" class="form-control" placeholder="Search" ng-model="search">
-            <hr>
-
-            <div style="max-height: 500px; overflow: auto;">
-                <!-- filtro cerca dentro nome progetto, username e interessi -->
-                <div ng-repeat="proj in closed | filterBy: ['name', 'owner.username', 'restitution.interests']: search">
-                    <a href="#!projectDetails?id={{proj._id}}"><h4>{{proj.name}}</h4></a>
-                    <a href="#!show/{{proj.owner._id}}/{{proj.owner.username}}"><i class="fa fa-user"></i> {{proj.owner.username}}</a>
-                    <div>Interessi: {{proj.restitution.interests}}%</div>
-                    <hr ng-if="!$last">
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="col-xs-6 col-md-4">
-        <div class="project">
-            <h4>CHIUSI E RESTITUITI</h4>
-
-            <input type="text" class="form-control" placeholder="Search" ng-model="search">
-            <hr>
-
-            <div style="max-height: 500px; overflow: auto;">
-                <!-- filtro cerca dentro nome progetto, username e interessi -->
-                <div ng-repeat="proj in returned | filterBy: ['name', 'owner.username', 'restitution.interests']: search">
-                    <a href="#!projectDetails?id={{proj._id}}"><h4>{{proj.name}}</h4></a>
-                    <a href="#!show/{{proj.owner._id}}/{{proj.owner.username}}"><i class="fa fa-user"></i> {{proj.owner.username}}</a>
-                    <div>Interessi: {{proj.restitution.interests}}%</div>
-                    <hr ng-if="!$last">
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="col-xs-6 col-md-4">
-        <div class="project">
             <h4>GESTIONE UTENTI ADMIN</h4>
             <p>
                 <span>Aggiungi admin: </span>
@@ -124,6 +16,60 @@
                 <a href="#!show/{{admin._id}}/{{admin.username}}"><i class="fa fa-user"></i> {{admin.username}}</a>
                 
             </div>
+
+        </div>
+    </div>
+
+
+    <div class="col-xs-6 col-md-12">
+        <div class="project">
+            <h4>Progetti</h4>
+
+            <input type="text" class="form-control" placeholder="Search" ng-model="search">
+            
+            <div class="filters" style="margin-top:10px;">
+                <button class="btn btn-info" ng-click="filterStatus('ACCEPTED')">Accettati</button>
+                <button class="btn btn-info" ng-click="filterStatus('TO_CHECK')">In attesa</button>
+                <button class="btn btn-info" ng-click="filterStatus('NOT_ACCEPTED')">Respinti</button>
+                <button class="btn btn-info" ng-click="filterStatus('CLOSED')">Chiusi</button>
+                <button class="btn btn-info" ng-click="filterStatus('CLOSED_&_RESTITUTED')">Chiusi e restituiti</button>
+                <button class="btn btn-info" ng-click="filterStatus('FORCED_CLOSING')">Chiusura forzata</button>
+                <span>|</span>
+                <button class="btn btn-warning" ng-click="filterStatus(null); search = null">Reset</button>
+            </div>
+            <hr>
+            <table style="width: 100%;">
+                <thead>
+                    <tr>
+                        <td>Stato</td>
+                        <td>Nome</td>
+                        <td>Utente</td>
+                        <td>Interessi</td>
+                        <td>Chiusura</td>
+                        <td>Azioni</td>
+                    </tr>
+                </thead>
+                <tr ng-repeat="proj in projects | filterBy: ['name', 'owner.username', 'proj.endDate']: search | filterBy: ['status.value']: status : true">
+                    <td>{{proj.status.value}}</td>
+                    <td><a href="#!projectDetails?id={{proj._id}}"><h4>{{proj.name}}</h4></a></td>
+                    <td><a href="#!show/{{proj.owner._id}}/{{proj.owner.username}}"><i class="fa fa-user"></i> {{proj.owner.username}}</a></td>
+                    <td>Raccolti: €{{proj.actualMoney.money}} / €{{proj.requestedMoney}}</td>
+                    <td>
+                        <div ng-if="today < proj.endDate">{{proj.endDate | amUtc | amDateFormat:'MM-DD-YYYY HH:mm:ss'}}</div>
+                        <div ng-if="today >= proj.endDate">Chiuso</div>
+                    </td>
+                    <td>
+                        <div ng-if="proj.status.value == 'ACCEPTED'">
+                            <button class="btn " ng-class="{'btn-success': proj.isExample, 'btn-warning': !proj.isExample}" ng-click="setPublic(proj)"><i class="fa"  ng-class="{'fa-check': proj.isExample, 'fa-ban': !proj.isExample}"></i> Pubblico</button>
+                            <button class="btn btn-danger" ng-click="closeAndReturn(proj._id)">Chiudi e restituisci</button>
+                        </div>
+                        <div ng-if="proj.status.value == 'TO_CHECK'">
+                            <button class="btn btn-success" ng-click="changeStatus(proj._id, 'ACCEPTED')">Accetta</button>
+                            <button class="btn btn-danger" ng-click="changeStatus(proj._id, 'NOT_ACCEPTED')">Rifiuta</button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
         </div>
     </div>

@@ -131,3 +131,5 @@ input::-webkit-inner-spin-button {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.filters > * {margin-right: 5px;}
