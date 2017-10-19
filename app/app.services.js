@@ -41,7 +41,9 @@ function ($q, $timeout, $http) {
     listAllProjects:listAllProjects,
     changeProjectStatus:changeProjectStatus,
     setPublic:setPublic,
-    closeAndReturn:closeAndReturn
+    closeAndReturn:closeAndReturn,
+    adminList:adminList,
+    newAdmin:newAdmin
   });
 
   function isLoggedIn() {
@@ -227,6 +229,14 @@ function ($q, $timeout, $http) {
 
   function closeAndReturn(projectId) {
     return $http.post('/api/admin/closeAndReturn', {projectId});
+  }
+
+  function adminList() {
+    return $http.get('/api/admin/adminList');
+  }
+
+  function newAdmin(username) {
+    return $http.post('/api/admin/newAdmin', {username});
   }
 
 }]);

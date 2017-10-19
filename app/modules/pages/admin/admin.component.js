@@ -2,7 +2,11 @@ angular.module('mealApp').component('admin', {
     templateUrl: 'modules/pages/admin/admin.template.html',
     controller: ['$scope', '$location','UserService', 'moment',
                     function($scope, $location, UserService, moment) {
-                      //UserService.cachedProject=null;
+                        UserService.adminList()
+                        .then(function(response) {
+                            $scope.admins = response.data.admins;
+                        })
+
                       UserService.listAllProjects()//prendo lista progetti
                       .then(function(response) {
                         projects = response.data.projects;
@@ -60,7 +64,7 @@ angular.module('mealApp').component('admin', {
                     };
 
                     $scope.closeAndReturn = function (projectId) {
-                        
+                        //cambiare stato!!!!!!
                         $scope.projectsError = $scope.projectsSuccess = false;
                         UserService.closeAndReturn(projectId)
                         .then(function(response) {
@@ -74,7 +78,24 @@ angular.module('mealApp').component('admin', {
 
                     };
 
+                    $scope.newAdmin = function () {
+                        $scope.projectsError = $scope.projectsSuccess = false;
+                        UserService.newAdmin($scope.newAdminName)
+                        .then(function(response) {
+                            window.location.reload();
+                            //$scope.projectsSuccess = true;
+                            //$scope.projectsSuccessMessage = response.data.status;
+                        })
+                        .catch(function(error) {
+                            $scope.projectsError = true;
+                            $scope.projectsErrorMessage = error.data.message;
+                        });
 
+                    };
+
+                    
+
+                    
                       
                 }]
   });

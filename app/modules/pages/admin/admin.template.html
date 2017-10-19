@@ -110,4 +110,22 @@
         </div>
     </div>
 
+    <div class="col-xs-6 col-md-4">
+        <div class="project">
+            <h4>GESTIONE UTENTI ADMIN</h4>
+            <p>
+                <span>Aggiungi admin: </span>
+                <input type="text" placeholder="Username" ng-model="newAdminName" class="form-control">
+                <button class="btn btn-success" ng-click="newAdmin()">Aggiungi</button>
+            </p>
+            <hr>
+            Lista admin
+            <div ng-repeat="admin in admins">
+                <a href="#!show/{{admin._id}}/{{admin.username}}"><i class="fa fa-user"></i> {{admin.username}}</a>
+                
+            </div>
+
+        </div>
+    </div>
+
 </div>

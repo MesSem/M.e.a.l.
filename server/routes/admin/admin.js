@@ -142,8 +142,47 @@ adminRoutes.post('/closeAndReturn', function(req, res) {
     utils.createNotification(project.owner, 'Il tuo progetto "' + project.name + '" è stato chiuso e i soldi rimborsati','YOUR_PROJECT_FORCED');
   })
 
-  
+});
 
+/**
+ * @api {get} /api/admin/adminList List of all the admins
+ * @apiName AdminList
+ * @apiGroup Admin
+ *
+ * @apiSuccess {[Admins]} list of all the admins
+ *
+ */
+adminRoutes.get('/adminList', function(req, res) {
+  User.find({isAdmin: true}, '_id, username', function (err, result) {
+    if (err) {
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error getting admins list', err, 500);
+    }
+    return res.status(200).json({
+      admins: result
+    });
+  })
+});
+
+/**
+ * @api {get} /api/admin/adminList List of all the admins
+ * @apiName AdminList
+ * @apiGroup Admin
+ *
+ * @apiSuccess {[Admins]} list of all the admins
+ *
+ */
+adminRoutes.post('/newAdmin', function(req, res) {
+  var username = req.body.username;
+
+  User.findOneAndUpdate({username : username}, {"$set" : {isAdmin: true}}, function(err, user){
+    if (err) {
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error updating admins status', err, 500);
+    }
+    res.status(200).json({
+      status: 'New admin setting successful!'
+    });
+    utils.createNotification(user._id, 'Complimenti, ora sei un admin!', 'GENERAL');
+  })
 });
 
 module.exports = adminRoutes;
