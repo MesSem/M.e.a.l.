@@ -8,6 +8,7 @@
                     <h4 style="text-align:center;">{{project.name}}</h4>
 
                     <hr>
+                    <div>Stato progetto: {{enumProjects[project.status.value]}}</div>
                     <div>Interessi: {{project.restitution.interests}}%</div>
                     <div>Raccolti: €{{project.actualMoney.money}} / €{{project.requestedMoney}}</div>
                     <timer end-time="project.endDate">{{days}} giorni, {{hours}} ore, {{minutes}} minuti, {{seconds}} secondi</timer>

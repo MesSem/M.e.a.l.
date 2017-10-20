@@ -27,6 +27,10 @@ module.exports = function(req, res, next) {
               //User exist, return of the user id
               if (user) {
                 req.userId = payload.id;
+                if (user.isAdmin)
+                  req.isAdmin = true;
+                else
+                  req.isAdmin = false;
                 //Creazone del payload del token
                 var newPayload = {
                     id: req.userId,
@@ -62,6 +66,7 @@ module.exports = function(req, res, next) {
             }
             if (user && user.isAdmin) {
               req.userId = payload.id;
+              req.isAdmin = true;
               //Creazone del payload del token
               var newPayload = {
                   id: req.userId,
