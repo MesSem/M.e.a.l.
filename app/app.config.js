@@ -18,7 +18,8 @@ mealApp.config(['$locationProvider', '$routeProvider',
           template: '<login></login>'
         }).
       when('/newProject',{
-            template: '<create-project></create-project>'
+            template: '<create-project></create-project>',
+            access: {onlyUser: true}
           }).
       when('/projects',{
             template: '<projects></projects>'
@@ -66,8 +67,8 @@ mealApp.run(function ($rootScope, $location, $route, UserService) {
 });
 
 angular.module('mealApp').controller('loggedController',
-['$scope', '$window', 'UserService',
-function ($scope, $window, UserService) {
+['$scope', 'UserService', '$location',
+function ($scope, UserService, $location) {
 
   $scope.isLoggedIn = function() {
     return UserService.isLoggedIn();
@@ -81,7 +82,7 @@ function ($scope, $window, UserService) {
     // call logout from service
     UserService.logout()
       .then(function () {
-        $window.location.reload();
+        $location.url('/login');
       });
   }
 

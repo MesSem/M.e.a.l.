@@ -50,11 +50,11 @@ body {background-color: #F7F5F2;}
 
 h1, h2, h3 {text-align: center;}
 
-.shadow, .project, .upper-div, .form-div, .showcase {
+.shadow, .project, .upper-div, .form-div, .showcase, .project-div {
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
-.form-div, .project, .showcase {
+.form-div, .project, .showcase, .project-div {
     border-radius: 3px;
 }
 
@@ -63,6 +63,12 @@ h1, h2, h3 {text-align: center;}
     background-color: white;
     padding: 10px 15px;
     margin: 15px auto;
+}
+
+.project-div {
+    max-width: 1000px;
+    margin: auto;
+    overflow: auto;
 }
 
 .project input {
@@ -133,3 +139,9 @@ input::-webkit-inner-spin-button {
 }
 
 .filters > * {margin-right: 5px;}
+
+.gallery-img {
+    margin-right: 5px;
+    margin-bottom: 5px;
+    max-height: 120px;
+}

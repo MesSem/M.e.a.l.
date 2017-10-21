@@ -87,8 +87,8 @@ function ($q, $timeout, $http) {
   }
 
   var cachedUser = null;
-  function getUser() {
-    if(!cachedUser) cachedUser = $http.get('/api/user/user');
+  function getUser(force = false) {
+    if(!cachedUser || force) cachedUser = $http.get('/api/user/user');
     return cachedUser;
   }
 

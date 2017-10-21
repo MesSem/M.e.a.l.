@@ -347,7 +347,7 @@ userRoutes.post('/project', upload, function(req, res) {//registrazione o update
 
       resizeImage(gallery[key], projDir + path.sep + galleryName);
 
-      var galleryPath = realProjDir + path.sep + galleryName;
+      gallery[key] = realProjDir + path.sep + galleryName;
     }
 
     Project.update({_id: proj._id}, {'$set': {image: mainImagePath, imagesGallery: gallery}}, function (err) {
