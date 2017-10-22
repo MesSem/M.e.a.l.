@@ -34,10 +34,9 @@
 
   <script src='bower_components/angular-filter/dist/angular-filter.min.js'></script>
 
-  <!--<script src="app.module.js"></script>-->
+
   <script src="app.config.js"></script>
   <script src="app.services.js"></script>
-
 
 
   <script src="modules/pages/home/home.component.js"></script>
@@ -59,15 +58,9 @@
   <script src="modules/widgets/cambio-password/cambio-password.component.js"></script>
   <script src="modules/widgets/storico-prestiti/storico-prestiti.component.js"></script>
 
-  <!--
-  <script src="modules/common/common.module.js"></script>
-  <script src="modules/common/filters/media.filter.js"></script>
-  <script src="modules/common/services/user.service.js"></script>-->
-
 </head>
 
 <body>
-<!-- qui va il menu presente in alto, dovrà cambiare in base se utente loggato o no, forse meglio fare un componente apposito-->
 
   <div class="bg-green upper-div">
     <div><a href="#!" style="color: white;text-decoration: none;">MEAL</a></div>
@@ -75,10 +68,10 @@
     <div class="access-div">
       <div ng-controller="loggedController">
         <a class="btn btn-success" href="#!admin" ng-show='isAdmin()'>Admin</a>
-        <div class="btn-group show-on-hover" ng-show='isLoggedIn()' ng-controller="loggedController">
+        <div class="btn-group show-on-hover" ng-show='isLoggedIn()'>
           <a class="btn btn-success" ng-click="show = !show">Notifiche <span class="badge">{{notifications.length}}</span></a>
           <ul class="dropdown-menu" role="menu" ng-show="show" ng-if="notifications.length" style="display:block;max-width: 100%;">
-            <li ng-repeat="notif in notifications"><a class="ellipsis">{{notif.message}}</a></li>
+            <li ng-repeat="notif in notifications"><a class="ellipsis">{{extractConvert(notif.message)}}</a></li>
             <li class="divider"></li>
             <li><a href="" ng-click='deleteNotifications()'>Cancella tutto</a></li>
           </ul>
@@ -99,7 +92,6 @@
 
   </div>
 
-  <!--<ng-view></ng-view>-->
   <div ng-view></div>
 
   <!--<div id="login" ng-viewlogin></div>-->

@@ -50,6 +50,7 @@ function ($q, $timeout, $http) {
   function getEnumProjects() {//traduco da enum in italiano
     return {ACCEPTED : 'In corso', TO_CHECK : 'In attesa', NOT_ACCEPTED : 'Respinto', CLOSED : 'Chiuso', 'CLOSED_&_RESTITUTED' : 'Chiuso e restituito', FORCED_CLOSING : 'Chiusura forzata'};
   }
+  
   function isLoggedIn() {
     if(user) {
       return true;
@@ -75,11 +76,11 @@ function ($q, $timeout, $http) {
   }
 
   function login(username, password, sessionOpen) {
+    cachedUser = cachedUserList = cachedTransactions = cachedProjects = cachedLoansDone = null;//reset cache
     return $http.post('/api/login', {username: username, password: password, sessionOpen:sessionOpen});
   }
 
   function logout() {
-    cachedUser = cachedUserList = cachedTransactions = cachedProjects = cachedLoansDone = null;//reset cache
     return $http.get('/api/user/logout');
   }
 

@@ -80,7 +80,7 @@ adminRoutes.post('/changeProjectStatus', function(req, res) {//findByIdAndUpdate
     res.status(200).json({
       status: 'Update successful!'
     });
-    utils.createNotification(project.owner, 'Il tuo progetto "' + project.name + '" è stato impostato come ' + newStatus,'YOUR_PROJECT_PUBLIC');
+    utils.createNotification(project.owner, 'Il tuo progetto "' + project.name + '" è stato impostato come @' + newStatus + '@', 'YOUR_PROJECT_PUBLIC');
   });
 
 });
@@ -139,7 +139,7 @@ adminRoutes.post('/closeAndReturn', function(req, res) {
     res.status(200).json({
       status: 'Closing successful!'
     });
-    utils.createNotification(project.owner, 'Il tuo progetto "' + project.name + '" è stato chiuso e i soldi rimborsati','YOUR_PROJECT_FORCED');
+    utils.createNotification(project.owner, 'Il tuo progetto "' + project.name + '" è stato chiuso e i soldi rimborsati', 'YOUR_PROJECT_FORCED');
   })
 
 });

@@ -67,8 +67,8 @@ mealApp.run(function ($rootScope, $location, $route, UserService) {
 });
 
 angular.module('mealApp').controller('loggedController',
-['$scope', 'UserService', '$location',
-function ($scope, UserService, $location) {
+['$scope', 'UserService', '$location', '$rootScope',
+function ($scope, UserService, $location, $rootScope) {
 
   $scope.isLoggedIn = function() {
     return UserService.isLoggedIn();
@@ -94,14 +94,19 @@ function ($scope, UserService, $location) {
       });
   }
 
-  UserService.getUser()
-    .then(function (response) {
-      userInfo = response;
-      //console.log(userInfo);
-      $scope.notifications = userInfo.data.user.notifications;
-      //if (notifications.length > 0)
-        //console.log(notifications);
-    });
-  
+  $rootScope.$on('newNotifications', function() {//richiamabile dal controller del login
+    UserService.getUser()//prendo le notifiche
+      .then(function (response) {
+        $scope.notifications = response.data.user.notifications;
+      });
+  });
+
+  $rootScope.$emit('newNotifications');
+
+  $scope.extractConvert = function(frase) {//trovo e traduco lo status del progetto
+    enumProjects = UserService.getEnumProjects();
+    status = frase.match("@(.*)@")[0];
+    return frase.replace(status, '"' + enumProjects[status.replace(/@/g, '')] + '"');
+  }
 
 }]);

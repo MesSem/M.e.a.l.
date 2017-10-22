@@ -1,6 +1,6 @@
 <div class="row" style="padding: 15px;">
-        <div ng-show="projectsSuccess" class="alert alert-success">{{projectsSuccessMessage}}</div>
-        <div ng-show="projectsError" class="alert alert-danger">{{projectsErrorMessage}}</div>
+    <div ng-show="projectsSuccess" class="alert alert-success">{{projectsSuccessMessage}}</div>
+    <div ng-show="projectsError" class="alert alert-danger">{{projectsErrorMessage}}</div>
 
     <div class="col-xs-6 col-md-4">
         <div class="project">
@@ -16,10 +16,8 @@
                 <a href="#!show/{{admin._id}}/{{admin.username}}"><i class="fa fa-user"></i> {{admin.username}}</a>
                 
             </div>
-
         </div>
     </div>
-
 
     <div class="col-xs-6 col-md-12">
         <div class="project">
@@ -61,11 +59,11 @@
                     <td>
                         <div ng-if="proj.status.value == 'ACCEPTED'">
                             <button class="btn " ng-class="{'btn-success': proj.isExample, 'btn-warning': !proj.isExample}" ng-click="setPublic(proj)"><i class="fa"  ng-class="{'fa-check': proj.isExample, 'fa-ban': !proj.isExample}"></i> Pubblico</button>
-                            <button class="btn btn-danger" ng-click="closeAndReturn(proj._id)">Chiudi e restituisci</button>
+                            <button class="btn btn-danger" ng-click="closeAndReturn(proj)">Chiudi e restituisci</button>
                         </div>
                         <div ng-if="proj.status.value == 'TO_CHECK'">
-                            <button class="btn btn-success" ng-click="changeStatus(proj._id, 'ACCEPTED')">Accetta</button>
-                            <button class="btn btn-danger" ng-click="changeStatus(proj._id, 'NOT_ACCEPTED')">Rifiuta</button>
+                            <button class="btn btn-success" ng-click="changeStatus(proj, 'ACCEPTED')">Accetta</button>
+                            <button class="btn btn-danger" ng-click="changeStatus(proj, 'NOT_ACCEPTED')">Rifiuta</button>
                         </div>
                     </td>
                 </tr>

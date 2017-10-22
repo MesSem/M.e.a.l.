@@ -12,10 +12,11 @@ angular.module('mealApp').component('admin', {
                             $scope.projects = response.data.projects;
                         });
 
-                        $scope.changeStatus = function (projectId, newStatus) {//cambio stato progetto
+                        $scope.changeStatus = function (project, newStatus) {//cambio stato progetto
                             $scope.projectsError = $scope.projectsSuccess = false;
-                            UserService.changeProjectStatus(projectId, newStatus)
+                            UserService.changeProjectStatus(project._id, newStatus)
                             .then(function(response) {
+                                project.status.value = newStatus;
                                 $scope.projectsSuccess = true;
                                 $scope.projectsSuccessMessage = response.data.status;
                             })
@@ -42,11 +43,12 @@ angular.module('mealApp').component('admin', {
 
                         };
 
-                        $scope.closeAndReturn = function (projectId) {//forza chiusura progetto
+                        $scope.closeAndReturn = function (project) {//forza chiusura progetto
                             //cambiare stato!!!!!!
                             $scope.projectsError = $scope.projectsSuccess = false;
-                            UserService.closeAndReturn(projectId)
+                            UserService.closeAndReturn(project._id)
                             .then(function(response) {
+                                project.status.value = 'FORCED_CLOSING';
                                 $scope.projectsSuccess = true;
                                 $scope.projectsSuccessMessage = response.data.status;
                             })
