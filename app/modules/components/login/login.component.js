@@ -16,9 +16,6 @@ angular.module('mealApp').component('login', {
                   UserService.login($scope.loginForm.username, $scope.loginForm.password, $scope.loginForm.sessionOpen)
                     // handle success
                     .then(function () {
-                      UserService.getUser(true).then(function(response) {
-                        $scope.user = response.data.user;
-                      });
                       $location.path('/');
                       $scope.disabled = false;
                       $scope.loginForm = {};

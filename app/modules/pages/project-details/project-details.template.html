@@ -6,32 +6,28 @@
 
         <div class="showcase-details">
             
-            <div style="padding:10px;">
-                <h4 style="text-align:center;">{{project.name}}</h4>
+            <h1 style="text-align:center;">{{project.name}}</h1>
 
-                <hr>
-                <div style="text-align:center; margin-bottom:20px;">
-                    <img class="gallery-img" ng-repeat="img in project.imagesGallery" src="{{img}}">
-                </div>
-                
-                <div>Stato progetto: {{enumProjects[project.status.value]}}</div>
-                <div>Interessi: {{project.restitution.interests}}%</div>
-                <div>Raccolti: €{{project.actualMoney.money}} / €{{project.requestedMoney}}</div>
-                <timer end-time="project.endDate">{{days}} giorni, {{hours}} ore, {{minutes}} minuti, {{seconds}} secondi</timer>
-
-
-                <div>Richiedente: <a href="#!show/{{project.owner._id}}/{{project.owner.username}}" ng-show="user._id"><i class="fa fa-user"></i> {{project.owner.username}}</a></div>
-                <div>Descrizione: <div ng-bind-html="project.description"></div></div>
-                <div>Data di inizio: {{project.startDate | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
-                <div>Data di fine: {{project.endDate | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
-                <div>Data di restituzione: {{project.restitution.date | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
-                <div>Interessi: {{project.restitution.interests}}</div>
-                <div>Obiettivo: {{project.requestedMoney}}</div>
-                <div>Valore raggiunto: {{project.actualMoney.money}}</div>
-            <!--    <img ng-src="{{project.image}}"  alt="Mountain View" style="width:304px;height:228px;">-->
-                    <a href="#!projectManagement?id={{project._id}}" ng-show="project.owner._id==user._id">Gestisci il progetto</a>
-
+            <hr>
+            <div style="text-align:center; margin-bottom:20px;">
+                <img class="gallery-img" ng-repeat="img in project.imagesGallery" src="{{img}}">
             </div>
+            
+            <div>Stato progetto: {{enumProjects[project.status.value]}}</div>
+            <div>Interessi: {{project.restitution.interests}}%</div>
+            <div>Raccolti: €{{project.actualMoney.money}} / €{{project.requestedMoney}}</div>
+            <div>Scade in: <timer end-time="project.endDate">{{days}} giorni, {{hours}} ore, {{minutes}} minuti, {{seconds}} secondi</timer></div>
+
+
+            <div>Richiedente: <a href="#!show/{{project.owner._id}}/{{project.owner.username}}" ng-show="user._id"><i class="fa fa-user"></i> {{project.owner.username}}</a></div>
+            <div>Data di inizio: {{project.startDate | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
+            <div>Data di fine: {{project.endDate | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
+            <div>Data di restituzione: {{project.restitution.date | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
+            
+            <div>Descrizione: <div ng-bind-html="project.description"></div></div>
+
+            <div style="text-align:center;"><a href="#!projectManagement?id={{project._id}}" class="btn btn-warning" ng-show="project.owner._id==user._id">Gestisci il progetto</a></div>
+
         </div>
         <div>
             <form class="form"  ng-submit="createLoan()" ng-show="project.owner._id!=user._id">

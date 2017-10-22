@@ -79,6 +79,7 @@ function ($q, $timeout, $http) {
   }
 
   function logout() {
+    cachedUser = cachedUserList = cachedTransactions = cachedProjects = cachedLoansDone = null;//reset cache
     return $http.get('/api/user/logout');
   }
 
@@ -87,8 +88,8 @@ function ($q, $timeout, $http) {
   }
 
   var cachedUser = null;
-  function getUser(force = false) {
-    if(!cachedUser || force) cachedUser = $http.get('/api/user/user');
+  function getUser() {
+    if(!cachedUser) cachedUser = $http.get('/api/user/user');
     return cachedUser;
   }
 

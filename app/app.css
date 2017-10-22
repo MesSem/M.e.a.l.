@@ -41,6 +41,10 @@ body {background-color: #F7F5F2;}
     text-align: left;
 }
 
+.showcase-details {
+    padding: 0px 20px 20px;
+}
+
 .col-md-4 {
     margin-bottom: 15px;
     text-align: center;
