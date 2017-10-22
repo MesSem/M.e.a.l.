@@ -104,9 +104,14 @@ function ($scope, UserService, $location, $rootScope) {
   $rootScope.$emit('newNotifications');
 
   $scope.extractConvert = function(frase) {//trovo e traduco lo status del progetto
-    enumProjects = UserService.getEnumProjects();
-    status = frase.match("@(.*)@")[0];
-    return frase.replace(status, '"' + enumProjects[status.replace(/@/g, '')] + '"');
+    pattern = "@(.*)@";
+    if (frase.match(pattern)) {
+      enumProjects = UserService.getEnumProjects();
+      status = frase.match(pattern)[0];
+      return frase.replace(status, '"' + enumProjects[status.replace(/@/g, '')] + '"');
+    } else {
+      return frase;
+    }
   }
 
 }]);
