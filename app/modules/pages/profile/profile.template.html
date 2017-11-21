@@ -1,15 +1,41 @@
-<div class="row" style="padding: 15px;">
+<div class="row tabbable tabs-below" ng-init="selectedTab = 1;" style="padding: 15px;">
+  <!-- le tab sono gestite in maniera 'creativa' perchè ci sono dei conflitti tra angular e bootstrap -->
 
-  <div ng-include="'modules/widgets/dettagli-account/dettagli-account.template.html'"></div>
+  <ul class="nav nav-pills nav-justified" style="padding-bottom: 20px;">
+      <li ng-class="{active: selectedTab == 1}">
+          <a href="" ng-click="selectedTab = 1;"><i class="fa fa-user"></i> Informazioni</a>
+      </li>
+      <li ng-class="{active: selectedTab == 2}">
+          <a href="" ng-click="selectedTab = 2;"><i class="fa fa-credit-card"></i> Denaro</a>
+      </li>
+      <li ng-class="{active: selectedTab == 3}">
+          <a href="" ng-click="selectedTab = 3;"><i class="fa fa-comments"></i> Messaggi</a>
+      </li>
+  </ul>
 
-  <div ng-include="'modules/widgets/carte-associate/carte-associate.template.html'"></div>
+  <div class="tab-content" ng-show="selectedTab == 1">
 
-  <div ng-include="'modules/widgets/invia-denaro/invia-denaro.template.html'"></div>
+    <div ng-include="'modules/widgets/dettagli-account/dettagli-account.template.html'"></div>
+      
+    <div ng-include="'modules/widgets/carte-associate/carte-associate.template.html'"></div>
 
-  <div ng-include="'modules/widgets/storico/storico.template.html'"></div>
+    <div ng-include="'modules/widgets/cambio-password/cambio-password.template.html'"></div>
 
-  <div ng-include="'modules/widgets/cambio-password/cambio-password.template.html'"></div>
+  </div>
 
-  <div ng-include="'modules/widgets/storico-prestiti/storico-prestiti.template.html'"></div>
+  <div class="tab-content" ng-show="selectedTab == 2">
+
+    <div ng-include="'modules/widgets/invia-denaro/invia-denaro.template.html'"></div>
+      
+    <div ng-include="'modules/widgets/storico/storico.template.html'"></div>
+      
+    <div ng-include="'modules/widgets/storico-prestiti/storico-prestiti.template.html'"></div>
+    
+  </div>
+
+  <div class="tab-content" ng-show="selectedTab == 3">
+    Messaggi<br>
+    Segnalazioni
+  </div>
 
 </div>

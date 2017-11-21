@@ -22,17 +22,17 @@
         <form ng-repeat="card in user.cards" class="form" ng-submit="deleteCard(card._id, user._id)" id="form-{{card._id}}">
         <hr>
         <p>
-            <span>Numero (oscurare): </span>
+            <span>Numero: </span>
             <span>{{card.number}}</span>
         </p>
         <p>
             <span>Scadenza: </span>
             <span>{{card.endDate | amDateFormat:'MM/YY'}}</span>
         </p>
-        <p>
+        <!--<p>
             <span>CVV (togliere): </span>
             <span>{{card.cvv}}</span>
-        </p>
+        </p>-->
         <button class="btn btn-danger" type="submit">Elimina</button>
         </form>
     </div>

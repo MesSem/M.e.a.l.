@@ -73,6 +73,14 @@ userRoutes.get('/user', function(req, res) {
       return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error finding user', err, 500);
     }
     if (user) {
+      user.cards.forEach(card => {
+        card.cvv = undefined;//rimuovo per sicurezza
+        
+        var length = card.number.length;
+        var latest = card.number.slice((length - 4), length);
+        
+        card.number = Array(length - 4).join("*") + latest;//oscuro per sicurezza
+      });
       res.status(200).json({
         user: user
       });
