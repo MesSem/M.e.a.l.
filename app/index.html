@@ -57,6 +57,8 @@
   <script src="modules/widgets/storico/storico.component.js"></script>
   <script src="modules/widgets/cambio-password/cambio-password.component.js"></script>
   <script src="modules/widgets/storico-prestiti/storico-prestiti.component.js"></script>
+  <script src="modules/widgets/richiedi/richiedi.component.js"></script>
+  <script src="modules/widgets/messaggi/messaggi.component.js"></script>
 
 </head>
 
@@ -71,7 +73,7 @@
         <div class="btn-group show-on-hover" ng-show='isLoggedIn()'>
           <a class="btn btn-success" ng-click="show = !show">Notifiche <span class="badge">{{notifications.unread.length}}</span></a>
           <ul class="dropdown-menu" role="menu" ng-show="show" ng-if="notifications.unread.length" style="display:block;max-width: 100%;">
-            <li ng-repeat="notif in notifications.unread"><a class="ellipsis">{{notif.message = extractConvert(notif.message)}}</a></li>
+            <li ng-repeat="notif in notifications.unread | orderBy:'-date'"><a class="ellipsis">{{notif.message = extractConvert(notif.message)}}</a></li>
             <li class="divider"></li>
             <li><a href="" ng-click='deleteNotifications()'>Cancella tutto</a></li>
           </ul>

@@ -34,8 +34,11 @@
   </div>
 
   <div class="tab-content" ng-show="selectedTab == 3">
-    Messaggi<br>
-    Segnalazioni
+
+      <div ng-include="'modules/widgets/richiedi/richiedi.template.html'"></div>
+
+      <div ng-include="'modules/widgets/messaggi/messaggi.template.html'"></div>
+
   </div>
 
 </div>

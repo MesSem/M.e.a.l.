@@ -693,4 +693,24 @@ userRoutes.get('/listLoans', function(req, res) {
   });
 });
 
+/**
+ * @api {post} /api/newNotification Create a new notification
+ * @apiName newNotification
+ * @apiGroup Api
+ *
+ * @apiSuccess {success}
+ */
+userRoutes.post('/newNotification', function(req, res) {
+
+  message = req.body.message;
+  recipient = req.body.recipient;
+
+  utils.createNotification(recipient, message, 'GENERAL');
+
+  res.status(200).json({
+    status: 'Notifications created successfully!'
+  });
+
+});
+
 module.exports = userRoutes;

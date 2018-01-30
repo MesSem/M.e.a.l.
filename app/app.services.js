@@ -44,7 +44,8 @@ function ($q, $timeout, $http) {
     setPublic:setPublic,
     closeAndReturn:closeAndReturn,
     adminList:adminList,
-    newAdmin:newAdmin
+    newAdmin:newAdmin,
+    newNotification:newNotification
   });
 
   function getEnumProjects() {//traduco da enum in italiano
@@ -243,6 +244,10 @@ function ($q, $timeout, $http) {
 
   function newAdmin(username) {
     return $http.post('/api/admin/newAdmin', {username});
+  }
+
+  function newNotification(recipient, message) {
+    return $http.post('/api/user/newNotification', {recipient, message});
   }
 
 }]);
