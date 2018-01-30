@@ -24,7 +24,8 @@ var Notification=new Schema({
       enum: ['GENERAL', 'RECEIVED_TRANSACTION' ,'REFUNDED_FROM_OTHER_PROJECT', 'YOUR_PROJECT_CLOSED', 'YOUR_PROJECT_ACCEPTED', 'YOUR_PROJECT_DECLINED', 'YOUR_PROJECT_PUBLIC', 'YOUR_PROJECT_FORCED'],//YOUR_PROJECT_CLOSED:Project clsoed, site send you all money achieved
       default:'GENERAL'//INDICA UNA TRANSAZIONE CLASSICA
     },
-    date:{type:Date,default:Date.now, required:true}
+  date:{type:Date,default:Date.now, required:true},
+  seen:{type:Boolean, default:false}
 });
 
 var User = new Schema({

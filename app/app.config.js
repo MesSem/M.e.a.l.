@@ -90,14 +90,26 @@ function ($scope, UserService, $location, $rootScope) {
     //delete all notifications
     UserService.deleteNotifications()
       .then(function () {
-        $scope.notifications = [];
+        angular.forEach($scope.notifications.unread, function(notif){
+          notif.seen = true;//metto tutte come lette
+        });
+        $scope.notifications.read = $scope.notifications.read.concat($scope.notifications.unread);//faccio il merge degli array
+        $scope.notifications.unread = [];
       });
   }
 
   $rootScope.$on('newNotifications', function() {//richiamabile dal controller del login
     UserService.getUser()//prendo le notifiche
       .then(function (response) {
-        $scope.notifications = response.data.user.notifications;
+        $scope.notifications = {};
+        $scope.notifications.read = [];
+        $scope.notifications.unread = [];
+        angular.forEach(response.data.user.notifications, function(notif){
+          if (notif.seen === true)
+            $scope.notifications.read.push(notif);//notifiche lette
+          else
+            $scope.notifications.unread.push(notif);//nuove notifiche
+        })
       });
   });
 

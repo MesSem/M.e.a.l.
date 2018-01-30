@@ -620,13 +620,27 @@ userRoutes.post('/publicUser', function(req, res) {
  * @apiSuccess {String} info about user
  */
 userRoutes.delete('/deleteNotifications', function(req, res) {
-  User.update({'_id':req.userId},{$unset: {notifications:1}}, function(err){
-    if (err) {
-      console.log(err.message);
-      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error in deleting notification of current user', err, 500);
+  User.findOne({'_id':req.userId}, function(err, user){
+    
+    if (user) {
+      console.log(user);
+      user.notifications.forEach(function (notif) {
+        if (notif.seen == false)
+          notif.seen = true;
+      })
+      user.save(function(err) {
+        if (err) {
+          console.log(err.message);
+          return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error in deleting notification of current user', err, 500);
+        }
+      });
     }
+    else {
+      return errorCodes.sendError(res, errorCodes.ERR_ELEMENT_NOT_FOUND, 'No user found', err, 500);
+    }
+
     res.status(200).json({
-      status: 'Notification delted successful!'
+      status: 'Notifications deleted successful!'
     });
   });
 });
