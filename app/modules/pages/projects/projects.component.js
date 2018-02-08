@@ -10,5 +10,7 @@ angular.module('mealApp').component('projects', {
                     UserService.getUser().then(function(response) {
                       $scope.user = response.data.user;
                     });
+
+                    $scope.enumProjects = UserService.getEnumProjects();
               }]
 });

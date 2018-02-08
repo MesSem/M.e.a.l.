@@ -9,10 +9,11 @@ function ($q, $timeout, $http) {
   }
 
   // create user variable
-  var user = null;
+  var user = admin = null;
 
   // return available functions for use in the controllers
   return ({
+    getEnumProjects:getEnumProjects,
     isLoggedIn: isLoggedIn,
     getUserStatus: getUserStatus,
     login: login,
@@ -35,8 +36,21 @@ function ($q, $timeout, $http) {
     getPublicUser: getPublicUser,
     returnMoney:returnMoney,
     getDoneLoans:getDoneLoans,
-    deleteNotifications:deleteNotifications
+    deleteNotifications:deleteNotifications,
+    isAdmin:isAdmin,
+    getAdminStatus:getAdminStatus,
+    listAllProjects:listAllProjects,
+    changeProjectStatus:changeProjectStatus,
+    setPublic:setPublic,
+    closeAndReturn:closeAndReturn,
+    adminList:adminList,
+    newAdmin:newAdmin,
+    newNotification:newNotification
   });
+
+  function getEnumProjects() {//traduco da enum in italiano
+    return {ACCEPTED : 'In corso', TO_CHECK : 'In attesa', NOT_ACCEPTED : 'Respinto', CLOSED : 'Chiuso', 'CLOSED_&_RESTITUTED' : 'Chiuso e restituito', FORCED_CLOSING : 'Chiusura forzata'};
+  }
 
   function isLoggedIn() {
     if(user) {
@@ -63,6 +77,7 @@ function ($q, $timeout, $http) {
   }
 
   function login(username, password, sessionOpen) {
+    cachedUser = cachedUserList = cachedTransactions = cachedProjects = cachedLoansDone = null;//reset cache
     return $http.post('/api/login', {username: username, password: password, sessionOpen:sessionOpen});
   }
 
@@ -181,6 +196,58 @@ function ($q, $timeout, $http) {
 
   function deleteNotifications(idProject) {
     return $http.delete('/api/user/deleteNotifications');
+  }
+
+  function isAdmin() {
+    if(admin) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function getAdminStatus() {
+    return $http.get('/api/admin/status')
+    // handle success
+    .then(function (success) {
+      if(success.data.status){
+        admin = true;
+      } else {
+        admin = false;
+      }
+    })
+    // handle error
+    .catch(function (error) {
+      admin = false;
+    });
+  }
+
+  function listAllProjects() {
+    return $http.get('/api/admin/listAllProjects');
+  }
+
+  function changeProjectStatus(projectId, newStatus) {
+    return $http.post('/api/admin/changeProjectStatus', {projectId, newStatus});
+  }
+
+  function setPublic(projectId, newStatus) {
+    return $http.post('/api/admin/setPublic', {projectId, newStatus});
+  }
+
+  function closeAndReturn(projectId) {
+    return $http.post('/api/admin/closeAndReturn', {projectId});
+  }
+
+  function adminList() {
+    return $http.get('/api/admin/adminList');
+  }
+
+  function newAdmin(username) {
+    return $http.post('/api/admin/newAdmin', {username});
+  }
+
+  function newNotification(recipient, message) {
+    return $http.post('/api/user/newNotification', {recipient, message});
   }
 
 }]);

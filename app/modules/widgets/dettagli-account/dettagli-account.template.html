@@ -1,70 +1,68 @@
-<div ng-controller="dettagli-account">
-    <div class="col-xs-6 col-md-4">
-        <div class="project">
-            <h4>PROFILO</h4>
-            <form class="form" ng-submit="updateUser()">
-            <p>
-                <span>Username*: </span>
-                <span>{{user.username}}</span>
-                <!--<input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.username" required>-->
-            </p>
-            <p>
-                <span>Nome*: </span>
-                <span ng-hide='showInput'>{{user.name}}</span>
-                <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.name" required>
-            </p>
-            <p>
-                <span>Cognome*: </span>
-                <span ng-hide='showInput'>{{user.surname}}</span>
-                <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.surname" required>
-            </p>
-            <p>
-                <span>Email*: </span>
-                <span ng-hide='showInput'>{{user.email}}</span>
-                <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.email" required>
-            </p>
-            <p>
-                <span>Data nascita*: </span>
-                <span ng-hide='showInput'>{{user.formattedBornDate}}</span>
-                <input type="text" ng-show='showInput' class="form-control" minlength="10" maxlength="10" ng-model="updateForm.formattedBornDate" required>
-            </p>
-            <p>
-                <span>Telefono: </span>
-                <span ng-hide='showInput'>{{user.telephone}}</span>
-                <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.telephone">
-            </p>
-            <hr>
-            <p><span>INDIRIZZO</span></p>
-            <p>
-                <span>Via: </span>
-                <span ng-hide='showInput'>{{user.address.street}}</span>
-                <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.address.street">
-            </p>
-            <p>
-                <span>Città*: </span>
-                <span ng-hide='showInput'>{{user.address.city}}</span>
-                <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.address.city">
-            </p>
-            <p>
-                <span>Nazione*: </span>
-                <span ng-hide='showInput'>{{user.address.nation}}</span>
-                <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.address.nation">
-            </p>
-            <p>
-                <span>CAP*: </span>
-                <span ng-hide='showInput'>{{user.address.CAP}}</span>
-                <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.address.CAP">
-            </p>
-            <div>
-                <a class="btn btn-warning" ng-click='toggleShowInput()'>Modifica</a>
-                <button class="btn btn-success" type="submit" ng-disabled="disabled">Salva</button>
-            </div>
-            <br>
-            <div><i>* obbligatorio</i></div>
-            </form>
-            <div style="margin-top:10px"></div>
-            <div ng-show="error" class="alert alert-danger">{{errorMessage}}</div>
-            <div ng-show="success" class="alert alert-success">{{successMessage}}</div>
+<div class="col-xs-6 col-md-4" ng-controller="dettagli-account">
+    <div class="project">
+        <h4>PROFILO</h4>
+        <form class="form" ng-submit="updateUser()">
+        <p>
+            <span>Username*: </span>
+            <span>{{user.username}}</span>
+            <!--<input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.username" required>-->
+        </p>
+        <p>
+            <span>Nome*: </span>
+            <span ng-hide='showInput'>{{user.name}}</span>
+            <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.name" required>
+        </p>
+        <p>
+            <span>Cognome*: </span>
+            <span ng-hide='showInput'>{{user.surname}}</span>
+            <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.surname" required>
+        </p>
+        <p>
+            <span>Email*: </span>
+            <span ng-hide='showInput'>{{user.email}}</span>
+            <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.email" required>
+        </p>
+        <p>
+            <span>Data nascita*: </span>
+            <span ng-hide='showInput'>{{user.formattedBornDate}}</span>
+            <input type="text" ng-show='showInput' class="form-control" minlength="10" maxlength="10" ng-model="updateForm.formattedBornDate" required>
+        </p>
+        <p>
+            <span>Telefono: </span>
+            <span ng-hide='showInput'>{{user.telephone}}</span>
+            <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.telephone">
+        </p>
+        <hr>
+        <p><span>INDIRIZZO</span></p>
+        <p>
+            <span>Via: </span>
+            <span ng-hide='showInput'>{{user.address.street}}</span>
+            <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.address.street">
+        </p>
+        <p>
+            <span>Città*: </span>
+            <span ng-hide='showInput'>{{user.address.city}}</span>
+            <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.address.city">
+        </p>
+        <p>
+            <span>Nazione*: </span>
+            <span ng-hide='showInput'>{{user.address.nation}}</span>
+            <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.address.nation">
+        </p>
+        <p>
+            <span>CAP*: </span>
+            <span ng-hide='showInput'>{{user.address.CAP}}</span>
+            <input type="text" ng-show='showInput' class="form-control" ng-model="updateForm.address.CAP">
+        </p>
+        <div>
+            <a class="btn btn-warning" ng-click='toggleShowInput()'>Modifica</a>
+            <button class="btn btn-success" type="submit" ng-disabled="disabled">Salva</button>
         </div>
+        <br>
+        <div><i>* obbligatorio</i></div>
+        </form>
+        <div style="margin-top:10px"></div>
+        <div ng-show="error" class="alert alert-danger">{{errorMessage}}</div>
+        <div ng-show="success" class="alert alert-success">{{successMessage}}</div>
     </div>
 </div>

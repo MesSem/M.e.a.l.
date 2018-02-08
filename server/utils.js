@@ -64,6 +64,7 @@ this.updateActualMoney= function(){
       }
 
     ], function(err,results) {
+      console.log(results);
         if(results!=undefined){
           results.forEach(function(p) {
             jobQueries.push(Project.update({_id:p._id},{'actualMoney.cacheDate':tmpDate, $inc:{'actualMoney.money':p.totalMoney}}).exec());//aggiungere quelle già sommate in passato
@@ -238,6 +239,54 @@ this.checkMEALAccountOrCreate=function(){
       }
     }
   });
+}
+
+this.forceClosing=function(idProject){
+  /*var deferred = Q.defer();
+  var query=null;
+  if(idUser!=null && idUser!=undefined){
+    query={$and:[{_id:idProject},{'status.value':'CLOSED'},{'owner':idUser}]};
+  }else{
+    query={$and:[{_id:idProject},{'status.value':'CLOSED'}]};
+  }*/
+  Project
+  .findOneAndUpdate({_id:idProject}, {'$set': {'status.value': 'FORCED_CLOSING'}})
+  .exec(function (err, project) {
+    if (err) {
+        console.log("Error finding project: "+err.message);
+        throw err;
+    }
+    Transaction
+    .find({$and:[{projectRecipient: idProject}, {type:'LOAN'}]})
+    .stream()
+    .on('data', function(loan){
+      money = loan.money;
+      var returnLoan = new Transaction({
+        sender: project.owner,
+        recipient:loan.sender,
+        projectRecipient: loan.projectRecipient,
+        money: money,
+        loanId: loan._id,
+        notes: "Restituzione soldi chiusura anticipata progetto",
+        type:'LOAN_RESTITUTION_FROM_SERVER'
+      });
+      returnLoan.save(function (err, results) {
+        if (err) {
+          console.log("Da returnMoney, returnLoan.save :"+ err);
+          throw err;
+        }
+      });
+    })
+    .on('error', function(err){
+      console.log("Error in return money of single project "+ err);
+      //deferred.reject(err);
+    })
+    .on('end', function(){
+      console.log("Money return successfully");
+      //deferred.resolve("ok");
+    });
+  });
+  //return deferred.promise;
 }
 
 /**

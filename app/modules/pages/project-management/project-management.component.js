@@ -45,5 +45,7 @@ angular.module('mealApp').component('projectManagement', {
                           console.log(error);
                       });
                     }
+
+                    $scope.enumProjects = UserService.getEnumProjects();
               }]
 });

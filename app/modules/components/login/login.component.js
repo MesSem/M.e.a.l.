@@ -1,7 +1,7 @@
 angular.module('mealApp').component('login', {
   templateUrl: 'modules/components/login/login.template.html',
-  controller: ['$scope', '$location', 'UserService',
-              function ($scope, $location, UserService) {
+  controller: ['$scope', '$location', 'UserService', '$rootScope',
+              function ($scope, $location, UserService, $rootScope) {
 
                 $scope.loginForm = {};
                 $scope.loginForm.sessionOpen = true;
@@ -16,6 +16,8 @@ angular.module('mealApp').component('login', {
                   UserService.login($scope.loginForm.username, $scope.loginForm.password, $scope.loginForm.sessionOpen)
                     // handle success
                     .then(function () {
+                      $rootScope.$emit('newNotifications');//richiamo aggiornamento notifiche
+
                       $location.path('/');
                       $scope.disabled = false;
                       $scope.loginForm = {};

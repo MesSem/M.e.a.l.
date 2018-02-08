@@ -1,0 +1,14 @@
+<div class="col-xs-6 col-md-4" ng-controller="messaggi">
+    <div class="project">
+        <h4>Notifiche</h4>
+        <div>
+            <div ng-repeat="notif in user.notifications | orderBy:'-date'">
+                {{notif.date | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}
+                <br>
+                {{notif.message}}
+                <hr ng-if="!$last">
+            </div>
+        </div>
+        <div ng-show="moneyError" class="alert alert-danger">{{moneyErrorMessage}}</div>
+    </div>
+</div>

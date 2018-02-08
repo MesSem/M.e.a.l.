@@ -1,15 +1,13 @@
-<div ng-controller="storico">
-    <div class="col-xs-6 col-md-4">
-        <div class="project">
-            <h4>STORICO</h4>
-            <div ng-repeat="tran in transactions">
-                <hr>
-                <div>Data: {{tran.date | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
-                <div>Mittente: <a href="#!show/{{tran.sender._id}}/{{tran.sender.username}}"><i class="fa fa-user"></i> {{tran.sender.username}}</a></div>
-                <div>Destinatario: <a href="#!show/{{tran.recipient._id}}/{{tran.recipient.username}}"><i class="fa fa-user"></i> {{tran.recipient.username}}</a></div>
-                <div>Importo: € {{tran.money | number:2}}</div>
-                <div ng-if="tran.notes">Messaggio: {{tran.notes}}</div>
-            </div>
+<div class="col-xs-6 col-md-4" ng-controller="storico">
+    <div class="project">
+        <h4>STORICO</h4>
+        <div ng-repeat="tran in transactions">
+            <hr>
+            <div>Data: {{tran.date | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
+            <div>Mittente: <a href="#!show/{{tran.sender._id}}/{{tran.sender.username}}"><i class="fa fa-user"></i> {{tran.sender.username}}</a></div>
+            <div>Destinatario: <a href="#!show/{{tran.recipient._id}}/{{tran.recipient.username}}"><i class="fa fa-user"></i> {{tran.recipient.username}}</a></div>
+            <div>Importo: € {{tran.money | number:2}}</div>
+            <div ng-if="tran.notes">Messaggio: {{tran.notes}}</div>
         </div>
     </div>
 </div>

@@ -1,78 +1,84 @@
 <div class="row" style="padding: 15px;">
-        <div class="col-xs-offset-2 col-md-offset-2 col-xs-8 col-md-8">
-              <div class="showcase-details">
-                <div>
-                  <a class="btn btn-success" ng-click='updateProject()'>Salva Modifiche</a>
-                  <a class="btn btn-success" ng-click='returnMoney()' ng-show="project.status.value=='CLOSED'">Restituisci i soldi in anticipo</a>
-                </div>
-                <div ng-show="messageProjectVisibile" class="alert alert-danger">{{messageProject}}</div>
-                <div style="max-height: 300px;overflow: hidden;">
-                    <img ng-src="{{project.image}}"  alt="Mountain View" style="width:100%;height:auto;">
-                </div>
-                <div style="padding:10px;">
-                    <h4 style="text-align:center;">{{project.name}}</h4>
+  <div class="project-div">
+    <div style="max-height: 300px;overflow: hidden;">
+        <img ng-src="{{project.image}}"  alt="Mountain View" style="width:100%;height:auto;">
+    </div>
 
-                    <hr>
-                    <div>Interessi: {{project.restitution.interests}}%</div>
-                    <div>Raccolti: €{{project.actualMoney.money}} / €{{project.requestedMoney}}</div>
-                    <timer end-time="project.endDate">{{days}} days, {{hours}} hours, {{minutes}} minutes, {{seconds}} seconds</timer>
+    <div class="showcase-details">
+      <div ng-show="messageProjectVisibile" class="alert alert-danger">{{messageProject}}</div>
 
+      <h1 style="text-align:center;">{{project.name}}</h1>
 
-                    <div>Richiedente: {{project.owner.name+" "+project.owner.surname}}</div>
-                    <!--<div>Descrizione: <div ng-bind-html="project.description"></div></div>-->
-                    <div class="form-textarea">
-                      <label>Descrizione*</label>
-                      <!--<input type="textarea" class="form-control" minlength="8" maxlength="500" ng-model="projectForm.description" required>-->
-                      <text-angular ng-model="project.description" required></text-angular>
-                    </div>
-                    <div>Data di inizio: {{project.startDate | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
-                    <div>Data di fine: {{project.endDate | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
-                    <div>Data di restituzione: {{project.restitution.date | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
-                    <div>Obiettivo: {{project.requestedMoney}}</div>
-                    <div>Valore raggiunto: {{project.actualMoney.money}}</div>
-                <!--    <img ng-src="{{project.image}}"  alt="Mountain View" style="width:304px;height:228px;">-->
-                </div>
-                <hr>
+      <hr>
 
-              <!--GESTIONE IMMAGINI...
-                Modifca immagine principale
-                <input type="file" class="btn btn-primary" ngf-select="uploadFiles($files)" accept="image/*" ng-model="projectForm.mainImage" ngf-max-size="20MB" required></input>
-                <div class="clear"></div>
-                <div style="margin-right:5px; margin-top:5px;">
-                    <img style="width:150px;" ngf-thumbnail="projectForm.mainImage"/>
-                </div>
+      <div style="text-align:center; margin-bottom:20px;">
+        <img class="gallery-img" ng-repeat="img in project.imagesGallery" src="{{img}}">
+      </div>
 
-                <hr>
+      <div>Stato progetto: {{enumProjects[project.status.value]}}</div>
+      <div>Interessi: {{project.restitution.interests}}%</div>
+      <div>Raccolti: €{{project.actualMoney.money}} / €{{project.requestedMoney}}</div>
+      <div>Scade in: <timer end-time="project.endDate">{{days}} giorni, {{hours}} ore, {{minutes}} minuti, {{seconds}} secondi</timer></div>
 
-                Aggiungi immagini galleria (max 20)
-                <input type="file" class="btn btn-primary" ngf-select="uploadFiles($files)" accept="image/*" ng-model="projectForm.gallery" multiple="multiple" ngf-max-files="20"></input>
-                <div class="clear"></div>
-                <div ng-repeat="gal in projectForm.gallery" style="display:inline-block; margin-right:5px; margin-top:5px;">
-                    <img style="width:100px;" ngf-thumbnail="gal"/>
-                </div>
-                  -->
+      <div>Richiedente: <a href="#!show/{{project.owner._id}}/{{project.owner.username}}"><i class="fa fa-user"></i> {{project.owner.username}}</a></div>
+      <div>Data di inizio: {{project.startDate | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
+      <div>Data di fine: {{project.endDate | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
+      <div>Data di restituzione: {{project.restitution.date | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</div>
+      
+      <!--<div>Descrizione: <div ng-bind-html="project.description"></div></div>-->
+      <div class="form-textarea">
+        <label>Descrizione*</label>
+        <!--<input type="textarea" class="form-control" minlength="8" maxlength="500" ng-model="projectForm.description" required>-->
+        <text-angular ng-model="project.description" required></text-angular>
+      </div>
 
-                <div class="container">
-                  <h4>Elenco dei prestiti</h4>
-                  <table class="table table-hover table-striped">
-                    <thead>
-                      <tr>
-                        <th>Data</th>
-                        <th>Mittente</th>
-                        <th>Importo</th>
-                        <th>Messaggio</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr ng-repeat="loan in loans">
-                        <td>{{loan.date | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</td>
-                        <td>{{loan.sender.username}}</td>
-                        <td>{{loan.money | number:2}}€</td>
-                        <td ng-if="loan.notes">{{loan.notes}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-        </div>
+      <div style="text-align: center;">
+        <a class="btn btn-success" ng-click='updateProject()'>Salva Modifiche</a>
+        <a class="btn btn-success" ng-click='returnMoney()' ng-show="project.status.value=='CLOSED'">Restituisci i soldi in anticipo</a>
+      </div>
+
+      <hr>
+
+      <!--GESTIONE IMMAGINI...
+      Modifca immagine principale
+      <input type="file" class="btn btn-primary" ngf-select="uploadFiles($files)" accept="image/*" ng-model="projectForm.mainImage" ngf-max-size="20MB" required></input>
+      <div class="clear"></div>
+      <div style="margin-right:5px; margin-top:5px;">
+          <img style="width:150px;" ngf-thumbnail="projectForm.mainImage"/>
+      </div>
+
+      <hr>
+
+      Aggiungi immagini galleria (max 20)
+      <input type="file" class="btn btn-primary" ngf-select="uploadFiles($files)" accept="image/*" ng-model="projectForm.gallery" multiple="multiple" ngf-max-files="20"></input>
+      <div class="clear"></div>
+      <div ng-repeat="gal in projectForm.gallery" style="display:inline-block; margin-right:5px; margin-top:5px;">
+          <img style="width:100px;" ngf-thumbnail="gal"/>
+      </div>
+      -->
+
+      <div style="max-width: 100%;">
+        <h4>Elenco dei prestiti</h4>
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Mittente</th>
+              <th>Importo</th>
+              <th>Messaggio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="loan in loans">
+              <td>{{loan.date | amUtc | amLocal | amDateFormat:'DD-MM-YYYY HH:mm:ss'}}</td>
+              <td>{{loan.sender.username}}</td>
+              <td>{{loan.money | number:2}}€</td>
+              <td ng-if="loan.notes">{{loan.notes}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
 </div>

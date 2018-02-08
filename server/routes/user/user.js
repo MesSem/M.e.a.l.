@@ -73,6 +73,14 @@ userRoutes.get('/user', function(req, res) {
       return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error finding user', err, 500);
     }
     if (user) {
+      user.cards.forEach(card => {
+        card.cvv = undefined;//rimuovo per sicurezza
+        
+        var length = card.number.length;
+        var latest = card.number.slice((length - 4), length);
+        
+        card.number = Array(length - 4).join("*") + latest;//oscuro per sicurezza
+      });
       res.status(200).json({
         user: user
       });
@@ -347,7 +355,7 @@ userRoutes.post('/project', upload, function(req, res) {//registrazione o update
 
       resizeImage(gallery[key], projDir + path.sep + galleryName);
 
-      var galleryPath = realProjDir + path.sep + galleryName;
+      gallery[key] = realProjDir + path.sep + galleryName;
     }
 
     Project.update({_id: proj._id}, {'$set': {image: mainImagePath, imagesGallery: gallery}}, function (err) {
@@ -407,18 +415,18 @@ userRoutes.get('/detailsProject', function(req, res) {
     if (err) {
       return errorCodes.sendError(res, errorCodes.ERR_ELEMENT_NOT_FOUND,'Not project found',err,500 );
     }else{
-      if(result.accepted==false){
+      if((result.status.value == 'TO_CHECK' || result.status.value == 'NOT_ACCEPTED') && req.userId != result.owner._id && !req.isAdmin){//solo il proprietario può vedere un progetto in attesa o rifiutato
         return errorCodes.sendError(res, errorCodes.ERR_PROJECT_NOT_ACCEPTED,'Project isn\'t accepted' ,new Error('Accepted field of the project is false'),500 );
       }else{
         res.status(200).json({
-          project: result[0]
+          project: result
         });
       }
     }
   };
   if (req.query.id!=undefined){
-    Project.find({'_id': req.query.id})
-    .populate('owner',{name:'name',username:'username', _id:'id'})
+    Project.findOne({'_id': req.query.id})
+    .populate('owner',{/*name:'name',*/username:'username', _id:'id'})
     .exec(afterGetProject);
   }else {
     return errorCodes.sendError(res, errorCodes.ERR_QUERY_PARAMETER,'There isn\'t id in the query',new Error('Query without id'),500 );
@@ -612,13 +620,27 @@ userRoutes.post('/publicUser', function(req, res) {
  * @apiSuccess {String} info about user
  */
 userRoutes.delete('/deleteNotifications', function(req, res) {
-  User.update({'_id':req.userId},{$unset: {notifications:1}}, function(err){
-    if (err) {
-      console.log(err.message);
-      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error in deleting notification of current user', err, 500);
+  User.findOne({'_id':req.userId}, function(err, user){
+    
+    if (user) {
+      console.log(user);
+      user.notifications.forEach(function (notif) {
+        if (notif.seen == false)
+          notif.seen = true;
+      })
+      user.save(function(err) {
+        if (err) {
+          console.log(err.message);
+          return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error in deleting notification of current user', err, 500);
+        }
+      });
     }
+    else {
+      return errorCodes.sendError(res, errorCodes.ERR_ELEMENT_NOT_FOUND, 'No user found', err, 500);
+    }
+
     res.status(200).json({
-      status: 'Notification delted successful!'
+      status: 'Notifications deleted successful!'
     });
   });
 });
@@ -635,8 +657,9 @@ userRoutes.get('/listLoans', function(req, res) {
   var arrayOfLoans=[];
   var promises=[];
   Transaction
-  .find({$and:[{sender: req.userId}, {type:'LOAN'}]})
+  .find({$and:[{sender: req.userId}, {type:{ $ne: '' }}]})
   .populate('projectRecipient',{name:'name', _id:'id'})
+  .populate('sender',{username:'username'})
   .lean()
   .stream()
   .on('data', function(loan){
@@ -668,6 +691,26 @@ userRoutes.get('/listLoans', function(req, res) {
     });
 
   });
+});
+
+/**
+ * @api {post} /api/newNotification Create a new notification
+ * @apiName newNotification
+ * @apiGroup Api
+ *
+ * @apiSuccess {success}
+ */
+userRoutes.post('/newNotification', function(req, res) {
+
+  message = req.body.message;
+  recipient = req.body.recipient;
+
+  utils.createNotification(recipient, message, 'GENERAL');
+
+  res.status(200).json({
+    status: 'Notifications created successfully!'
+  });
+
 });
 
 module.exports = userRoutes;
