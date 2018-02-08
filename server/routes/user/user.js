@@ -75,10 +75,10 @@ userRoutes.get('/user', function(req, res) {
     if (user) {
       user.cards.forEach(card => {
         card.cvv = undefined;//rimuovo per sicurezza
-        
+
         var length = card.number.length;
         var latest = card.number.slice((length - 4), length);
-        
+
         card.number = Array(length - 4).join("*") + latest;//oscuro per sicurezza
       });
       res.status(200).json({
@@ -427,6 +427,7 @@ userRoutes.get('/detailsProject', function(req, res) {
   if (req.query.id!=undefined){
     Project.findOne({'_id': req.query.id})
     .populate('owner',{/*name:'name',*/username:'username', _id:'id'})
+    .populate('comments.user',{/*name:'name',*/username:'username', _id:'id'})
     .exec(afterGetProject);
   }else {
     return errorCodes.sendError(res, errorCodes.ERR_QUERY_PARAMETER,'There isn\'t id in the query',new Error('Query without id'),500 );
@@ -621,7 +622,7 @@ userRoutes.post('/publicUser', function(req, res) {
  */
 userRoutes.delete('/deleteNotifications', function(req, res) {
   User.findOne({'_id':req.userId}, function(err, user){
-    
+
     if (user) {
       console.log(user);
       user.notifications.forEach(function (notif) {
@@ -711,6 +712,38 @@ userRoutes.post('/newNotification', function(req, res) {
     status: 'Notifications created successfully!'
   });
 
+});
+
+/**
+ * @api {post} /api/newComment Create a new comment
+ * @apiName newComment
+ * @apiGroup Api
+ *
+ * @apiSuccess {success}
+ */
+userRoutes.post('/newComment', function(req, res) {
+
+    idProject = req.body.idProject;
+    var newComment = {user: req.userId, text: req.body.text};
+
+    Project.update({_id: idProject}, {$push: {comments: newComment}}, function (err) {
+      if (err) {
+        return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error adding new comment', err, 500);
+      }
+      Project.findOne({'_id': req.body.idProject}, function(err, project) {
+        if (err) {
+          return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error finding project', err, 500);
+        }
+        if (project) {
+          utils.createNotification(project.owner, "Il tuo progetto\""+project.name+"\" ha un nuovo commento", 'GENERAL');
+        } else {
+          return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error finding project', err, 500);
+        }
+      });
+      res.status(200).json({
+        status: 'Added successfully!'
+      });
+    })
 });
 
 module.exports = userRoutes;

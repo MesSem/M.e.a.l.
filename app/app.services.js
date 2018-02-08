@@ -45,7 +45,8 @@ function ($q, $timeout, $http) {
     closeAndReturn:closeAndReturn,
     adminList:adminList,
     newAdmin:newAdmin,
-    newNotification:newNotification
+    newNotification:newNotification,
+    createComment:createComment
   });
 
   function getEnumProjects() {//traduco da enum in italiano
@@ -248,6 +249,28 @@ function ($q, $timeout, $http) {
 
   function newNotification(recipient, message) {
     return $http.post('/api/user/newNotification', {recipient, message});
+  }
+
+  function createComment(form) {
+    var deferred = $q.defer();
+
+    // send a post request to the server
+    $http.post('/api/user/newComment', form)
+      // handle success
+      .then(function (success) {
+        if(success.status === 200 && success.data.status){
+          deferred.resolve();
+        } else {
+          deferred.reject();
+        }
+      })
+      // handle error
+      .catch(function (error) {
+        deferred.reject(error);
+      });
+
+    // return promise object
+    return deferred.promise;
   }
 
 }]);

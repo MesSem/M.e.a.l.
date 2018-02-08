@@ -4,8 +4,9 @@ var Schema = mongoose.Schema;
 
 var Comment=new Schema({
   _id: {type: Schema.Types.ObjectId, auto: true},
-  id_utente:{type: mongoose.Schema.Types.ObjectId, ref: 'users', required:true},
-  text:{type:String, minlength: 3, required:true}
+  user:{type: mongoose.Schema.Types.ObjectId, ref: 'users', required:true},
+  text:{type:String, minlength: 3, required:true},
+  date: {type:Date, default:Date.now, required:true}
 });
 
 var Project = new Schema({

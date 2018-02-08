@@ -3,9 +3,11 @@ angular.module('mealApp').component('projectDetails', {
   controller: ['$scope', '$location','UserService', 'moment',
                   function($scope,$location, UserService, moment) {
                     UserService.getProject($location.search().id)
-                    .then(function(response) {
+                    .then(
+                      function(response) {
                         $scope.project = response.data.project;
                       });
+
                       UserService.getUser().then(function(response) {
                         $scope.user = response.data.user;
                       });
@@ -31,6 +33,27 @@ angular.module('mealApp').component('projectDetails', {
 
                       }
 
+                      $scope.createComment = function () {
+                          $scope.commentError = false;
+
+                          //creo oggetto transazione da dati del form
+                          var comment = {idProject: $scope.project._id, text: $scope.commentForm.text}
+
+                          UserService.createComment(comment)//creo il commento
+                          // handle success
+                          .then(function () {
+                              window.location.reload();
+                          })
+                          // handle error
+                          .catch(function (error) {
+                              console.log(error);
+                              $scope.commentError = true;
+                              $scope.commentErrorMessage = error.data.message;
+                          });
+
+                      }
+
                       $scope.enumProjects = UserService.getEnumProjects();
-              }]
+              }
+            ]
 });

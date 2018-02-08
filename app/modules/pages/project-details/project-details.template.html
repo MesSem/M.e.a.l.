@@ -41,5 +41,29 @@
             <div ng-show="moneyError" class="alert alert-danger">{{moneyErrorMessage}}</div>
             </form>
         </div>
+        <div>
+            <form class="form"  ng-submit="createComment()">
+            <label>Fai una domanda o lascia un commento</label>
+            <p>
+              <textarea class="form-control" ng-model="commentForm.text"></textarea>
+            </p>
+            <button class="btn btn-success" type="submit">Commenta</button>
+            <div ng-show="commentError" class="alert alert-danger">{{commentErrorMessage}}</div>
+            </form>
+        </div>
+        <br>
+        <div class="project">
+            <h4>Commenti</h4>
+            <div>
+                <div ng-repeat="comment in project.comments | orderBy:'-date'">
+                    <div><a href="#!show/{{comment.user._id}}/{{comment.user.username}}" ng-show="user._id"><i class="fa fa-user"></i> {{comment.user.username}}</a></div>
+                    {{comment.text}}
+                    <br>
+                    <span style="color:grey">{{comment.date | amDateFormat:'DD-MM-YYYY'}}</span>
+                    <hr ng-if="!$last">
+                </div>
+            </div>
+            <div ng-show="moneyError" class="alert alert-danger">{{moneyErrorMessage}}</div>
+        </div>
     </div>
 </div>
