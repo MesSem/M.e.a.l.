@@ -33,16 +33,23 @@
     {{up.file.size / 1000000|number:1}}MB: max 20M</i>-->
     <!--<p>{{progress}}</p>-->
     <hr>
-    
-    Seleziona immagine principale*
+
+    Seleziona immagine principale(o una categoria)*
     <input type="file" class="btn btn-primary" ngf-select="uploadFiles($files)" accept="image/*" ng-model="projectForm.mainImage" ngf-max-size="20MB" required></input>
     <div class="clear"></div>
     <div style="margin-right:5px; margin-top:5px;">
         <img style="width:150px;" ngf-thumbnail="projectForm.mainImage"/>
     </div>
-
+    Categoria:
+    <select ng-model="projectForm.imageDefault">
+      <option value="">Immagine caricata</option>
+      <option value="uploads/default/house.jpg">Edilizia</option>
+      <option value="uploads/default/hobby.jpg">Hobby</option>
+      <option value="uploads/default/holiday.png">Vacanza</option>
+      <option value="uploads/default/study.jpeg">Studio</option>
+    </select>
     <hr>
-    
+
     Seleziona immagini galleria (max 20)
     <input type="file" class="btn btn-primary" ngf-select="uploadFiles($files)" accept="image/*" ng-model="projectForm.gallery" multiple="multiple" ngf-max-files="20"></input>
     <div class="clear"></div>

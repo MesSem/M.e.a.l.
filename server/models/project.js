@@ -2,6 +2,12 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var Comment=new Schema({
+  _id: {type: Schema.Types.ObjectId, auto: true},
+  id_utente:{type: mongoose.Schema.Types.ObjectId, ref: 'users', required:true},
+  text:{type:String, minlength: 3, required:true}
+});
+
 var Project = new Schema({
   _id: {type: Schema.Types.ObjectId, auto: true},
   owner:{type: mongoose.Schema.Types.ObjectId, ref: 'users', required:true},
@@ -28,7 +34,8 @@ var Project = new Schema({
     money:Number,
     cacheDate:Date
   },
-  isExample: {type:Boolean, default:false}
+  isExample: {type:Boolean, default:false},
+  comments: [Comment],
 });
 
 // set up a mongoose model and pass it using module.exports
