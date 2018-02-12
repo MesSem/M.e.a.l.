@@ -13,6 +13,7 @@ var auth = require("./server/auth.js")();
 var utils = require("./server/utils.js");
 var config = require("./server/config.js");
 var moment = require('moment');//gestione date e tempo
+var keys = require('./keys.js');//gestione date e tempo
 
 mongoose.Promise = global.Promise;
 // mongoose
@@ -53,12 +54,9 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
 
 const FacebookStrategy = require('passport-facebook').Strategy;
 
-const FACEBOOK_APP_ID = '1664386266977814';
-const FACEBOOK_APP_SECRET = '76328850dcea4d040734d996a0928415';
-
 passport.use(new FacebookStrategy({
-    clientID: FACEBOOK_APP_ID,
-    clientSecret: FACEBOOK_APP_SECRET,
+    clientID: keys.FACEBOOK_APP_ID,
+    clientSecret: keys.FACEBOOK_APP_SECRET,
     callbackURL: "/api/auth/facebook/callback",
     profileFields : ["id", "birthday", "email", "first_name", "gender", "last_name"]
   },
