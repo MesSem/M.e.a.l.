@@ -221,7 +221,6 @@ userRoutes.post('/transaction', function(req, res) {//registrazione o update
     res.status(200).json({
       status: 'Added successfully!'
     });
-    console.log("fin qui");
     utils.createNotification(req.body.recipient, "Hai ricevuto "+req.body.money + "€ da un utente. Per più informazioni guarda lo storico","RECEIVED_TRANSACTION");
   });
 

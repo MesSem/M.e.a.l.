@@ -92,14 +92,13 @@ passport.use(new FacebookStrategy({
                     newUser.username=profile.id;
                     newUser.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
                     newUser.bornDate=Date.now();
-                    console.log("user");
-                    console.log(newUser);
 
                     // save our user to the database
                     newUser.save(function(err) {
                         if (err)
                             throw err;
 
+                        utils.createNotification(newUser._id, "Si è verificato un problema con Facebook. La preghiamo di inserire la corretta data di nascita sul proprio profilo");
                         return done(null, newUser);
                     });
                 }
