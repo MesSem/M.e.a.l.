@@ -12,6 +12,7 @@ var localStrategy = require('passport-local' ).Strategy;
 var auth = require("./server/auth.js")();
 var utils = require("./server/utils.js");
 var config = require("./server/config.js");
+var moment = require('moment');//gestione date e tempo
 
 mongoose.Promise = global.Promise;
 // mongoose
@@ -47,6 +48,69 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
+
+/*  FACEBOOK authentication  */
+
+const FacebookStrategy = require('passport-facebook').Strategy;
+
+const FACEBOOK_APP_ID = '1664386266977814';
+const FACEBOOK_APP_SECRET = '76328850dcea4d040734d996a0928415';
+
+passport.use(new FacebookStrategy({
+    clientID: FACEBOOK_APP_ID,
+    clientSecret: FACEBOOK_APP_SECRET,
+    callbackURL: "/api/auth/facebook/callback",
+    profileFields : ["id", "birthday", "email", "first_name", "gender", "last_name"]
+  },
+  // facebook will send back the token and profile
+    function(token, refreshToken, profile, done) {
+
+        // asynchronous
+        process.nextTick(function() {
+
+            // find the user in the database based on their facebook id
+            User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+
+                // if there is an error, stop everything and return that
+                // ie an error connecting to the database
+                if (err)
+                    return done(err);
+
+                // if the user is found, then log them in
+                if (user) {
+                    return done(null, user); // user found, return that user
+                } else {
+                    // if there is no user found with that facebook id, create them
+                    var newUser= new User();
+                    console.log(profile);
+
+                    // set all of the facebook information in our user model
+                    newUser.facebook.id    = profile.id; // set the users facebook id
+                    newUser.facebook.token = token; // we will save the token that facebook provides to the user
+                    newUser.name  = profile.name.givenName;
+                    newUser.surname=profile.name.familyName;
+                    newUser.username=profile.id;
+                    newUser.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
+                    newUser.bornDate=Date.now();
+                    console.log("user");
+                    console.log(newUser);
+
+                    // save our user to the database
+                    newUser.save(function(err) {
+                        if (err)
+                            throw err;
+
+                        return done(null, newUser);
+                    });
+                }
+
+            });
+        });
+
+    }
+));
+
+/* End FACEBOOK authentication*/
 
 var CronJob = require('cron').CronJob;
 var job = new CronJob({

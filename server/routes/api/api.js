@@ -60,6 +60,56 @@ apiRoutes.post('/login', function(req, res, next) {
   })(req, res, next);
 });
 
+
+/**
+ * @api {get} /api/loginFacebook User login
+ * @apiName Login with Facebook
+ * @apiGroup Api
+ *
+ * @apiParam {User} the user data--->mettere meglio
+ */
+apiRoutes.get('/loginFacebook', function(req, res, next) {
+  passport.authenticate('facebook',{scope:['public_profile', 'email']}, function(err, user, info) {
+    if (err) {
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error during authentication', next(err), 500);
+    }
+    if (!user) {
+      return errorCodes.sendError(res, errorCodes.ERR_API_WRONG_PSW, 'User not found', info, 500);
+    }
+    //Creazone del payload del token
+    var payload = {
+        id: user.id,
+        sessionOpen:req.body.sessionOpen,
+        expr:moment().add(cfg.timeSessionToken, "hours").unix()
+    };
+    //ho commentato maxAge perchè già c'è il parametro expr dentro al token. Da discutere se togliere expr e utilizzare maxAge
+      res.cookie('token',jwt.encode(payload, cfg.jwtSecret), { maxAge: cfg.cookieAge, httpOnly: true });
+    //Codifica del token e restituzione
+    //var token = jwt.encode(payload, cfg.jwtSecret);
+    res.status(200).json({
+        //token: token,
+        status: 'Login successful!'
+    });
+  })(req, res, next);
+});
+
+
+apiRoutes.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/error' }),
+  function(req, res) {
+    var payload = {
+        id: req.user.id,
+        sessionOpen:req.body.sessionOpen,
+        expr:moment().add(cfg.timeSessionToken, "hours").unix()
+    };
+    //ho commentato maxAge perchè già c'è il parametro expr dentro al token. Da discutere se togliere expr e utilizzare maxAge
+    res.cookie('token',jwt.encode(payload, cfg.jwtSecret), { maxAge: cfg.cookieAge, httpOnly: true });
+    //Codifica del token e restituzione
+    //var token = jwt.encode(payload, cfg.jwtSecret);
+    res.redirect('/');
+});
+
+
 /**
  * @api {post} /api/register User registration
  * @apiName Register

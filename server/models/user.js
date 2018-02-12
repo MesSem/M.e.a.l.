@@ -41,7 +41,11 @@ var User = new Schema({
   cards: [Card],
   idCard: String,
   isAdmin:{type:Boolean, default:false},
-  notifications:[Notification]
+  notifications:[Notification],
+  facebook:{
+    id: String,
+    token:String
+  }
 });
 
 
