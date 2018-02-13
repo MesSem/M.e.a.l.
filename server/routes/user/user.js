@@ -298,75 +298,85 @@ function resizeImage(input, output) {//ridimensiona con dimensioni massime 1024
 userRoutes.post('/project', upload, function(req, res) {//registrazione o update
   var form = req.body.form;
 
-  if (req.files.length < 1)//controllo la presenza di immagini
-    return errorCodes.sendError(res, errorCodes.ERR_INVALID_REQUEST, 'Main image missing', err, 500);
+  User.findOne({'_id':req.userId}, function(err, user){//controllo che l'utente sia verificato
+    if (user.verified !== 'VERIFIED') {
+      return errorCodes.sendError(res, errorCodes.ERR_OPERATION_UNAUTHORIZED, 'User not verified', new Error("User not verified"), 500);
+    }
+    else {
+  
+      if (req.files.length < 1)//controllo la presenza di immagini
+        return errorCodes.sendError(res, errorCodes.ERR_INVALID_REQUEST, 'Main image missing', err, 500);
 
-  var gallery = [];
+      var gallery = [];
 
-  for (var key in req.files) {//trovo immagine principale e immagini galleria
-    el = req.files[key];
-    if (el.fieldname == 'file[main]')
-      mainImage = el.path;
-    else if (el.fieldname == 'file[gallery]')
-      gallery.push(el.path);
-  }
+      for (var key in req.files) {//trovo immagine principale e immagini galleria
+        el = req.files[key];
+        if (el.fieldname == 'file[main]')
+          mainImage = el.path;
+        else if (el.fieldname == 'file[gallery]')
+          gallery.push(el.path);
+      }
 
-  var proj = new Project({
-    owner: req.userId,
-    name: form.name,
-    description: form.description,
-    image: 'temp',//req.files[0].path,
-    imagesGallery: [],//gallery,
-    endDate:form.endDate,
-    restitution: {
-      date: form.restitution.dateRestitution,
-      interests: form.restitution.interests
-      },
-    requestedMoney: form.requestedMoney,
-    actualMoney:{money:0, date:Date.now()}
+      var proj = new Project({
+        owner: req.userId,
+        name: form.name,
+        description: form.description,
+        image: 'temp',//req.files[0].path,
+        imagesGallery: [],//gallery,
+        endDate:form.endDate,
+        restitution: {
+          date: form.restitution.dateRestitution,
+          interests: form.restitution.interests
+          },
+        requestedMoney: form.requestedMoney,
+        actualMoney:{money:0, date:Date.now()}
+      });
+
+      proj.save(function (err, results) {
+        if (err) {
+          //in caso di errore elimino tutte le immagini caricate
+          fs.unlinkSync(mainImage);
+          for (var key in gallery) {
+            fs.unlinkSync(gallery[key]);
+          }
+          return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error saving new project', err, 500);
+        }
+        //sposto le immagini nella cartella una volta che ho _id del progetto - rename(vecchia_dir, nuova_dir)
+        projDir = uploadDir + path.sep + proj._id;
+        realProjDir = rsDir + path.sep + proj._id;
+        if (!fs.existsSync(projDir))
+          fs.mkdirSync(projDir);
+
+
+        var mainImageName = mainImage.split(path.sep).pop();
+
+        resizeImage(mainImage, projDir + path.sep + mainImageName);
+
+        var mainImagePath = realProjDir + path.sep + mainImageName;
+
+
+        for (var key in gallery) {
+          var galleryName = gallery[key].split(path.sep).pop();
+
+          resizeImage(gallery[key], projDir + path.sep + galleryName);
+
+          gallery[key] = realProjDir + path.sep + galleryName;
+        }
+
+        Project.update({_id: proj._id}, {'$set': {image: mainImagePath, imagesGallery: gallery}}, function (err) {
+          if (err) {
+            return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error saving images inside project', err, 500);
+          }
+        });
+
+        res.status(200).json({
+          status: 'Added successfully!'
+        });
+      });
+
+    }
   });
 
-  proj.save(function (err, results) {
-    if (err) {
-      //in caso di errore elimino tutte le immagini caricate
-      fs.unlinkSync(mainImage);
-      for (var key in gallery) {
-        fs.unlinkSync(gallery[key]);
-      }
-      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error saving new project', err, 500);
-    }
-    //sposto le immagini nella cartella una volta che ho _id del progetto - rename(vecchia_dir, nuova_dir)
-    projDir = uploadDir + path.sep + proj._id;
-    realProjDir = rsDir + path.sep + proj._id;
-    if (!fs.existsSync(projDir))
-      fs.mkdirSync(projDir);
-
-
-    var mainImageName = mainImage.split(path.sep).pop();
-
-    resizeImage(mainImage, projDir + path.sep + mainImageName);
-
-    var mainImagePath = realProjDir + path.sep + mainImageName;
-
-
-    for (var key in gallery) {
-      var galleryName = gallery[key].split(path.sep).pop();
-
-      resizeImage(gallery[key], projDir + path.sep + galleryName);
-
-      gallery[key] = realProjDir + path.sep + galleryName;
-    }
-
-    Project.update({_id: proj._id}, {'$set': {image: mainImagePath, imagesGallery: gallery}}, function (err) {
-      if (err) {
-        return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error saving images inside project', err, 500);
-      }
-    });
-
-    res.status(200).json({
-      status: 'Added successfully!'
-    });
-  });
 
 });
 
@@ -743,6 +753,58 @@ userRoutes.post('/newComment', function(req, res) {
         status: 'Added successfully!'
       });
     })
+});
+
+var uploadID = multer({ //multer settings -- caricamento documento identità
+  storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      dirID = 'app/uploads/' + req.userId + '/ID';
+      if (!fs.existsSync(dirID)) //controllo directory
+        fs.mkdirSync(dirID);
+        
+      fs.readdir(dirID, (err, files) => {
+        fs.unlinkSync(path.join(dirID, files[0]));//elimino eventuale doc caricato in precedenza
+      });
+
+      cb(null, dirID)
+    },
+    filename: function (req, file, cb) {
+      cb(null, 'IDdoc' + path.extname(file.originalname))
+    }
+  }),
+  onError : function(err, next) {
+    console.log("err.message");
+    return errorCodes.sendError(res, errorCodes.ERR_INVALID_REQUEST, 'Error uploading document', err, 500);
+  }
+}).any();//uso any perchè sembra l'unico funzionante
+
+/**
+ * @api {post} /user/uploadDoc Upload identity document
+ * @apiName uploadDoc
+ * @apiGroup Api
+ *
+ * @apiSuccess {success}
+ */
+userRoutes.post('/uploadDoc', uploadID, function(req, res) {
+  
+  if (req.files.length !== 1)
+    return errorCodes.sendError(res, errorCodes.ERR_INVALID_REQUEST, 'Document missing', err, 500);
+
+  User.findById(req.userId, function (err, user) {
+    if (err)
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error finding user', err, 500);
+  
+    user.verified = 'WAITING';
+    user.save(function (err) {
+      if (err)
+        return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error updating user', err, 500);
+
+      res.status(200).json({
+        status: 'Document uploaded successfully!'
+      });
+    });
+  });
+
 });
 
 module.exports = userRoutes;

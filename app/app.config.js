@@ -70,12 +70,18 @@ angular.module('mealApp').controller('loggedController',
 ['$scope', 'UserService', '$location', '$rootScope',
 function ($scope, UserService, $location, $rootScope) {
 
+  UserService.getVerifiedStatus();
+
   $scope.isLoggedIn = function() {
     return UserService.isLoggedIn();
   };
 
   $scope.isAdmin = function() {
     return UserService.isAdmin();
+  };
+
+  $scope.isVerified = function() {
+    return UserService.isVerified();
   };
 
   $scope.logout = function () {

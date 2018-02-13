@@ -45,7 +45,8 @@ var User = new Schema({
   facebook:{
     id: String,
     token:String
-  }
+  },
+  verified: {type:String, enum: ['UNVERIFIED', 'WAITING', 'VERIFIED'], default: 'UNVERIFIED'}
 });
 
 

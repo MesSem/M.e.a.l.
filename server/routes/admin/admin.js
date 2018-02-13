@@ -4,6 +4,7 @@
 
 var express = require('express');
 var router = express.Router();
+var fs = require('fs');
 
 var errorCodes= require('../../errorCodes.js');
 var utils= require('../../utils.js');
@@ -182,6 +183,65 @@ adminRoutes.post('/newAdmin', function(req, res) {
       status: 'New admin setting successful!'
     });
     utils.createNotification(user._id, 'Complimenti, ora sei un admin!', 'GENERAL');
+  })
+});
+
+/**
+ * @api {get} /api/admin/usersList List of all the users for verification purpose
+ * @apiName UsersList
+ * @apiGroup Admin
+ *
+ * @apiSuccess {[Users]} list of all the users
+ *
+ */
+adminRoutes.get('/usersList', function(req, res) {
+  User.find({}, '_id username verified name surname', function (err, result) {
+    if (err) {
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error getting users list', err, 500);
+    }
+
+    let users = JSON.parse(JSON.stringify(result));//devo fare un deep clone e sembra che questo è l'unico modo
+
+    users.map((user) => {
+      dirID = 'app/uploads/' + user._id + '/ID';
+
+      if (fs.existsSync(dirID)) {
+        var files = fs.readdirSync(dirID);
+
+        if (files)
+          user.doc = files[0];//aggiungo il nome del documento ID
+      }
+        
+        return user;
+    });
+
+    return res.status(200).json({
+      users: users
+    });
+  })
+});
+
+/**
+ * @api {get} /api/admin/changeVerified Change user verified status
+ * @apiName changeVerified
+ * @apiGroup Admin
+ *
+ * @apiSuccess {[Admins]} list of all the admins
+ *
+ */
+adminRoutes.post('/changeVerified', function(req, res) {
+  var user = req.body.user;
+  var newStatus = req.body.status;
+
+  User.findOneAndUpdate({_id : user._id}, {"$set" : {verified: newStatus}}, function(err, user){
+    if (err) {
+      return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error updating user status', err, 500);
+    }
+    res.status(200).json({
+      status: 'User\'s status update successfull!',
+      user: user
+    });
+    utils.createNotification(user._id, 'Complimenti, sei stato verificato! Ora puoi creare il tuo primo progetto!', 'GENERAL');
   })
 });
 

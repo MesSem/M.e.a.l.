@@ -12,6 +12,11 @@ angular.module('mealApp').component('admin', {
                             $scope.projects = response.data.projects;
                         });
 
+                        UserService.usersList()//prendo lista utenti
+                        .then(function(response) {
+                            $scope.users = response.data.users;
+                        });
+
                         $scope.changeStatus = function (project, newStatus) {//cambio stato progetto
                             $scope.projectsError = $scope.projectsSuccess = false;
                             UserService.changeProjectStatus(project._id, newStatus)
@@ -86,6 +91,35 @@ angular.module('mealApp').component('admin', {
                         }
 
                     $scope.enumProjects = UserService.getEnumProjects();
+
+                    $scope.orderStatus = function(user) {//precedenza a utenti in attesa o non verificati
+                        if (user.verified == 'WAITING')
+                            return 1;
+                        else if (user.verified == 'UNVERIFIED')
+                            return 2;
+                        else
+                            return 3;
+                     };
+
+                    $scope.openID = function (id, filename) {
+                        var redirectWindow = window.open('uploads/' + id + '/ID/' + filename, '_blank');
+                        redirectWindow.location;
+                    };
+
+                    $scope.changeVerified = function(user, status) {
+
+                        UserService.changeVerified(user, status)
+                        .then(function(response) {
+                            //console.log(response.data.user);
+                            user.verified = status;
+                            $scope.projectsSuccess = true;
+                            $scope.projectsSuccessMessage = response.data.status;
+                        })
+                        .catch(function(error) {
+                            $scope.projectsError = true;
+                            $scope.projectsErrorMessage = error.data.message;
+                        });
+                    }
                       
                 }]
   });

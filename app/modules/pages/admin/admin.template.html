@@ -19,6 +19,39 @@
         </div>
     </div>
 
+    <div class="col-xs-6 col-md-8" style="margin-bottom: 15px;">
+        <div class="project">
+            <input type="text" class="form-control" placeholder="Search" ng-model="searchUser">
+            <hr>
+            <table style="width: 100%;">
+                <thead>
+                    <tr>
+                        <td>Nome e cognome</td>
+                        <td>Username</td>
+                        <td>Status</td>
+                        <td>Azioni</td>
+                    </tr>
+                </thead>
+                <tr ng-repeat="user in users | filterBy: ['username', 'name', 'surname', 'verified']: searchUser | orderBy:orderStatus">
+                    <td>
+                        {{user.name}} {{user.surname}}
+                    </td>
+                    <td>
+                        {{user.username}}
+                    </td>
+                    <td>
+                        {{user.verified}}
+                    </td>
+                    <td style="padding:2px;">
+                        <button class="btn btn-info" ng-disabled="!user.doc" ng-click="openID(user._id, user.doc)"><i class="fa fa-eye"></i> Vedi ID</button>
+                        <button class="btn btn-danger" ng-show="user.verified != 'UNVERIFIED'" ng-click="changeVerified(user, 'UNVERIFIED')"><i class="fa fa-times"></i> Rifiuta</button>
+                        <button class="btn btn-success" ng-show="user.verified != 'VERIFIED'" ng-click="changeVerified(user, 'VERIFIED')"><i class="fa fa-check"></i> Accetta</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
     <div class="col-xs-6 col-md-12">
         <div class="project">
             <h4>Progetti</h4>
@@ -71,5 +104,6 @@
 
         </div>
     </div>
+
 
 </div>

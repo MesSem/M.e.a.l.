@@ -9,7 +9,7 @@ function ($q, $timeout, $http) {
   }
 
   // create user variable
-  var user = admin = null;
+  var user = admin = verified = null;
 
   // return available functions for use in the controllers
   return ({
@@ -46,7 +46,12 @@ function ($q, $timeout, $http) {
     adminList:adminList,
     newAdmin:newAdmin,
     newNotification:newNotification,
-    createComment:createComment
+    createComment:createComment,
+    uploadIdentity:uploadIdentity,
+    usersList:usersList,
+    changeVerified:changeVerified,
+    getVerifiedStatus:getVerifiedStatus,
+    isVerified:isVerified
   });
 
   function getEnumProjects() {//traduco da enum in italiano
@@ -271,6 +276,38 @@ function ($q, $timeout, $http) {
 
     // return promise object
     return deferred.promise;
+  }
+
+  function uploadIdentity(uploadDoc) {
+    return $http.post('/api/user/uploadDoc', {uploadDoc});
+  }
+
+  function usersList() {
+    return $http.get('/api/admin/usersList');
+  }
+
+  function changeVerified(user, status) {
+    return $http.post('/api/admin/changeVerified', {user, status});
+  }
+
+  function getVerifiedStatus() {
+    getUser()
+    .then(function (success) {
+      verUser = success.data.user;
+
+      if (verUser.verified === 'VERIFIED')
+        verified = true
+      else
+        verified = false;
+    });
+  }
+
+  function isVerified() {
+    if(verified) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }]);

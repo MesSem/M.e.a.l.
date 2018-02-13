@@ -78,7 +78,7 @@
             <li><a href="" ng-click='deleteNotifications()'>Cancella tutto</a></li>
           </ul>
         
-          <a class="btn btn-success" href="#!newProject">Nuovo progetto</a>
+          <a class="btn btn-success" href="#!newProject" ng-class="{disabled: !isVerified()}">Nuovo progetto</a>
           <a class="btn btn-success" href="#!profile">Profilo</a>
           <a class="btn btn-success" href="#!projects">Progetti</a>
           <a class="btn btn-success" href="#!projects?onlyMy=true">I miei progetti</a>

@@ -1,7 +1,7 @@
 angular.module('mealApp').controller('dettagli-account',
-              ['$scope', 'UserService', 'moment',
+              ['$scope', 'UserService', 'moment', 'Upload',
 
-                function ($scope, UserService, moment) {
+                function ($scope, UserService, moment, Upload) {
                   UserService.getUser()
                   .then(function(response) {
                     $scope.user = response.data.user;
@@ -19,6 +19,7 @@ angular.module('mealApp').controller('dettagli-account',
                   $scope.updateUser = function () {//invio dati modificati
                     // initial values
                     $scope.error = false;
+                    $scope.success = false;
                     $scope.disabled = true;
 
                     // call register from service
@@ -35,6 +36,28 @@ angular.module('mealApp').controller('dettagli-account',
                         $scope.errorMessage = error.data.message;
                         $scope.disabled = true;
                         $scope.updateForm = {};
+                      });
+
+                  },
+
+                  $scope.uploadIdentity = function () {//invio documento identità
+                    // initial values
+                    $scope.errorID = false;
+                    $scope.successID = false;
+
+                    // call register from service
+                    Upload.upload({
+                      url: 'http://localhost:8080/api/user/uploadDoc', //webAPI exposed to upload the file
+                      arrayKey: '',
+                      data:{file: {doc: $scope.uploadDoc}} //pass file as data, should be user ng-model
+                    }).then(function () {
+                        $scope.successID = true;
+                        $scope.successIDMessage = "Upload successfully!";
+                      })
+                      // handle error
+                      .catch(function (error) {
+                        $scope.errorID = true;
+                        $scope.errorIDMessage = error.data.message;
                       });
 
                   }
