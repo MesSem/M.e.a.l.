@@ -18,6 +18,21 @@ Piattaforma sviluppata con lo stack Mean per lo scambio di denaro e la possibili
 - Promesse con il modello "q"
 - Organizzazione route divisa in diversi Router di Express
 
+# User Story
+Indicate dalla traccia:
+- come utente voglio poter accedere ad un’area privata tramite username e password
+- come utente voglio poter inviare del denaro ad un altro utente
+- come utente voglio poter richiedere un prestito P2P dentro l’app rispettando le leggi italiane
+- come utente voglio poter investire in un prestito chiesto da un altro utente
+- come admin voglio poter moderare le richieste di prestito
+Scelte dagli svilupparori del progetto:
+- come utente voglio chedere del denaro ad un altro utente
+- come utente posso visualizzare il profilo degli altri utenti con i progetti/richieste di prestito create dagli altri utenti
+- come utente posso lasciare dei commenti sui progetti/richieste di prestito degli altri per fare domande o dare un giudizio
+- come utente posso ricevere delle notifiche sull'anamento della mia richiesta di prestito, commenti ricevuti o altre informazioni
+- come utente posso entrare nel sistema creando un utente all'interno del sistema o attraverso il social network facebook
+Oltre a queste user story la piattaforma permette agli utenti di modificare i propri progetti, tenerne traccia. Gli utente non loggati nel sistema possono solo visualizzare alcune richieste di prestito pubblici giusto per avere un'idea del sistema.
+
 
 # ChangeLog
 - 14/02/2018 -- Inserimento controllo degli utenti attraverso carta di identità
@@ -60,18 +75,50 @@ Le API restituiscono un messaggio strutturato nel seguente modo
 
 # Struttura file del server
 ```
---- index.js                / /file principale da eseguire
---- package.js
---+ routes
-  |---- db-utilities.js      //funzioni condivise tra tutti, per interagire con il db
-  |--+ admin
-     |--- admin-index.js     //file principale del modulo Admin
-     |--- admin-utilities.js //funzioni del modulo Admin       
-  |--+ api  
-     |--- api-index.js       //file principale del modulo Api
-     |--- api-utilities.js   //funzioni del modulo Api
---+ models                   //schemi modelli Mongoose
-  |--- User.js
+--- main.js                 //file principale da eseguire
+--- package.json            
+--- bower.json
+--- app.js                  //file che continee tutte le configurazioni dell'applicazione web
+--+ server
+  |--+ models                //schemi modelli Mongoose
+     |--genericData.js      
+     |--project.js          
+     |--transaction.js      
+     |--user.js
+  |---- auth.js      //funzioni condivise tra tutti, per l'autenticazione degli utenti
+  |---- config.js      //funzioni condivise tra tutti, per parametri di configurazione
+  |---- errorCodes.js      //funzioni condivise tra tutti, per i codici di errore
+  |---- utils.js      //funzioni condivise tra tutti, per alcuni metodi utili in diverse parti del software
+  |--+ routes 
+     |--+ admin
+        |--- admin.js     //file principale del modulo Admin    
+     |--+ api  
+        |--- api.js       //file principale del modulo Api
+     |--+ user  
+        |--- user.js       //file principale del modulo User
+--+ app
+  |---- app.config.js
+  |---- app.css
+  |---- app.service.js      //funzioni di servizio utilizzate nell'app
+  |---- index.html
+  |--+ uploads              //cartella non presente su git ma creata durante l'esecuzione dell'app per le immagini
+     |--+ idProgetto
+        |---- immagine.jpg 
+  |--+ modules
+     |--+ components
+        |--+ login          //non inserito dentro le pagine per lasciarlo distaccato e dare la possibilità di gestirlo in diverse modalità
+            |---- login.component.js
+            |---- login.template.js
+     |--+ elements
+        |---- project.template.html  //template del progetto utilizzati nelle pagine e nei widget
+     |--+ pages
+        |--+ nome-pagina    //pagine dell'applicazione
+           |---- nome-pagina.component.js
+           |---- nome-pagina.template.html
+     |--+ widgets           //elementi della pagina profilo, distaccati dal contenitore e riutilizzabili altrove
+        |--+ nome-widget
+           |---- nome-widget.component.js
+           |---- nome-widget.template.html
 ```
 
 Prima di avviare il server, installare le dipendenze con il comando  
@@ -84,18 +131,20 @@ oppure installate [https://github.com/foreverjs/forever](forever), per riavviare
 `forever -w start index.js`
 
 Per utilizzare il login attraverso Facebook occorre creare nella cartella principale il file keys.js con questo contenuto:
+'''
 module.exports =
 {
     'FACEBOOK_APP_ID':   'app id',
     'FACEBOOK_APP_SECRET': 'app secret code'
 };
+'''
 Per ottenere i codici bisogna crearsi un'acount facebook developer, creare una nuova app e a quel punto si otterranno i due codici necessari al login tramite facebook.
 
 
 # App deployata su Heroku
 https://m-e-a-l.herokuapp.com/
 Per effettuare il login tramite facebook bisogna usare l'utente di prova. 
-Email: test_fikmgrd_utente@tfbnw.net 
-Password: 1qa2wszx
+- Email: test_fikmgrd_utente@tfbnw.net 
+- Password: 1qa2wszx
 
 
