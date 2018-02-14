@@ -763,7 +763,8 @@ var uploadID = multer({ //multer settings -- caricamento documento identità
         fs.mkdirSync(dirID);
         
       fs.readdir(dirID, (err, files) => {
-        fs.unlinkSync(path.join(dirID, files[0]));//elimino eventuale doc caricato in precedenza
+        if (files.length > 0)
+          fs.unlinkSync(path.join(dirID, files[0]));//elimino eventuale doc caricato in precedenza
       });
 
       cb(null, dirID)

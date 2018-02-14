@@ -47,17 +47,18 @@ angular.module('mealApp').controller('dettagli-account',
 
                     // call register from service
                     Upload.upload({
-                      url: 'http://localhost:8080/api/user/uploadDoc', //webAPI exposed to upload the file
+                      url: '//localhost:8080/api/user/uploadDoc', //webAPI exposed to upload the file
                       arrayKey: '',
                       data:{file: {doc: $scope.uploadDoc}} //pass file as data, should be user ng-model
                     }).then(function () {
                         $scope.successID = true;
                         $scope.successIDMessage = "Upload successfully!";
+                        $scope.user.verified = "WAITING";
                       })
                       // handle error
                       .catch(function (error) {
                         $scope.errorID = true;
-                        $scope.errorIDMessage = error.data.message;
+                        $scope.errorIDMessage = 'Error during upload';
                       });
 
                   }
