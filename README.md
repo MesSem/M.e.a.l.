@@ -29,20 +29,7 @@ Oltre a queste user story la piattaforma permette agli utenti di modificare i pr
 - 14/02/2018 -- Inserimento controllo degli utenti attraverso carta di identità
 
 
-# API esposte dal server:
-
-/     
-GET   /  
-POST  /
-
-/admin  (richiesto ruolo admin)  
-GET   /admin/users  
-GET   /admin/setup  
-
-/api  
-POST  /api/signup  
-POST  /api/authenticate  
-
+# Messaggi restituiti dalle API
 
 Le API restituiscono un messaggio strutturato nel seguente modo
 - caso di successo
