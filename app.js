@@ -13,7 +13,22 @@ var auth = require("./server/auth.js")();
 var utils = require("./server/utils.js");
 var config = require("./server/config.js");
 var moment = require('moment');//gestione date e tempo
-var keys = require('./keys.js');//gestione date e tempo
+
+try {//se il file per le key api esiste, uso quello
+    var keys = require('./keys.js');
+} catch (ex) {
+    console.log("File keys.js non trovato. Ricerca nelle variabili di sessione...");
+
+    if (!process.env.FACEBOOK_APP_ID || !process.env.FACEBOOK_APP_SECRET) {
+        console.log('Una o più variabili mancanti! Ricordati di impostarle!');
+        throw Error('Missing api key');
+    }
+    else {
+        var keys = {};
+        keys.FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID;
+        keys.FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET;
+    }
+}
 
 mongoose.Promise = global.Promise;
 // mongoose
