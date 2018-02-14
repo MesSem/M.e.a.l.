@@ -121,9 +121,14 @@ Per ottenere i codici bisogna crearsi un'acount facebook developer, creare una n
 
 # App deployata su Heroku
 https://m-e-a-l.herokuapp.com/
-Per effettuare il login tramite facebook bisogna usare l'utente di prova. 
+
+Per effettuare il login tramite Facebook bisogna usare l'utente di prova.
 - Email: test_fikmgrd_utente@tfbnw.net 
 - Password: 1qa2wszx
+
+Utente admin all'interno di Heroku per visualizzare le pagine disponibili solo all'admin:
+-
+-
 
 # Autori
 - **Giacomo Natali**
