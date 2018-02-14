@@ -47,7 +47,7 @@ angular.module('mealApp').controller('dettagli-account',
 
                     // call register from service
                     Upload.upload({
-                      url: '//localhost:8080/api/user/uploadDoc', //webAPI exposed to upload the file
+                      url: '/api/user/uploadDoc', //webAPI exposed to upload the file
                       arrayKey: '',
                       data:{file: {doc: $scope.uploadDoc}} //pass file as data, should be user ng-model
                     }).then(function () {

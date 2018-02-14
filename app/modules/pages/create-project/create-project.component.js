@@ -15,7 +15,7 @@ angular.module('mealApp').component('createProject', {
                     delete $scope.projectForm.gallery;
 
                     Upload.upload({
-                      url: '//localhost:8080/api/user/project', //webAPI exposed to upload the file
+                      url: '/api/user/project', //webAPI exposed to upload the file
                       arrayKey: '',
                       data:{file: {main: mainImage, gallery: gallery}, form: $scope.projectForm} //pass file as data, should be user ng-model
                     }).then(function (resp) { //upload function returns a promise
