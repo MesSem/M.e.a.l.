@@ -758,7 +758,12 @@ userRoutes.post('/newComment', function(req, res) {
 var uploadID = multer({ //multer settings -- caricamento documento identità
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
-      dirID = 'app/uploads/' + req.userId + '/ID';
+      dir = 'app/uploads/' + req.userId;
+      dirID = dir + '/ID';
+
+      if (!fs.existsSync(dir)) //controllo directory
+        fs.mkdirSync(dir);
+
       if (!fs.existsSync(dirID)) //controllo directory
         fs.mkdirSync(dirID);
         
