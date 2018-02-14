@@ -20,7 +20,8 @@ Scelte dagli svilupparori del progetto:
 - come utente posso visualizzare il profilo degli altri utenti con i progetti/richieste di prestito create dagli altri utenti
 - come utente posso lasciare dei commenti sui progetti/richieste di prestito degli altri per fare domande o dare un giudizio
 - come utente posso ricevere delle notifiche sull'anamento della mia richiesta di prestito, commenti ricevuti o altre informazioni
-- come utente posso entrare nel sistema creando un utente all'interno del sistema o attraverso il social network facebook
+- come utente posso entrare nel sistema creando un utente all'interno del sistema o attraverso il social network Facebook
+
 Oltre a queste user story la piattaforma permette agli utenti di modificare i propri progetti, tenerne traccia. Gli utente non loggati nel sistema possono solo visualizzare alcune richieste di prestito pubblici giusto per avere un'idea del sistema.
 
 
