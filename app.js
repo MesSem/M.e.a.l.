@@ -17,7 +17,13 @@ var keys = require('./keys.js');//gestione date e tempo
 
 mongoose.Promise = global.Promise;
 // mongoose
-mongoose.connect('mongodb://localhost/meal');
+if (process.env.NODE_ENV == 'production') {//imposto in produzione se avvio con 'npm start'
+  console.log('production');
+  mongoose.connect('mongodb://admin:secret@ds235388.mlab.com:35388/meal', { useMongoClient: true });
+} else {
+  console.log('development');
+  mongoose.connect('mongodb://localhost/meal', { useMongoClient: true });
+}
 
 // user schema/model
 var User = require('./server/models/user.js');
