@@ -33,7 +33,7 @@ apiRoutes.get('/prova', function(req, res) {
  * @apiName Login
  * @apiGroup Api
  *
- * @apiParam {User} the user data--->mettere meglio
+ * @apiParam {User} the user data
  */
 apiRoutes.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
@@ -66,7 +66,6 @@ apiRoutes.post('/login', function(req, res, next) {
  * @apiName Login with Facebook
  * @apiGroup Api
  *
- * @apiParam {User} the user data--->mettere meglio
  */
 apiRoutes.get('/loginFacebook', function(req, res, next) {
   passport.authenticate('facebook',{scope:['public_profile', 'email']}, function(err, user, info) {
@@ -115,7 +114,7 @@ apiRoutes.get('/auth/facebook/callback',
  * @apiName Register
  * @apiGroup Api
  *
- * @apiParam {User} the user data--->mettere meglio
+ * @apiParam {User} the user data
  */
 apiRoutes.post('/register', function(req, res) {
   if (req.body.password.length < 8 || req.body.password.length > 100) {

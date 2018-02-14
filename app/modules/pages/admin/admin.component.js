@@ -29,7 +29,7 @@ angular.module('mealApp').component('admin', {
                                 $scope.projectsError = true;
                                 $scope.projectsErrorMessage = error.data.message;
                             });
-                            
+
                         };
 
                         $scope.setPublic = function (project) {//cambio stato pubblico progetto
@@ -49,7 +49,6 @@ angular.module('mealApp').component('admin', {
                         };
 
                         $scope.closeAndReturn = function (project) {//forza chiusura progetto
-                            //cambiare stato!!!!!!
                             $scope.projectsError = $scope.projectsSuccess = false;
                             UserService.closeAndReturn(project._id)
                             .then(function(response) {
@@ -79,7 +78,7 @@ angular.module('mealApp').component('admin', {
 
                         };
 
-                        
+
                         $scope.today = new Date();
                         $scope.today = $scope.today.toISOString()
 
@@ -120,6 +119,6 @@ angular.module('mealApp').component('admin', {
                             $scope.projectsErrorMessage = error.data.message;
                         });
                     }
-                      
+
                 }]
   });

@@ -5,7 +5,7 @@ angular.module('mealApp').component('createProject', {
                   $scope.error = false;
                   $scope.disabled = false;
                   $scope.progress=0;
-                  
+
                   $scope.createProject = function () {
 
                     var mainImage = $scope.projectForm.mainImage;
@@ -33,10 +33,6 @@ angular.module('mealApp').component('createProject', {
                       //$window.alert('Error status: ' + resp.status);
                     }, function (evt) {
                       console.log(evt);
-                      //GESTIONE PROGESS BAR, commentato ma in futuro figo
-                      //var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                      //console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-                      //vm.progress = 'progress: ' + progressPercentage + '% '; // capture upload progress
                   });
                   };
               }]

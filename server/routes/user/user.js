@@ -86,7 +86,7 @@ userRoutes.get('/user', function(req, res) {
       });
     } else {
       return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error finding user', err, 500);
-        // or you could create a new account
+        // or  create a new account
     }
   });
 });
@@ -303,7 +303,7 @@ userRoutes.post('/project', upload, function(req, res) {//registrazione o update
       return errorCodes.sendError(res, errorCodes.ERR_OPERATION_UNAUTHORIZED, 'User not verified', new Error("User not verified"), 500);
     }
     else {
-  
+
       if (req.files.length < 1)//controllo la presenza di immagini
         return errorCodes.sendError(res, errorCodes.ERR_INVALID_REQUEST, 'Main image missing', err, 500);
 
@@ -546,8 +546,6 @@ userRoutes.post('/editProject', function(req, res) {
  * @apiSuccess {[Loan]} loans list of all loans of the project
  */
 userRoutes.get('/listLoanForProject', function(req, res) {
-  /*Project.find({$and:[{'owner':req.userId},{'_id':req.query.idP}]}).exec();/*.select("post")*/
-/*  promise.then(function (project) {*/
   Project
   .findOne({$and:[{'owner':req.userId},{'_id':req.query.idP}]})
   .then(function (project) {
@@ -766,7 +764,7 @@ var uploadID = multer({ //multer settings -- caricamento documento identità
 
       if (!fs.existsSync(dirID)) //controllo directory
         fs.mkdirSync(dirID);
-        
+
       fs.readdir(dirID, (err, files) => {
         if (files.length > 0)
           fs.unlinkSync(path.join(dirID, files[0]));//elimino eventuale doc caricato in precedenza
@@ -792,14 +790,14 @@ var uploadID = multer({ //multer settings -- caricamento documento identità
  * @apiSuccess {success}
  */
 userRoutes.post('/uploadDoc', uploadID, function(req, res) {
-  
+
   if (req.files.length !== 1)
     return errorCodes.sendError(res, errorCodes.ERR_INVALID_REQUEST, 'Document missing', err, 500);
 
   User.findById(req.userId, function (err, user) {
     if (err)
       return errorCodes.sendError(res, errorCodes.ERR_DATABASE_OPERATION, 'Error finding user', err, 500);
-  
+
     user.verified = 'WAITING';
     user.save(function (err) {
       if (err)

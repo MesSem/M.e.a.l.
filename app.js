@@ -134,7 +134,6 @@ var CronJob = require('cron').CronJob;
 var job = new CronJob({
   cronTime: config.timeCallMethodPeriodically,
   onTick:function() {
-    /* Runs every weekday (Sunday through Saturday) at 16:10:00 AM. It does not run on Saturday or Sunday. */
     utils.updateActualMoney();
     utils.closeProjectAll();
     utils.returnMoneyAll();
@@ -165,10 +164,6 @@ app.use('/api/user',auth.authenticate, userRoutes);
 // =======================
 var adminRoutes = require('./server/routes/admin/admin');
 app.use('/api/admin', auth.authenticateAdmin,adminRoutes);
-/*
-app.get('/images/',auth.authenticate, function (req, res) {
-    // res.sendFile(filepath);
-});*/
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '/app', 'index.html'));
