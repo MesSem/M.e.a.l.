@@ -1,3 +1,12 @@
+Qui sotto alcuni link del codice di extrategy che ci potrebbero essere utili:
+
+--Codice angular, prima lezione, senza server : https://github.com/e-xtrategy/unicam-angularjs
+--Codice angular ultima lezione, progetto diverso da quello sopra(fa riferimento a un server indicato nel readme del progetto): https://github.com/De-Lac/AngularJs_client_example
+--Codice server: https://github.com/De-Lac/NodeJs_server_examaple
+
+Struttura cartelle: https://code.tutsplus.com/it/tutorials/introduction-to-the-mean-stack--cms-19918
+
+
 ###################LOGS##############################
 
 var tsFormat = () => (new Date()).toLocaleDateString();
