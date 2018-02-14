@@ -13,7 +13,9 @@ Indicate dalla traccia:
 - come utente voglio poter richiedere un prestito P2P dentro l’app rispettando le leggi italiane
 - come utente voglio poter investire in un prestito chiesto da un altro utente
 - come admin voglio poter moderare le richieste di prestito
+
 Scelte dagli svilupparori del progetto:
+
 - come utente voglio chedere del denaro ad un altro utente
 - come utente posso visualizzare il profilo degli altri utenti con i progetti/richieste di prestito create dagli altri utenti
 - come utente posso lasciare dei commenti sui progetti/richieste di prestito degli altri per fare domande o dare un giudizio
@@ -136,6 +138,6 @@ Per effettuare il login tramite facebook bisogna usare l'utente di prova.
 - Password: 1qa2wszx
 
 # Autori
-- Giacomo Natali
-- Simone Morettini
+- **Giacomo Natali**
+- **Simone Morettini**
 
