@@ -4,6 +4,7 @@
   "description": "Money Exchange and loan",
   "main": "main.js",
   "scripts": {
+    "postinstall": "bower install",
     "start": "set NODE_ENV=production&&node main.js"
   },
   "repository": {
@@ -19,6 +20,7 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.0",
+    "bower": "^1.8.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.3",
     "cron": "^1.3.0",
