@@ -83,7 +83,19 @@ poi avviarlo con il comando
 oppure installate [https://github.com/foreverjs/forever](forever), per riavviare in automatico Node dopo una modifica, o dopo un crash. (-w sta per watch, cioè controlla se sono state salvate modifiche)  
 `forever -w start index.js`
 
+Per utilizzare il login attraverso Facebook occorre creare nella cartella principale il file keys.js con questo contenuto:
+module.exports =
+{
+    'FACEBOOK_APP_ID':   'app id',
+    'FACEBOOK_APP_SECRET': 'app secret code'
+};
+Per ottenere i codici bisogna crearsi un'acount facebook developer, creare una nuova app e a quel punto si otterranno i due codici necessari al login tramite facebook.
+
+
 # App deployata su Heroku
 https://m-e-a-l.herokuapp.com/
+Per effettuare il login tramite facebook bisogna usare l'utente di prova. 
+Email: test_fikmgrd_utente@tfbnw.net 
+Password: 1qa2wszx
 
 
