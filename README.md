@@ -135,7 +135,7 @@ Per effettuare il login tramite facebook bisogna usare l'utente di prova.
 - Email: test_fikmgrd_utente@tfbnw.net 
 - Password: 1qa2wszx
 
-#Autori
-- ## Giacomo Natali
-- ## Simone Morettini
+# Autori
+- Giacomo Natali
+- Simone Morettini
 
