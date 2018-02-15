@@ -116,6 +116,8 @@ module.exports =
     'FACEBOOK_APP_SECRET': 'app secret code'
 };
 '''
+Oppure creare due variabili d'ambiente con gli stessi nomi. (Su Heroku abbiamo fatto così)
+
 Per ottenere i codici bisogna crearsi un'acount facebook developer, creare una nuova app e a quel punto si otterranno i due codici necessari al login tramite facebook.
 
 
