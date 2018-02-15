@@ -122,13 +122,13 @@ Per ottenere i codici bisogna crearsi un'acount facebook developer, creare una n
 # App deployata su Heroku
 https://m-e-a-l.herokuapp.com/
 
-Per effettuare il login tramite Facebook bisogna usare l'utente di prova.
+Per utilizzare le api di Facebook ho creato un'app all'interno di Facebook developer. Dato che è un progetto scolastico non ho reso pubblica l'app, perciò non è possibile loggarsi nel sistema attraverso un normale account Facebook ma bisogna utilizzare l'account Facebook di test:
 - Email: test_fikmgrd_utente@tfbnw.net 
 - Password: 1qa2wszx
 
 Utente admin all'interno di Heroku per visualizzare le pagine disponibili solo all'admin:
--
--
+-MEALMEAL
+-password
 
 # Autori
 - **Giacomo Natali**
