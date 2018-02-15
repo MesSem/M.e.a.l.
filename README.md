@@ -101,9 +101,11 @@ Le API restituiscono un messaggio strutturato nel seguente modo
 
 Prima di avviare il server, installare le dipendenze con il comando  
 `npm install`
+Verranno installate anche le dipendenze di bower
 
 poi avviarlo con il comando  
-`node main.js`
+`npm start`
+Verrà avviato node e impostato in modalità "production"
 
 oppure installate [https://github.com/foreverjs/forever](forever), per riavviare in automatico Node dopo una modifica, o dopo un crash. (-w sta per watch, cioè controlla se sono state salvate modifiche)  
 `forever -w start index.js`
@@ -116,7 +118,7 @@ module.exports =
     'FACEBOOK_APP_SECRET': 'app secret code'
 };
 '''
-Oppure creare due variabili d'ambiente con gli stessi nomi. (Su Heroku abbiamo fatto così)
+Oppure creare due variabili d'ambiente con gli stessi nomi (su Heroku abbiamo fatto così).
 
 Per ottenere i codici bisogna crearsi un'acount facebook developer, creare una nuova app e a quel punto si otterranno i due codici necessari al login tramite facebook.
 
