@@ -127,8 +127,8 @@ Per utilizzare le api di Facebook ho creato un'app all'interno di Facebook devel
 - Password: 1qa2wszx
 
 Utente admin all'interno di Heroku per visualizzare le pagine disponibili solo all'admin:
--MEALMEAL
--password
+- MEALMEAL
+- password
 
 # Autori
 - **Giacomo Natali**
