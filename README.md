@@ -101,9 +101,11 @@ Le API restituiscono un messaggio strutturato nel seguente modo
 
 Prima di avviare il server, installare le dipendenze con il comando  
 `npm install`
+Verranno installate anche le dipendenze di bower
 
 poi avviarlo con il comando  
-`node main.js`
+`npm start`
+Verrà avviato node e impostato in modalità "production"
 
 oppure installate [https://github.com/foreverjs/forever](forever), per riavviare in automatico Node dopo una modifica, o dopo un crash. (-w sta per watch, cioè controlla se sono state salvate modifiche)  
 `forever -w start index.js`
@@ -116,19 +118,21 @@ module.exports =
     'FACEBOOK_APP_SECRET': 'app secret code'
 };
 '''
+Oppure creare due variabili d'ambiente con gli stessi nomi (su Heroku abbiamo fatto così).
+
 Per ottenere i codici bisogna crearsi un'acount facebook developer, creare una nuova app e a quel punto si otterranno i due codici necessari al login tramite facebook.
 
 
 # App deployata su Heroku
 https://m-e-a-l.herokuapp.com/
 
-Per effettuare il login tramite Facebook bisogna usare l'utente di prova.
+Per utilizzare le api di Facebook ho creato un'app all'interno di Facebook developer. Dato che è un progetto scolastico non ho reso pubblica l'app, perciò non è possibile loggarsi nel sistema attraverso un normale account Facebook ma bisogna utilizzare l'account Facebook di test:
 - Email: test_fikmgrd_utente@tfbnw.net 
 - Password: 1qa2wszx
 
 Utente admin all'interno di Heroku per visualizzare le pagine disponibili solo all'admin:
--
--
+- MEALMEAL
+- password
 
 # Autori
 - **Giacomo Natali**
