@@ -138,3 +138,9 @@ Utente admin all'interno di Heroku per visualizzare le pagine disponibili solo a
 - **Giacomo Natali**
 - **Simone Morettini**
 
+# Documentazione
+- Video di presentazione: https://youtu.be/afzc5pgno-s
+
+- Documento utilizzato nella presentazione: https://docs.google.com/presentation/d/1T5B6VX0HsEnwvVV2GgSUWQkwR2mhBwqzvgcT68O9Log
+
+
