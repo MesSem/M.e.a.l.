@@ -135,8 +135,8 @@ Utente admin all'interno di Heroku per visualizzare le pagine disponibili solo a
 - password
 
 # Autori
-- **Giacomo Natali**
-- **Simone Morettini**
+- [**Giacomo Natali**](https://github.com/Giacomo411)
+- [**Simone Morettini**](https://github.com/MesSem)
 
 # Documentazione
 - Video di presentazione: https://youtu.be/afzc5pgno-s
