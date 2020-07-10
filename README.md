@@ -1,3 +1,6 @@
+# Progetto realizzato per l'esame di Programmazione Web dell'Università di Camerino
+Lo scopo del progetto è di realizzare una piattaforma web composta da un backend e un frontend, essendo un progetto universitario sono state effettuate diverse semplificazioni e non sono state implementate le integrazioni con i metodi di pagamento che avrebbero reso il prodotto utilizzabile.
+
 # M.e.a.L. (Management Exchange And Loan)
 Piattaforma sviluppata con lo stack Mean per lo scambio di denaro e la possibilità di ricevere e fare prestiti. Tecnologia utilizzate:
 - autenticazione JWT
